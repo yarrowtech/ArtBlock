@@ -31,6 +31,7 @@
   overflow: hidden;
   width: 95vh;
   min-height: 20vh;
+  margin-top: 1rem;
 }
 
 .storyDiv {

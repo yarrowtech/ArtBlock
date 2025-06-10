@@ -22,6 +22,7 @@ import ProfileEdit from './components/ProfileEdit';
 import EmailNotifications from './components/EmailNotifications';
 import PaymentHistory from './components/PaymentHistory';
 import BlockedAccounts from './components/BlockedAccounts';
+import Saved from './components/Saved';
 import CreatorStories from './components/CreateStories';
 
 export default function App() {
@@ -55,6 +56,7 @@ export default function App() {
             />
             <Route path="payment-history" element={<PaymentHistory />} />
             <Route path="blocked-accounts" element={<BlockedAccounts />} />
+            <Route path="saved" element={<Saved />} />
           </Route>
 
           {/* Optionally: Add a fallback for 404 */}

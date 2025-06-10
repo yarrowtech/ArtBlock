@@ -68,6 +68,12 @@ const Sidebar = () => {
           >
             Settings
           </button>
+          <button
+            className={styles.btn}
+            onClick={() => handleNavigation('/auth?mode=login')}
+          >
+            Logout
+          </button>
         </div>
         <NotificationPanel
           open={notificationOpen}

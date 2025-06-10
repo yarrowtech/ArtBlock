@@ -1,9 +1,6 @@
 // src/components/BlockedAccounts.jsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styles from '../styles/SettingsPage.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 const BlockedAccounts = () => {
   const [blocked, setBlocked] = useState([
@@ -14,14 +11,9 @@ const BlockedAccounts = () => {
   const unblock = (id) => {
     setBlocked((prev) => prev.filter((user) => user.id !== id));
   };
-  const navigate = useNavigate();
 
   return (
     <section className={styles.section}>
-      <button className={styles.back} onClick={() => navigate('/feed')}>
-        <FontAwesomeIcon icon={faArrowLeft} />
-        Back to Feed
-      </button>
       <h2>Blocked Accounts</h2>
       {blocked.length === 0 ? (
         <p>No accounts blocked.</p>
