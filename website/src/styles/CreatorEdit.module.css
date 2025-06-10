@@ -1,0 +1,205 @@
+/* Overall Layout */
+.pageWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #1e1e1e;
+  color: #e2e8f0;
+}
+
+/* Main Content Section */
+.content,
+.section {
+  flex-grow: 1;
+  padding: 48px 32px;
+  background-color: #1e1e1e;
+  max-width: 640px;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 10px;
+}
+
+/* Profile Photo */
+.profilePhotoContainer {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.profilePhoto {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #334155;
+  margin-bottom: 12px;
+}
+
+/* Cover Photo */
+.coverPhotoContainer {
+  text-align: center;
+  margin-bottom: 24px;
+  background-color: #1e293b;
+  padding: 20px;
+  border-radius: 8px;
+  border: 2px dashed #475569;
+}
+
+/* Upload Label */
+.uploadLabel {
+  display: inline-block;
+  margin-top: 10px;
+  color: #3b82f6;
+  cursor: pointer;
+  font-weight: 500;
+  transition: color 0.3s;
+  padding: 8px 16px;
+  border-radius: 6px;
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.uploadLabel:hover {
+  color: #60a5fa;
+  background-color: rgba(59, 130, 246, 0.2);
+}
+
+/* Profile Form */
+.profileForm {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.profileForm label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin-bottom: 0.5rem;
+}
+
+.profileForm input,
+.profileForm textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 1rem;
+  border: 1px solid #475569;
+  border-radius: 8px;
+  background-color: #1e293b;
+  color: #f8fafc;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.profileForm textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.profileForm input:disabled {
+  background-color: #334155;
+  cursor: not-allowed;
+}
+
+.profileForm input:focus,
+.profileForm textarea:focus {
+  border-color: #38bdf8;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+}
+
+.profileForm button {
+  margin-top: 24px;
+  width: 100%;
+  padding: 12px 24px;
+  background-color: #10b981;
+  border: none;
+  color: #ffffff;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.profileForm button:hover {
+  background-color: #059669;
+  transform: translateY(-1px);
+}
+
+.profileForm button:active {
+  transform: translateY(0);
+}
+
+/* Success Message */
+.saveSuccess {
+  margin-top: 16px;
+  padding: 12px;
+  background-color: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+  font-weight: 600;
+  text-align: center;
+  border-radius: 6px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.container {
+  width: 100vw;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Work Sans', sans-serif;
+  color: #f3f4f6;
+  overflow-x: hidden;
+  background-color: #1e1e1e;
+}
+
+.container header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #374151;
+}
+
+.container h1 {
+  font-weight: 600;
+  font-size: 1.75rem;
+  color: #f9fafb;
+}
+.container .userProfile {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  transition: background-color 0.2s ease;
+}
+
+.container .userProfile:hover {
+  background-color: #1e293b;
+}
+
+.container .userProfile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 0.75rem;
+  object-fit: cover;
+  border: 2px solid #818cf8;
+}
+
+.container .userProfile span {
+  font-weight: 600;
+  color: #d1d5db;
+}

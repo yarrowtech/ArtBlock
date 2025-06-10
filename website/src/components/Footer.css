@@ -1,0 +1,23 @@
+footer {
+  background-color: #ffffff; /* bg-white */
+  border-top: 1px solid #e5e7eb; /* border-t */
+  font-size: 0.875rem; /* text-sm */
+  padding: 1.5rem; /* p-6 */
+  text-align: center; /* text-center */
+  color: #4b5563; /* text-gray-600 */
+}
+
+footer .footer-links {
+  margin-top: 0.5rem; /* mt-2 */
+}
+
+footer .footer-links a {
+  margin: 0 0.5rem; /* space-x-4 */
+  text-decoration: none;
+  color: inherit;
+  transition: text-decoration 0.2s ease-in-out;
+}
+
+footer .footer-links a:hover {
+  text-decoration: underline; /* hover:underline */
+}

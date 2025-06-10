@@ -1,0 +1,55 @@
+.customerExperienceSection {
+  background: linear-gradient(to right, #4c1d95, #b91c1c, #dc2626);
+  color: #ffffff;
+  padding: 2.5rem;
+}
+
+.customerExperienceContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .customerExperienceContainer {
+    flex-direction: row;
+  }
+}
+
+.customerExperienceImage {
+  width: 20rem;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.customerExperienceImage:hover {
+  transform: scale(1.05);
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.customerExperienceText h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.customerExperienceText p {
+  margin-bottom: 1rem;
+}
+
+.customerExperienceButton {
+  background-color: #3b82f6;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.customerExperienceButton:hover {
+  background-color: #2563eb;
+}

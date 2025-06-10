@@ -1,0 +1,185 @@
+/* CreatorStories.module.css */
+
+.storiesContainer {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 1rem;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    scrollbar-width: none; /* Firefox */
+    margin-left: 210px;
+
+  }
+  
+  .storiesContainer::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+    
+  }
+  
+  .storyCircle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 3px solid #ff4081;
+    overflow: hidden;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  
+  .storyCircle:hover {
+    transform: scale(1.05);
+  }
+  
+  .storyCircle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .addStoryButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 70px;
+    border: 2px dashed #888;
+    border-radius: 50%;
+    color: #ccc;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background-color 0.3s ease;
+    text-align: center;
+  }
+  
+  .addStoryButton:hover {
+    background-color: #333;
+  }
+  
+  .addIcon {
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 1;
+    color: #00bcd4;
+  }
+  
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modalContent {
+    background: #2a2a2a;
+    padding: 2rem;
+    border-radius: 10px;
+    position: relative;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    color: white;
+  }
+  
+  .closeButton {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .uploadArea {
+    margin-top: 1rem;
+  }
+  
+  .uploadButton {
+    background-color: #00bcd4;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    margin-top: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .uploadButton:hover {
+    background-color: #0097a7;
+  }
+  
+  .preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .preview img,
+  .preview video {
+    width: 100%;
+    max-height: 300px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+  
+
+  @media (max-width: 768px) {
+    .storiesContainer {
+      margin-left: 0;
+      padding: 0.5rem;
+      gap: 0.6rem;
+      border-radius: 0;
+    }
+  
+    .storyCircle {
+      width: 60px;
+      height: 60px;
+      border-width: 2px;
+    }
+  
+    .addStoryButton {
+      width: 60px;
+      height: 60px;
+      border-width: 2px;
+      font-size: 0.8rem;
+    }
+  
+    .addIcon {
+      font-size: 24px;
+    }
+  
+    .modalContent {
+      padding: 1rem;
+      width: 95%;
+    }
+  
+    .uploadButton {
+      width: 100%;
+      font-size: 1rem;
+      padding: 0.5rem;
+    }
+  
+    .preview img,
+    .preview video {
+      max-height: 200px;
+    }
+  
+    .closeButton {
+      font-size: 20px;
+      top: 8px;
+      right: 10px;
+    }
+  }
+  

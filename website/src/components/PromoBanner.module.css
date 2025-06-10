@@ -1,0 +1,60 @@
+.promoBanner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .promoBanner {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.promoCard {
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  color: white;
+}
+
+.bgRed600 {
+  background-color: #dc2626;
+}
+
+.bgPurple800 {
+  background-color: #6b21a8;
+}
+
+.promoCard h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.promoCard p {
+  margin-top: 0.5rem;
+}
+
+.promoCard button {
+  margin-top: 1rem;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  color: inherit;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.promoCard button:hover {
+  color: #d1d5db;
+}
+
+.promoCard ul {
+  margin-top: 0.5rem;
+  list-style: disc inside;
+  font-size: 0.875rem;
+}
+
+.promoCard li {
+  margin-bottom: 0.25rem;
+}

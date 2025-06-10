@@ -1,0 +1,27 @@
+.subscriptionsContent {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 30px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.container {
+  margin-left: 240px;
+  background-color: #121212;
+}
+
+/* ------------------ Mobile View ------------------ */
+@media (max-width: 768px) {
+  .container {
+    margin-left: 0;
+    padding: 0 1rem;
+  }
+
+  .subscriptionsContent {
+    padding: 20px 10px;
+    grid-template-columns: 1fr; /* One card per row */
+    gap: 16px;
+  }
+}

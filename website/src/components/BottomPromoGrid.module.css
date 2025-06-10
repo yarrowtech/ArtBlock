@@ -1,0 +1,101 @@
+.bottomPromoGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .bottomPromoGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.promoBox {
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.bgRed100 {
+  background-color: #fee2e2;
+}
+
+.bgGray100 {
+  background-color: #f3f4f6;
+}
+
+.bgCyan100 {
+  background-color: #cffafe;
+}
+
+.promoBox h3 {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.promoBox p {
+  margin-bottom: 0.5rem;
+}
+
+.promoBox button {
+  text-decoration: underline;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  transition: color 0.3s ease;
+}
+
+.textRed600 {
+  color: #dc2626;
+}
+
+.textRed600:hover {
+  color: #991b1b;
+}
+
+.textGray700 {
+  color: #374151;
+}
+
+.textGray700:hover {
+  color: #000;
+}
+
+.bottomPromoGrid img {
+  width: 100%;
+  border-radius: 0.5rem;
+  opacity: 0.95;
+  filter: grayscale(10%);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.bottomPromoGrid img:hover {
+  transform: scale(1.05);
+}
+
+.promoCardCentered {
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.centeredImage {
+  display: block;
+  margin: 0 auto 1rem;
+  width: 12rem;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+.centeredHeading {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.centeredParagraph {
+  color: #374151;
+}

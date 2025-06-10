@@ -1,0 +1,700 @@
+/* CreatorProfile.module.css - Dark Theme */
+
+.wrapper {
+  display: flex;
+  min-height: 100vh;
+  background-color: #121212;
+  color: #e0e0e0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  background-color: #1f1f1f;
+  padding: 2rem 1rem;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  position: fixed;
+  height: 100vh;
+}
+
+.sidebar h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #00bfa6;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.nav button {
+  background: none;
+  border: none;
+  color: #e0e0e0;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 100%;
+}
+
+.nav button:hover {
+  background-color: #2a2a2a;
+}
+
+/* Main Content */
+.container {
+  flex: 1;
+  padding: 2rem;
+}
+
+/* Profile Section */
+.profile {
+  background-color: #1e1e1e;
+  border-radius: 10px;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  margin-left: 210px;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid #00bcd4;
+  margin-bottom: 1rem;
+}
+
+.role {
+  font-weight: bold;
+  color: #aaa;
+  margin-top: 0.25rem;
+}
+
+.username {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.bio {
+  margin: 1rem 0;
+  font-style: italic;
+  color: #ccc;
+}
+
+.subscribers {
+  margin-bottom: 1rem;
+  color: #00bcd4;
+}
+
+/* Buttons */
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.primaryBtn {
+  background-color: #00bcd4;
+  color: #000;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.primaryBtn:hover {
+  background-color: #0097a7;
+}
+
+.secondaryBtn {
+  background-color: transparent;
+  border: 1px solid #00bcd4;
+  color: #00bcd4;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.secondaryBtn:hover {
+  background-color: #002f34;
+}
+
+/* Posts Section */
+.posts {
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-left: 210px;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.posts h3 {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  color: #ffffff;
+  margin-left: 49vh;
+}
+
+.postCard {
+  width: 800px;
+  height: 600px;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 4rem;
+  margin-top: 2rem;
+  transition: background-color 0.3s;
+}
+
+.postCard:hover {
+  background-color: #333;
+}
+
+.date {
+  font-size: 0.8rem;
+  color: #999;
+  margin-bottom: 0.5rem;
+}
+
+.media {
+  width: 100%;
+
+  object-fit: cover;
+  border-radius: 6px;
+  margin: 0.75rem 0;
+}
+
+.cover {
+  height: 20rem;
+  width: 175vh;
+  border-radius: 10px;
+}
+
+.profileBtn {
+  margin-left: 210px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.profileBtn button {
+  padding: 1rem 8rem;
+  margin: 1rem;
+  background-color: #121212;
+  color: white;
+  border: 0;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.profileBtn button:hover {
+  background-color: #2a2a2a;
+}
+
+/* Subscribe.module.css - Dark Theme */
+
+.heading {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  margin-left: 210px;
+  margin-top: 4rem;
+  color: #ffffff;
+  font-weight: 700;
+  text-align: center;
+}
+
+.plans {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-left: 210px;
+}
+
+.planCard {
+  margin: 2rem;
+  background-color: #1e1e1e;
+  border-radius: 10px;
+  padding: 1.5rem 1.2rem;
+  width: 260px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+}
+
+.planCard:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.8);
+}
+
+.planName {
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-bottom: 0.6rem;
+  color: #4fc3f7;
+}
+
+.price {
+  font-size: 1.7rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.features {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1.5rem;
+  text-align: left;
+  color: #cccccc;
+  font-size: 0.95rem;
+}
+
+.features li {
+  margin-bottom: 0.7rem;
+  position: relative;
+  padding-left: 18px;
+}
+
+.features li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #4fc3f7;
+  font-weight: bold;
+}
+
+.subscribeButton {
+  background-color: #4fc3f7;
+  color: #121212;
+  border: none;
+  border-radius: 25px;
+  padding: 0.7rem 2rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.subscribeButton:hover {
+  background-color: #039be5;
+}
+
+/* createpost popup */
+
+.popupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popupContent {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 16px;
+  max-width: 400px;
+  width: 100%;
+  position: relative;
+  animation: fadeIn 0.3s ease;
+}
+
+.popupContent img,
+video {
+  width: 40vh;
+  height: 30vh;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 10px;
+  right: 16px;
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.form input,
+.form textarea {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* LiveClasses */
+
+.heading {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.createSection {
+  margin-top: 2rem;
+  margin-left: 38%;
+}
+
+.upcomingSection {
+  margin-top: 2rem;
+  margin-left: 10%;
+  color: #000;
+  text-align: center;
+}
+
+.createSection h2 {
+  text-align: center;
+  margin-right: 48vh;
+  color: white;
+}
+.upcomingSection h2 {
+  text-align: center;
+  margin-left: 5vh;
+  color: white;
+}
+
+.upcomingSection h5 {
+  color: gray;
+  margin-left: 5vh;
+}
+
+.form {
+  display: grid;
+  gap: 1rem;
+  max-width: 500px;
+}
+
+.createSection input,
+textarea {
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.createSection button {
+  background-color: #4f46e5;
+  color: white;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.createSection button:hover {
+  background-color: #3730a3;
+}
+
+.classCard {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-top: 1rem;
+  background-color: #f9f9ff;
+}
+
+.classCard button {
+  background-color: #4f46e5;
+  color: white;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/*feed */
+
+.post {
+  margin-top: 2.5rem;
+  width: 450px;
+  height: 630px;
+  background-color: #1e1e1e;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+.caption {
+  padding: 10px;
+  width: 352px;
+  height: 50px;
+}
+
+.postProfile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.post .profilePic {
+  width: 40px;
+  height: 40px;
+  background-color: #555;
+  border-radius: 50%;
+}
+
+.username {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.postTime {
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
+.username {
+  color: white;
+}
+/* Post Content Placeholder */
+.content {
+  background-color: #2c2c2c;
+  border-radius: 8px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  width: 400px;
+  height: 400px;
+}
+
+/* Interaction Icons */
+.interact {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  font-size: 1.2rem;
+  margin-top: 2rem;
+}
+
+.interact i {
+  color: #aaa;
+  transition: color 0.2s;
+}
+
+.interact i:hover {
+  color: #00bfa6;
+}
+
+.join {
+  background-color: #00bfa6;
+  color: #fff;
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-left: auto;
+  transition: background-color 0.2s ease;
+}
+
+.join:hover {
+  background-color: #009e8f;
+}
+
+.content img {
+  width: 400px;
+  height: 400px;
+  border-radius: 8px;
+}
+
+.bookmark {
+  margin-left: 265px;
+}
+
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1001;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    width: 70%;
+    max-width: 300px;
+    height: 100vh;
+    z-index: 1000;
+    background-color: #1f1f1f;
+    padding: 2rem 1rem;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .wrapper {
+    padding-top: 3.5rem;
+    overflow-x: hidden;
+  }
+  
+
+
+  .sidebar h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .nav button {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .container {
+    padding: 1rem;
+  }
+
+  .profile {
+    margin-left: 0;
+    margin-top: 1rem;
+  }
+
+  .posts {
+    margin-left: 0;
+    padding: 1rem;
+  }
+
+  .posts h3 {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .postCard {
+    width: 100%;
+    height: auto;
+    padding: 1rem;
+  }
+
+  .cover {
+    width: 100%;
+    height: auto;
+  }
+
+  .profileBtn {
+    margin-left: 0;
+    flex-direction: row;
+  }
+
+  .profileBtn button {
+    width: 100%;
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+  }
+
+  .heading {
+    margin: 2rem 0 1rem 0;
+    font-size: 1.5rem;
+    margin-left: 0;
+  }
+
+  .plans {
+    margin-left: 0;
+    justify-content: center;
+  }
+
+  .createSection,
+  .upcomingSection {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .createSection h2,
+  .upcomingSection h2,
+  .upcomingSection h5 {
+    margin: 0 auto;
+  }
+
+  .popupContent img,
+  .popupContent video {
+    width: 100%;
+    height: auto;
+  }
+
+  .post {
+    width: 100%;
+    height: auto;
+    padding: 1rem;
+  }
+
+  .caption {
+    width: 100%;
+    height: auto;
+    padding: 0.5rem;
+  }
+
+  .content,
+  .content img {
+    width: 100%;
+    height: 350px;
+    border-radius: 8px;
+  }
+
+  .bookmark {
+    margin-left: auto;
+  }
+}

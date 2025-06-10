@@ -1,0 +1,41 @@
+.nav {
+  background-color: white;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.nav a {
+  text-decoration: none;
+}
+.logo {
+  color: #dc2626;
+  font-weight: bold;
+}
+
+.navList {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navList li {
+  cursor: pointer;
+}
+
+.authButtons {
+  margin-left: auto;
+}
+
+.loginButton {
+  margin-right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
