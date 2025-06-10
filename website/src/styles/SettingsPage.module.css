@@ -298,3 +298,16 @@ input:checked + .slider:before {
 .unblockBtn:hover {
   background-color: #dc2626;
 }
+
+.back {
+  background-color: #14b8a6;
+  padding: 0.5rem;
+  border-radius: 10px;
+  margin-left: 510px;
+  font-weight: bold;
+}
+
+.back:hover {
+  cursor: pointer;
+  background-color: #17bb87;
+}

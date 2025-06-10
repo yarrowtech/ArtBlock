@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/SettingsPage.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 const ProfileEdit = () => {
   const navigate = useNavigate();
@@ -46,6 +48,10 @@ const ProfileEdit = () => {
 
   return (
     <section className={styles.section}>
+      <button className={styles.back} onClick={() => navigate('/feed')}>
+        <FontAwesomeIcon icon={faArrowLeft} />
+        Back to Feed
+      </button>
       <h2>Edit Profile</h2>
 
       <div className={styles.profilePhotoContainer}>
