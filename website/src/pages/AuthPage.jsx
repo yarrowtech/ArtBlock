@@ -33,13 +33,13 @@ const AuthPage = () => {
         throw new Error('Password cannot be empty.');
       }
 
-      if (!role) {
-        throw new Error('Please select a role.');
-      }
-
       if (isRegistering) {
         if (!username) {
           throw new Error('Username is required for registration.');
+        }
+
+        if (!role) {
+          throw new Error('Please select a role.');
         }
 
         const isCreator = role === 'creator';
@@ -53,7 +53,7 @@ const AuthPage = () => {
       } else {
         const response = await authService.login(email, password);
         const user = response.user;
-        
+
         if (user.isCreator) {
           navigate('/creatorprofile');
         } else {
@@ -114,27 +114,35 @@ const AuthPage = () => {
               />
             </div>
 
-            <div className={styles.inputWrapper}>
-              <select
-                required
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                className={styles.input}
-                disabled={isLoading}
-              >
-                <option value="">Select Role</option>
-                <option value="creator">Creator</option>
-                <option value="supporter">Supporter</option>
-              </select>
-            </div>
+            {isRegistering && (
+              <div className={styles.inputWrapper}>
+                <select
+                  required
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  className={styles.input}
+                  disabled={isLoading}
+                >
+                  <option value="">Select Role</option>
+                  <option value="creator">Creator</option>
+                  <option value="supporter">Supporter</option>
+                </select>
+              </div>
+            )}
           </div>
 
-          <button 
-            className={`${styles.actionButton} ${isLoading ? styles.loading : ''}`} 
+          <button
+            className={`${styles.actionButton} ${
+              isLoading ? styles.loading : ''
+            }`}
             onClick={handleAction}
             disabled={isLoading}
           >
-            {isLoading ? 'Please wait...' : (isRegistering ? 'Register' : 'Login')}
+            {isLoading
+              ? 'Please wait...'
+              : isRegistering
+              ? 'Register'
+              : 'Login'}
           </button>
 
           <p className={styles.socialText}>
