@@ -3,39 +3,46 @@ import styles from '../styles/CreatorStories.module.css';
 
 const CreatorStories = ({ stories = [], onAddStory = () => {} }) => {
   const [showStoryUpload, setShowStoryUpload] = useState(false);
-  const fileInputRef = useRef(null);
   const [previewMedia, setPreviewMedia] = useState(null);
+  const fileInputRef = useRef(null);
 
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      // Check if file is image or video
-      if (file.type.startsWith('image/') || file.type.startsWith('video/')) {
-        setPreviewMedia({
-          type: file.type.startsWith('image/') ? 'image' : 'video',
-          url: URL.createObjectURL(file),
-          file,
-        });
-      } else {
-        alert('Please select an image or video file');
-      }
+    if (!file) return;
+
+    const isImage = file.type.startsWith('image/');
+    const isVideo = file.type.startsWith('video/');
+
+    if (isImage || isVideo) {
+      setPreviewMedia({
+        type: isImage ? 'image' : 'video',
+        url: URL.createObjectURL(file),
+        file,
+      });
+    } else {
+      alert('Please select an image or video file');
     }
   };
 
   const handleStoryUpload = async () => {
-    if (previewMedia) {
-      const newStory = {
-        id: Date.now(),
-        type: previewMedia.type,
-        url: previewMedia.url,
-        timestamp: new Date().toISOString(),
-        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // 24 hours from now
-      };
+    if (!previewMedia) return;
 
-      onAddStory(newStory);
-      setShowStoryUpload(false);
-      setPreviewMedia(null);
-    }
+    // TODO: Replace with actual API call
+    // const formData = new FormData();
+    // formData.append('media', previewMedia.file);
+    // await uploadStoryToServer(formData);
+
+    const newStory = {
+      id: Date.now(),
+      type: previewMedia.type,
+      url: previewMedia.url,
+      timestamp: new Date().toISOString(),
+      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+    };
+
+    onAddStory(newStory);
+    setShowStoryUpload(false);
+    setPreviewMedia(null);
   };
 
   const StoryUploadModal = () => (
@@ -51,7 +58,6 @@ const CreatorStories = ({ stories = [], onAddStory = () => {} }) => {
           ×
         </button>
         <h3>Add Story</h3>
-
         <div className={styles.uploadArea}>
           {!previewMedia ? (
             <>
@@ -60,7 +66,7 @@ const CreatorStories = ({ stories = [], onAddStory = () => {} }) => {
                 accept="image/*,video/*"
                 onChange={handleFileSelect}
                 ref={fileInputRef}
-                style={{ display: 'none' }}
+                hidden
               />
               <button
                 className={styles.uploadButton}
@@ -92,31 +98,34 @@ const CreatorStories = ({ stories = [], onAddStory = () => {} }) => {
   return (
     <div className={styles.storiesContainer}>
       {/* Add Story Button */}
-      <div>
-      <div
-        className={styles.addStoryButton}
-        onClick={() => setShowStoryUpload(true)}
-      >
-        <div className={styles.addIcon}>+</div>
-      </div>
-      <span>Add Story</span>
+      <div className={styles.addStoryWrapper}>
+        <div
+          className={styles.addStoryButton}
+          onClick={() => setShowStoryUpload(true)}
+          role="button"
+          tabIndex={0}
+        >
+          <div className={styles.addIcon}>+</div>
+        </div>
+        <span>Add Story</span>
       </div>
 
       {/* Story Circles */}
-      {stories.length === 0 ? (
-        <div className={styles.noStories}></div>
-      ) : (
+      {stories.length > 0 ? (
         stories.map((story) => (
           <div key={story.id} className={styles.storyCircle}>
-            <img
-              src={story.type === 'image' ? story.url : story.thumbnail}
-              alt="Story thumbnail"
-            />
+            {story.type === 'image' ? (
+              <img src={story.url} alt="Story preview" />
+            ) : (
+              <video src={story.url} muted />
+            )}
           </div>
         ))
+      ) : (
+        <div className={styles.noStories}>No stories yet</div>
       )}
 
-      {/* Story Upload Modal */}
+      {/* Modal */}
       {showStoryUpload && <StoryUploadModal />}
     </div>
   );

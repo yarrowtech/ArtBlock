@@ -1,25 +1,59 @@
-import React, { useState } from 'react';
-import { useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
-import styles from '../styles/FeedPage.module.css'; // CSS Module
-
-// Font Awesome
+import styles from '../styles/FeedPage.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// icons
-import { faBookmark as regularBookmark } from '@fortawesome/free-regular-svg-icons';
-import { faComment } from '@fortawesome/free-regular-svg-icons';
-import { faHeart } from '@fortawesome/free-regular-svg-icons';
+import {
+  faBookmark as regularBookmark,
+  faComment,
+  faHeart,
+} from '@fortawesome/free-regular-svg-icons';
 import { faShare } from '@fortawesome/free-solid-svg-icons';
+
+// Reusable Post Component
+const Post = ({ post, onJoin }) => (
+  <div className={styles.post}>
+    <div className={styles.postProfile}>
+      <div className={styles.profilePic}></div>
+      <div className={styles.username}>{post.username}</div>
+      <div className={styles.postTime}>.5h</div>
+      <FontAwesomeIcon icon={regularBookmark} className={styles.bookmark} />
+    </div>
+    <div className={styles.caption}>{post.caption}</div>
+    <div className={styles.content}>
+      <img src={post.image} alt="post" />
+    </div>
+    <div className={styles.interact}>
+      <FontAwesomeIcon icon={faHeart} />
+      <FontAwesomeIcon icon={faComment} />
+      <FontAwesomeIcon icon={faShare} />
+      <button type="button" className={styles.join} onClick={onJoin}>
+        Join
+      </button>
+    </div>
+  </div>
+);
+
+// Reusable Story Component
+const Story = ({ imgUrl, name }) => (
+  <div className={styles.story}>
+    <div className={styles.storyRing}>
+      <img src={imgUrl} alt={name} className={styles.profilePic} />
+    </div>
+    <h5>{name}</h5>
+  </div>
+);
 
 const FeedPage = () => {
   const navigate = useNavigate();
-
-  const handleNavigation = (path) => {
-    navigate(path);
-  };
-
   const scrollRef = useRef(null);
+
+  const [posts, setPosts] = useState([]);
+  const [usernames, setUsernames] = useState([]);
+  const [suggestedCreators, setSuggestedCreators] = useState([]);
+
+  const handleNavigation = (path) => navigate(path);
+  const handleJoin = () => handleNavigation('/subscribe');
 
   const scroll = (direction) => {
     const scrollAmount = 150;
@@ -31,195 +65,82 @@ const FeedPage = () => {
     }
   };
 
-  const usernames = [
-    'john',
-    'emma',
-    'alex',
-    'lisa',
-    'mark',
-    'sara',
-    'dave',
-    'nina',
-    'max',
-    'olivia',
-  ];
+  useEffect(() => {
+    // Simulated backend fetch (replace with actual API)
+    setUsernames([
+      'john',
+      'emma',
+      'alex',
+      'lisa',
+      'mark',
+      'sara',
+      'dave',
+      'nina',
+      'max',
+      'olivia',
+    ]);
+
+    setPosts([
+      {
+        username: 'amitsaha2002',
+        caption: 'Creating an engaging podcast...',
+        image: '../images/podcast.jpg',
+      },
+      {
+        username: 'amitsaha2002',
+        caption: 'Grooving to some dance moves!',
+        image: '../images/dancing.jpg',
+      },
+      {
+        username: 'amitsaha2002',
+        caption: 'Exploring musical creativity.',
+        image: '../images/music.jpg',
+      },
+    ]);
+
+    setSuggestedCreators(
+      Array.from({ length: 8 }, (_, i) => ({
+        name: `Creator ${i + 1}`,
+        handle: `@creator${i + 1}`,
+        avatar: `https://i.pravatar.cc/40?img=${i + 1}`,
+      }))
+    );
+  }, []);
 
   return (
     <div className={styles.container}>
       <Sidebar />
       <div className={styles.item2}>
+        {/* Story section */}
         <div className={styles.storyContainer}>
           <button className={styles.arrowLeft} onClick={() => scroll('left')}>
             &#8249;
           </button>
-
           <div className={styles.storyDiv} ref={scrollRef}>
             {usernames.map((name, index) => (
-              <div className={styles.story} key={index}>
-                <div className={styles.storyRing}>
-                  <img
-                    src={`https://i.pravatar.cc/150?img=${index + 1}`}
-                    alt={name}
-                    className={styles.profilePic}
-                  />
-                </div>
-                <h5>{name}</h5>
-              </div>
+              <Story
+                key={index}
+                imgUrl={`https://i.pravatar.cc/150?img=${index + 1}`}
+                name={name}
+              />
             ))}
           </div>
-
           <button className={styles.arrowRight} onClick={() => scroll('right')}>
             &#8250;
           </button>
         </div>
 
-        <div className={styles.post}>
-          <div className={styles.postProfile}>
-            <div className={styles.profilePic}></div>
-            <div className={styles.username}>amitsaha2002</div>
-            <div className={styles.postTime}>.5h</div>
-            <FontAwesomeIcon
-              icon={regularBookmark}
-              className={styles.bookmark}
-            />
-          </div>
-
-          <div className={styles.caption}>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore,
-            libero!
-          </div>
-
-          <div className={styles.content}>
-            <img src="../images/podcast.jpg" alt="" />
-          </div>
-
-          <div className={styles.interact}>
-            <FontAwesomeIcon icon={faHeart} />
-            <FontAwesomeIcon icon={faComment} />
-            <FontAwesomeIcon icon={faShare} />
-            <button
-              type="button"
-              className={styles.join}
-              onClick={() => handleNavigation('/subscribe')}
-            >
-              Join
-            </button>
-          </div>
-        </div>
-        <div className={styles.post}>
-          <div className={styles.postProfile}>
-            <div className={styles.profilePic}></div>
-            <div className={styles.username}>amitsaha2002</div>
-            <div className={styles.postTime}>.5h</div>
-            <FontAwesomeIcon
-              icon={regularBookmark}
-              className={styles.bookmark}
-            />
-          </div>
-
-          <div className={styles.caption}>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore,
-            libero!
-          </div>
-
-          <div className={styles.content}>
-            <img src="../images/dancing.jpg" alt="" />
-          </div>
-
-          <div className={styles.interact}>
-            <FontAwesomeIcon icon={faHeart} />
-            <FontAwesomeIcon icon={faComment} />
-            <FontAwesomeIcon icon={faShare} />
-
-            <button
-              type="button"
-              className={styles.join}
-              onClick={() => handleNavigation('/subscribe')}
-            >
-              Join
-            </button>
-          </div>
-        </div>
-        <div className={styles.post}>
-          <div className={styles.postProfile}>
-            <div className={styles.profilePic}></div>
-            <div className={styles.username}>amitsaha2002</div>
-            <div className={styles.postTime}>.5h</div>
-            <FontAwesomeIcon
-              icon={regularBookmark}
-              className={styles.bookmark}
-            />
-          </div>
-
-          <div className={styles.caption}>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore,
-            libero!
-          </div>
-
-          <div className={styles.content}>
-            <img src="../images/music.jpg" alt="" />
-          </div>
-
-          <div className={styles.interact}>
-            <FontAwesomeIcon icon={faHeart} />
-            <FontAwesomeIcon icon={faComment} />
-            <FontAwesomeIcon icon={faShare} />
-            <button
-              type="button"
-              className={styles.join}
-              onClick={() => handleNavigation('/subscribe')}
-            >
-              Join
-            </button>
-          </div>
-        </div>
+        {/* Posts section */}
+        {posts.map((post, i) => (
+          <Post key={i} post={post} onJoin={handleJoin} />
+        ))}
       </div>
 
+      {/* Suggested Creators */}
       <div className={styles.item3}>
         <h3 className={styles.suggestionTitle}>Suggested Creators</h3>
         <ul className={styles.creatorList}>
-          {[
-            {
-              name: 'Creator Name',
-              handle: '@username',
-              avatar: 'https://i.pravatar.cc/40?img=1',
-            },
-            {
-              name: 'Creator Name',
-              handle: '@username',
-              avatar: 'https://i.pravatar.cc/40?img=2',
-            },
-            {
-              name: 'Creator Name',
-              handle: '@username',
-              avatar: 'https://i.pravatar.cc/40?img=3',
-            },
-            {
-              name: 'Creator Name',
-              handle: '@username',
-              avatar: 'https://i.pravatar.cc/40?img=4',
-            },
-            {
-              name: 'Creator Name',
-              handle: '@username',
-              avatar: 'https://i.pravatar.cc/40?img=5',
-            },
-            {
-              name: 'Creator Name',
-              handle: '@username',
-              avatar: 'https://i.pravatar.cc/40?img=6',
-            },
-            {
-              name: 'Creator Name',
-              handle: '@username',
-              avatar: 'https://i.pravatar.cc/40?img=7',
-            },
-            {
-              name: 'Creator Name',
-              handle: '@username',
-              avatar: 'https://i.pravatar.cc/40?img=8',
-            },
-          ].map((creator, index) => (
+          {suggestedCreators.map((creator, index) => (
             <li key={index} className={styles.creatorItem}>
               <img
                 src={creator.avatar}
@@ -230,10 +151,7 @@ const FeedPage = () => {
                 <span className={styles.creatorName}>{creator.name}</span>
                 <span className={styles.creatorHandle}>{creator.handle}</span>
               </div>
-              <button
-                className={styles.followBtn}
-                onClick={() => handleNavigation('/subscribe')}
-              >
+              <button className={styles.followBtn} onClick={handleJoin}>
                 Join
               </button>
             </li>

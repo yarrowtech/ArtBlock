@@ -1,49 +1,70 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../styles/CreatorDashboard.module.css';
 import { useNavigate } from 'react-router-dom';
 
 const CreatorDashboard = () => {
   const navigate = useNavigate();
+
+  const [overviewData, setOverviewData] = useState([]);
+  const [activityStats, setActivityStats] = useState([]);
+  const [user, setUser] = useState({});
+
+  // Simulate fetching data from backend
+  useEffect(() => {
+    // TODO: Replace with actual API calls
+    setUser({
+      name: 'Amit Saha',
+      avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
+    });
+
+    setOverviewData([
+      {
+        title: 'Supporters',
+        count: '12.4K',
+        trend: '5.3% increase',
+        type: 'positive',
+      },
+      {
+        title: 'Impressions',
+        count: '32.7K',
+        trend: '1.8% decrease',
+        type: 'negative',
+      },
+      {
+        title: 'Profile Visits',
+        count: '8.1K',
+        trend: '7.1% increase',
+        type: 'positive',
+      },
+    ]);
+
+    setActivityStats([
+      { label: 'New supporters today', value: '245' },
+      { label: 'Posts engaged', value: '134' },
+      { label: 'Comments responded', value: '58' },
+    ]);
+  }, []);
+
   return (
     <div className={styles.dashboardContainer}>
-      <header>
+      {/* Header */}
+      <header className={styles.header}>
         <h1>Professional Dashboard</h1>
         <div
           onClick={() => navigate('/creatorprofile')}
           className={styles.userProfile}
           role="button"
-          tabIndex="0"
+          tabIndex={0}
         >
-          <img
-            src="https://randomuser.me/api/portraits/men/1.jpg"
-            alt="User avatar"
-          />
-          <span>Amit Saha</span>
+          <img src={user.avatar} alt="User avatar" />
+          <span>{user.name}</span>
         </div>
       </header>
 
+      {/* Metrics Cards */}
       <main>
         <section className={styles.overviewCards}>
-          {[
-            {
-              title: 'Supporters',
-              count: '12.4K',
-              trend: '5.3% increase',
-              type: 'positive',
-            },
-            {
-              title: 'Impressions',
-              count: '32.7K',
-              trend: '1.8% decrease',
-              type: 'negative',
-            },
-            {
-              title: 'Profile Visits',
-              count: '8.1K',
-              trend: '7.1% increase',
-              type: 'positive',
-            },
-          ].map((item, idx) => (
+          {overviewData.map((item, idx) => (
             <article className={styles.card} key={idx}>
               <h3>{item.title}</h3>
               <div className={styles.metric}>{item.count}</div>
@@ -71,28 +92,26 @@ const CreatorDashboard = () => {
           ))}
         </section>
 
+        {/* Chart.js Integration (optional) */}
         <section className={styles.chartContainer}>
           <h3>Supporter Growth (Last 7 Days)</h3>
           <canvas
             id="followerChart"
             width="400"
             height="200"
+            aria-label="Supporter Growth Chart"
             role="img"
-            aria-label="Line chart showing supporters growth"
           ></canvas>
         </section>
       </main>
 
+      {/* Insights Section */}
       <section className={styles.insights}>
         <h3>Recent Activities</h3>
-        {[
-          ['New supporters today', '245'],
-          ['Posts engaged', '134'],
-          ['Comments responded', '58'],
-        ].map(([label, value], i) => (
-          <div className={styles.insightItem} key={i}>
-            <span>{label}</span>
-            <span>{value}</span>
+        {activityStats.map((item, i) => (
+          <div key={i} className={styles.insightItem}>
+            <span>{item.label}</span>
+            <span>{item.value}</span>
           </div>
         ))}
       </section>
