@@ -11,7 +11,7 @@
   top: 0;
   left: 0;
   height: 100vh;
-  width: 360px;
+  width: 400px;
   background: #1e1e1e; /* Panel dark background */
   box-shadow: -4px 0 20px rgba(0, 0, 0, 0.5);
   transform: translateX(-100%);
@@ -115,7 +115,7 @@
 /* ===================== Mode Variants ===================== */
 
 .panel.creator {
-  margin-left: 250px;
+  margin-left: 240px;
 }
 
 .panel.supporter {

@@ -28,7 +28,7 @@ const Sidebar = () => {
       {/* Sidebar */}
       <aside className={`${styles.sidebar} ${sidebarOpen ? styles.open : ''}`}>
         <div className={styles.grid}>
-          <div className={styles.logo}>Art Block</div>
+          <h2>Art Block</h2>
 
           <button
             className={styles.btn}
