@@ -51,13 +51,19 @@ const Sidebar = () => {
             Subscriptions
           </button>
 
-          <button className={styles.btn} onClick={() => setMessageOpen(true)}>
+          <button
+            className={styles.btn}
+            onClick={() => setMessageOpen((prev) => !prev)}
+          >
             Messages
           </button>
 
           <button
             className={styles.btn}
-            onClick={() => setNotificationOpen(true)}
+            onClick={() => {
+              setNotificationOpen(true);
+              setMessageOpen(false);
+            }}
           >
             Notification
           </button>
@@ -78,8 +84,13 @@ const Sidebar = () => {
         <NotificationPanel
           open={notificationOpen}
           setOpen={setNotificationOpen}
+          mode="supporter"
         />
-        <MessageSlide isOpen={messageOpen} setIsOpen={setMessageOpen} />
+        <MessageSlide
+          isOpen={messageOpen}
+          setIsOpen={setMessageOpen}
+          mode="supporter"
+        />
       </aside>
     </>
   );

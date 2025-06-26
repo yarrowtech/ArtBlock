@@ -22,13 +22,14 @@
   position: fixed;
   top: 0;
   left: -150%;
-  width: 50vw;
+  width: 82vw;
   height: 100vh;
   background-color: #1e1e1e;
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.6);
   display: flex;
   transition: left 0.3s ease-in-out;
   z-index: 999;
+  margin-left: 255px;
 }
 
 .active {
@@ -209,4 +210,16 @@
     padding: 6px 12px;
     font-size: 13px;
   }
+}
+
+/* ===================== Mode Variants ===================== */
+
+/* Creator mode: shift right of sidebar */
+.messageSlide.creator {
+  margin-left: 255px;
+}
+
+/* Supporter mode: no left offset, full width on open */
+.messageSlide.supporter {
+  margin-left: 255px;
 }

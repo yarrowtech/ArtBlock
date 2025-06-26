@@ -1,7 +1,10 @@
 // src/components/ProfileEdit.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/CreatorEdit.module.css';
+import axios from 'axios'; // For backend integration
+
+const DEFAULT_PROFILE_PIC = 'https://randomuser.me/api/portraits/men/1.jpg';
 
 const ProfileEdit = () => {
   const navigate = useNavigate();
@@ -16,7 +19,19 @@ const ProfileEdit = () => {
 
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [coverPhoto, setCoverPhoto] = useState(null);
+  const [previewPhoto, setPreviewPhoto] = useState(DEFAULT_PROFILE_PIC);
   const [saveSuccess, setSaveSuccess] = useState(false);
+
+  // Preview URL cleanup
+  useEffect(() => {
+    if (profilePhoto) {
+      const objectUrl = URL.createObjectURL(profilePhoto);
+      setPreviewPhoto(objectUrl);
+      return () => URL.revokeObjectURL(objectUrl);
+    } else {
+      setPreviewPhoto(DEFAULT_PROFILE_PIC);
+    }
+  }, [profilePhoto]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,28 +41,36 @@ const ProfileEdit = () => {
     }));
   };
 
-  const handleProfilePhotoChange = (e) => {
+  const handleFileChange = (e, setter) => {
     const file = e.target.files[0];
-    if (file) {
-      setProfilePhoto(file);
-    }
-  };
-
-  const handleCoverPhotoChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setCoverPhoto(file);
-    }
+    if (file) setter(file);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Simulate save operation
-    setSaveSuccess(true);
-    setTimeout(() => {
-      setSaveSuccess(false);
-      navigate('/creatorprofile');
-    }, 2000);
+    try {
+      const formData = new FormData();
+      Object.entries(form).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+      if (profilePhoto) formData.append('profilePhoto', profilePhoto);
+      if (coverPhoto) formData.append('coverPhoto', coverPhoto);
+
+      // Send to backend
+      await axios.post('/api/profile/update', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      setSaveSuccess(true);
+      setTimeout(() => {
+        setSaveSuccess(false);
+        navigate('/creatorprofile');
+      }, 2000);
+    } catch (err) {
+      console.error('Profile update failed:', err);
+    }
   };
 
   return (
@@ -60,26 +83,19 @@ const ProfileEdit = () => {
           role="button"
           tabIndex="0"
         >
-          <img
-            src="https://randomuser.me/api/portraits/men/1.jpg"
-            alt="User avatar"
-          />
-          <span>Amit Saha</span>
+          <img src={DEFAULT_PROFILE_PIC} alt="User avatar" />
+          <span>{form.name}</span>
         </div>
       </header>
+
       <div className={styles.pageWrapper}>
         <section className={styles.section}>
           <div className={styles.profilePhotoContainer}>
             <img
-              src={
-                profilePhoto
-                  ? URL.createObjectURL(profilePhoto)
-                  : 'https://randomuser.me/api/portraits/men/1.jpg'
-              }
+              src={previewPhoto}
               alt="Profile"
               className={styles.profilePhoto}
             />
-            <br />
             <label htmlFor="profile-photo" className={styles.uploadLabel}>
               Change Profile Photo
             </label>
@@ -87,7 +103,7 @@ const ProfileEdit = () => {
               type="file"
               id="profile-photo"
               accept="image/*"
-              onChange={handleProfilePhotoChange}
+              onChange={(e) => handleFileChange(e, setProfilePhoto)}
               hidden
             />
           </div>
@@ -100,41 +116,27 @@ const ProfileEdit = () => {
               type="file"
               id="cover-photo"
               accept="image/*"
-              onChange={handleCoverPhotoChange}
+              onChange={(e) => handleFileChange(e, setCoverPhoto)}
               hidden
             />
           </div>
 
           <form onSubmit={handleSubmit} className={styles.profileForm}>
-            <label htmlFor="name">Name</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              required
-            />
-
-            <label htmlFor="username">Username</label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              value={form.username}
-              onChange={handleChange}
-              required
-            />
-
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              required
-            />
+            {['name', 'username', 'email'].map((field) => (
+              <React.Fragment key={field}>
+                <label htmlFor={field}>
+                  {field[0].toUpperCase() + field.slice(1)}
+                </label>
+                <input
+                  type={field === 'email' ? 'email' : 'text'}
+                  id={field}
+                  name={field}
+                  value={form[field]}
+                  onChange={handleChange}
+                  required
+                />
+              </React.Fragment>
+            ))}
 
             <label htmlFor="bio">Bio</label>
             <textarea

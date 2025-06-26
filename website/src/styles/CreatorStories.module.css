@@ -1,185 +1,144 @@
 /* CreatorStories.module.css */
 
 .storiesContainer {
-    display: flex;
-    gap: 1rem;
-    overflow-x: auto;
-    padding: 1rem;
-    background-color: #1e1e1e;
-    border-radius: 10px;
-    scrollbar-width: none; /* Firefox */
-    margin-left: 210px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  flex-wrap: wrap;
+  font-family: 'Poppins', sans-serif;
+  background-color: #1e1e2f;
+  border-radius: 10px;
+}
 
-  }
-  
-  .storiesContainer::-webkit-scrollbar {
-    display: none; /* Chrome, Safari */
-    
-  }
-  
-  .storyCircle {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    border: 3px solid #ff4081;
-    overflow: hidden;
-    flex-shrink: 0;
-    cursor: pointer;
-    transition: transform 0.2s;
-  }
-  
-  .storyCircle:hover {
-    transform: scale(1.05);
-  }
-  
-  .storyCircle img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .addStoryButton {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 70px;
-    height: 70px;
-    border: 2px dashed #888;
-    border-radius: 50%;
-    color: #ccc;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: background-color 0.3s ease;
-    text-align: center;
-  }
-  
-  .addStoryButton:hover {
-    background-color: #333;
-  }
-  
-  .addIcon {
-    font-size: 30px;
-    font-weight: bold;
-    line-height: 1;
-    color: #00bcd4;
-  }
-  
-  .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-  }
-  
-  .modalContent {
-    background: #2a2a2a;
-    padding: 2rem;
-    border-radius: 10px;
-    position: relative;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-    color: white;
-  }
-  
-  .closeButton {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    background: transparent;
-    border: none;
-    font-size: 24px;
-    color: white;
-    cursor: pointer;
-  }
-  
-  .uploadArea {
-    margin-top: 1rem;
-  }
-  
-  .uploadButton {
-    background-color: #00bcd4;
-    color: #fff;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    margin-top: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-  }
-  
-  .uploadButton:hover {
-    background-color: #0097a7;
-  }
-  
-  .preview {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .preview img,
-  .preview video {
-    width: 100%;
-    max-height: 300px;
-    border-radius: 8px;
-    object-fit: cover;
-  }
-  
+.addStoryWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
 
-  @media (max-width: 768px) {
-    .storiesContainer {
-      margin-left: 0;
-      padding: 0.5rem;
-      gap: 0.6rem;
-      border-radius: 0;
-    }
-  
-    .storyCircle {
-      width: 60px;
-      height: 60px;
-      border-width: 2px;
-    }
-  
-    .addStoryButton {
-      width: 60px;
-      height: 60px;
-      border-width: 2px;
-      font-size: 0.8rem;
-    }
-  
-    .addIcon {
-      font-size: 24px;
-    }
-  
-    .modalContent {
-      padding: 1rem;
-      width: 95%;
-    }
-  
-    .uploadButton {
-      width: 100%;
-      font-size: 1rem;
-      padding: 0.5rem;
-    }
-  
-    .preview img,
-    .preview video {
-      max-height: 200px;
-    }
-  
-    .closeButton {
-      font-size: 20px;
-      top: 8px;
-      right: 10px;
-    }
-  }
-  
+.addStoryButton {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f09, #3023ae);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 2rem;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.addStoryButton:hover {
+  transform: scale(1.05);
+}
+
+.addIcon {
+  user-select: none;
+}
+
+.storyCircle {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #ff5c8d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #eee;
+  transition: transform 0.2s ease;
+}
+
+.storyCircle img,
+.storyCircle video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.storyCircle:hover {
+  transform: scale(1.05);
+}
+
+.noStories {
+  color: #888;
+  font-size: 0.9rem;
+  margin-left: 1rem;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.closeButton {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #333;
+}
+
+.uploadArea {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.uploadButton {
+  background: #3023ae;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 1rem;
+}
+
+.uploadButton:hover {
+  background: #5c4db1;
+}
+
+.preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.preview img,
+.preview video {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  object-fit: contain;
+}

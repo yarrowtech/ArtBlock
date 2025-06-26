@@ -1,30 +1,30 @@
-/* CreatorProfile.module.css - Dark Theme */
+/* CreatorProfile.module.css — Dark Theme */
 
 .wrapper {
   display: flex;
+  font-family: 'Poppins', sans-serif;
   min-height: 100vh;
   background-color: #121212;
   color: #e0e0e0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Sidebar */
+/* Sidebar is fixed and always visible */
 .sidebar {
-  width: 240px;
-  background-color: #1f1f1f;
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #1e1e2f;
+  color: #fff;
   padding: 2rem 1rem;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  position: fixed;
-  height: 100vh;
+  z-index: 1000;
 }
 
 .sidebar h2 {
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: #00bfa6;
+  font-size: 1.5rem;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -36,662 +36,313 @@
 }
 
 .nav button {
-  background: none;
-  border: none;
-  color: #e0e0e0;
-  text-align: left;
   padding: 0.75rem 1rem;
+  background: transparent;
+  color: #fff;
+  border: none;
+  text-align: left;
   font-size: 1rem;
-  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-  width: 100%;
+  transition: background 0.2s;
 }
 
 .nav button:hover {
-  background-color: #2a2a2a;
+  background: #2a2a44;
+  border-radius: 6px;
 }
 
-/* Main Content */
 .container {
+  margin-left: 250px;
   flex: 1;
   padding: 2rem;
 }
 
 /* Profile Section */
 .profile {
-  background-color: #1e1e1e;
-  border-radius: 10px;
-  padding-bottom: 1rem;
-  margin-bottom: 2rem;
   text-align: center;
-  margin-left: 210px;
+  margin-bottom: 2rem;
+}
+
+.cover {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: -50px;
 }
 
 .avatar {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  border: 2px solid #00bcd4;
-  margin-bottom: 1rem;
+  object-fit: cover;
+  border: 4px solid #1e1e2f;
+  margin-bottom: 0.5rem;
 }
 
 .role {
-  font-weight: bold;
-  color: #aaa;
-  margin-top: 0.25rem;
+  color: #bbbbbb;
+  font-size: 0.9rem;
+  margin: 0.3rem 0;
 }
 
 .username {
-  font-size: 0.9rem;
   color: #888;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
 }
 
 .bio {
-  margin: 1rem 0;
-  font-style: italic;
+  font-size: 0.95rem;
   color: #ccc;
+  margin: 0.5rem auto;
+  max-width: 500px;
 }
 
-.subscribers {
-  margin-bottom: 1rem;
-  color: #00bcd4;
-}
-
-/* Buttons */
 .buttonGroup {
+  margin-top: 1rem;
   display: flex;
   justify-content: center;
   gap: 1rem;
-  flex-wrap: wrap;
-  margin-top: 1rem;
 }
 
 .primaryBtn {
-  background-color: #00bcd4;
-  color: #000;
   padding: 0.6rem 1.2rem;
+  background-color: #5e60ce;
+  color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-weight: bold;
-}
-
-.primaryBtn:hover {
-  background-color: #0097a7;
 }
 
 .secondaryBtn {
-  background-color: transparent;
-  border: 1px solid #00bcd4;
-  color: #00bcd4;
   padding: 0.6rem 1.2rem;
+  background-color: #333;
+  color: #eee;
+  border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-weight: bold;
 }
 
-.secondaryBtn:hover {
-  background-color: #002f34;
+/* Tabs */
+.profileBtn {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.profileBtn button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #2a2a2a;
+  color: #e0e0e0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  width: 10rem;
+}
+
+.profileBtn button:hover {
+  background-color: #3a3a3a;
 }
 
 /* Posts Section */
 .posts {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.post {
+  background: #1f1f2e;
   padding: 1.5rem;
   border-radius: 10px;
-  margin-left: 210px;
-  display: grid;
-  justify-content: center;
-  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
 }
 
-.posts h3 {
-  margin-bottom: 1rem;
-  font-size: 1.25rem;
-  color: #ffffff;
-  margin-left: 49vh;
-}
-
-.postCard {
-  width: 800px;
-  height: 600px;
-  background-color: #2a2a2a;
-  border-radius: 8px;
-  padding: 1rem;
-  margin-bottom: 4rem;
-  margin-top: 2rem;
-  transition: background-color 0.3s;
-}
-
-.postCard:hover {
-  background-color: #333;
-}
-
-.date {
-  font-size: 0.8rem;
-  color: #999;
-  margin-bottom: 0.5rem;
-}
-
-.media {
-  width: 100%;
-
-  object-fit: cover;
-  border-radius: 6px;
-  margin: 0.75rem 0;
-}
-
-.cover {
-  height: 20rem;
-  width: 175vh;
-  border-radius: 10px;
-}
-
-.profileBtn {
-  margin-left: 210px;
+.postProfile {
   display: flex;
-  justify-content: center;
   align-items: center;
-  border-bottom: 1px solid #2a2a2a;
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
 }
 
-.profileBtn button {
-  padding: 1rem 8rem;
-  margin: 1rem;
-  background-color: #121212;
-  color: white;
-  border: 0;
-  cursor: pointer;
+.profilePic {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: #444;
+}
+
+.postTime {
+  color: #999;
+  font-size: 0.8rem;
+}
+
+.caption {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #ddd;
+}
+
+.content img,
+.content video {
+  width: 100%;
+  max-height: 400px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.interact {
+  margin-top: 0.8rem;
+  display: flex;
+  gap: 1rem;
+  font-size: 1.2rem;
+  color: #bbb;
+}
+
+.bookmark {
+  margin-left: auto;
+}
+
+/* Live Classes */
+.createSection,
+.upcomingSection {
+  background: #1f1f2f;
+  padding: 2rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form input,
+.form textarea {
+  padding: 0.6rem;
+  background: #2a2a3d;
+  border: 1px solid #444;
+  color: #eee;
+  border-radius: 6px;
   font-size: 1rem;
 }
 
-.profileBtn button:hover {
-  background-color: #2a2a2a;
+.form button {
+  padding: 0.7rem;
+  background-color: #5e60ce;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-/* Subscribe.module.css - Dark Theme */
-
-.heading {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  margin-left: 210px;
-  margin-top: 4rem;
-  color: #ffffff;
-  font-weight: 700;
-  text-align: center;
+.classCard {
+  background: #2a2a3d;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
 }
 
+.classCard h3 {
+  margin: 0.5rem 0;
+  color: #fff;
+}
+
+.classCard p {
+  color: #ccc;
+}
+
+.classCard button {
+  margin-top: 0.5rem;
+  background: #5e60ce;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Membership Plans */
 .plans {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-left: 210px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
 }
 
 .planCard {
-  margin: 2rem;
-  background-color: #1e1e1e;
+  background: #1f1f2f;
   border-radius: 10px;
-  padding: 1.5rem 1.2rem;
-  width: 260px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  cursor: pointer;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
-.planCard:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.8);
+.planCard h2 {
+  margin-bottom: 0.5rem;
+  color: #fff;
 }
 
-.planName {
-  font-weight: 700;
-  font-size: 1.5rem;
-  margin-bottom: 0.6rem;
-  color: #4fc3f7;
+.planCard p {
+  font-size: 1.2rem;
+  color: #aaa;
 }
 
-.price {
-  font-size: 1.7rem;
-  margin-bottom: 1rem;
-  color: #ffffff;
-}
-
-.features {
+.planCard ul {
   list-style: none;
   padding: 0;
-  margin-bottom: 1.5rem;
-  text-align: left;
-  color: #cccccc;
-  font-size: 0.95rem;
+  margin: 1rem 0;
 }
 
-.features li {
-  margin-bottom: 0.7rem;
-  position: relative;
-  padding-left: 18px;
+.planCard ul li {
+  margin-bottom: 0.5rem;
+  color: #ccc;
 }
 
-.features li::before {
-  content: '✓';
-  position: absolute;
-  left: 0;
-  color: #4fc3f7;
-  font-weight: bold;
-}
-
-.subscribeButton {
-  background-color: #4fc3f7;
-  color: #121212;
+.planCard button {
+  padding: 0.6rem 1.2rem;
+  background-color: #5e60ce;
+  color: white;
   border: none;
-  border-radius: 25px;
-  padding: 0.7rem 2rem;
-  font-weight: 600;
-  font-size: 1rem;
+  border-radius: 6px;
   cursor: pointer;
-  width: 100%;
-  transition: background-color 0.3s ease;
 }
 
-.subscribeButton:hover {
-  background-color: #039be5;
-}
-
-/* createpost popup */
-
+/* Popup Overlay */
 .popupOverlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 9999;
+  background: rgba(15, 15, 30, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 2000;
 }
 
 .popupContent {
-  background: #fff;
+  background: #2a2a3d;
   padding: 2rem;
-  border-radius: 16px;
-  max-width: 400px;
-  width: 100%;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 10px;
   position: relative;
-  animation: fadeIn 0.3s ease;
+  color: #eee;
 }
 
-.popupContent img,
-video {
-  width: 40vh;
-  height: 30vh;
-}
-
-.closeBtn {
+.popupContent button {
   position: absolute;
   top: 10px;
   right: 16px;
-  font-size: 24px;
-  background: none;
+  font-size: 1.5rem;
   border: none;
-  cursor: pointer;
-}
-
-.form input,
-.form textarea {
-  width: 100%;
-  margin-bottom: 1rem;
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-.form textarea {
-  resize: vertical;
-  min-height: 100px;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* LiveClasses */
-
-.heading {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-.createSection {
-  margin-top: 2rem;
-  margin-left: 38%;
-}
-
-.upcomingSection {
-  margin-top: 2rem;
-  margin-left: 10%;
-  color: #000;
-  text-align: center;
-}
-
-.createSection h2 {
-  text-align: center;
-  margin-right: 48vh;
-  color: white;
-}
-.upcomingSection h2 {
-  text-align: center;
-  margin-left: 5vh;
-  color: white;
-}
-
-.upcomingSection h5 {
-  color: gray;
-  margin-left: 5vh;
-}
-
-.form {
-  display: grid;
-  gap: 1rem;
-  max-width: 500px;
-}
-
-.createSection input,
-textarea {
-  padding: 0.8rem;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  width: 100%;
-}
-
-.createSection button {
-  background-color: #4f46e5;
-  color: white;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.createSection button:hover {
-  background-color: #3730a3;
-}
-
-.classCard {
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 1rem;
-  margin-top: 1rem;
-  background-color: #f9f9ff;
-}
-
-.classCard button {
-  background-color: #4f46e5;
-  color: white;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-/*feed */
-
-.post {
-  margin-top: 2.5rem;
-  width: 450px;
-  height: 630px;
-  background-color: #1e1e1e;
-  border-radius: 10px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-}
-
-.caption {
-  padding: 10px;
-  width: 352px;
-  height: 50px;
-}
-
-.postProfile {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-}
-
-.post .profilePic {
-  width: 40px;
-  height: 40px;
-  background-color: #555;
-  border-radius: 50%;
-}
-
-.username {
-  font-weight: 500;
-  font-size: 1rem;
-}
-
-.postTime {
-  font-size: 0.8rem;
-  color: #aaa;
-}
-
-.username {
-  color: white;
-}
-/* Post Content Placeholder */
-.content {
-  background-color: #2c2c2c;
-  border-radius: 8px;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  width: 400px;
-  height: 400px;
-}
-
-/* Interaction Icons */
-.interact {
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
-  font-size: 1.2rem;
-  margin-top: 2rem;
-}
-
-.interact i {
-  color: #aaa;
-  transition: color 0.2s;
-}
-
-.interact i:hover {
-  color: #00bfa6;
-}
-
-.join {
-  background-color: #00bfa6;
+  background: transparent;
   color: #fff;
-  border: none;
-  padding: 0.4rem 1rem;
-  border-radius: 6px;
-  font-size: 0.9rem;
   cursor: pointer;
-  margin-left: auto;
-  transition: background-color 0.2s ease;
-}
-
-.join:hover {
-  background-color: #009e8f;
-}
-
-.content img {
-  width: 400px;
-  height: 400px;
-  border-radius: 8px;
-}
-
-.bookmark {
-  margin-left: 265px;
-}
-
-@media (max-width: 768px) {
-  .hamburger {
-    display: block;
-    position: fixed;
-    top: 1rem;
-    left: 1rem;
-    z-index: 1001;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.8rem;
-    cursor: pointer;
-  }
-
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease-in-out;
-    width: 70%;
-    max-width: 300px;
-    height: 100vh;
-    z-index: 1000;
-    background-color: #1f1f1f;
-    padding: 2rem 1rem;
-  }
-
-  .sidebar.open {
-    transform: translateX(0);
-  }
-
-  .wrapper {
-    padding-top: 3.5rem;
-    overflow-x: hidden;
-  }
-
-  .sidebar h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
-
-  .nav {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem;
-  }
-
-  .nav button {
-    font-size: 0.9rem;
-    padding: 0.5rem 0.75rem;
-  }
-
-  .container {
-    padding: 1rem;
-  }
-
-  .profile {
-    margin-left: 0;
-    margin-top: 1rem;
-  }
-
-  .posts {
-    margin-left: 0;
-    padding: 1rem;
-  }
-
-  .posts h3 {
-    margin-left: 0;
-    text-align: center;
-  }
-
-  .postCard {
-    width: 100%;
-    height: auto;
-    padding: 1rem;
-  }
-
-  .cover {
-    width: 100%;
-    height: auto;
-  }
-
-  .profileBtn {
-    margin-left: 0;
-    flex-direction: row;
-  }
-
-  .profileBtn button {
-    width: 100%;
-    padding: 0.75rem;
-    margin: 0.5rem 0;
-  }
-
-  .heading {
-    margin: 2rem 0 1rem 0;
-    font-size: 1.5rem;
-    margin-left: 0;
-  }
-
-  .plans {
-    margin-left: 0;
-    justify-content: center;
-  }
-
-  .createSection,
-  .upcomingSection {
-    margin-left: 0;
-    text-align: center;
-  }
-
-  .createSection h2,
-  .upcomingSection h2,
-  .upcomingSection h5 {
-    margin: 0 auto;
-  }
-
-  .popupContent img,
-  .popupContent video {
-    width: 100%;
-    height: auto;
-  }
-
-  .post {
-    width: 100%;
-    height: auto;
-    padding: 1rem;
-  }
-
-  .caption {
-    width: 100%;
-    height: auto;
-    padding: 0.5rem;
-  }
-
-  .content,
-  .content img {
-    width: 100%;
-    height: 350px;
-    border-radius: 8px;
-  }
-
-  .bookmark {
-    margin-left: auto;
-  }
 }

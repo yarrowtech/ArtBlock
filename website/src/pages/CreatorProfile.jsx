@@ -246,18 +246,52 @@ const CreatorProfile = () => {
       </button>
 
       {/* Sidebar */}
-      <aside className={`${styles.sidebar} ${menuOpen ? styles.open : ''}`}>
+      <aside className={styles.sidebar}>
         <h2>Art Block</h2>
         <nav className={styles.nav}>
-          <button onClick={() => navigate('/creatorprofile')}>Profile</button>
-          <button onClick={() => navigate('/creatordashboard')}>
+          <button
+            onClick={() => {
+              navigate('/creatorprofile');
+              setIsMessageOpen(false);
+              setOpenNotifications(false);
+            }}
+          >
+            Profile
+          </button>
+          <button
+            onClick={() => {
+              navigate('/creatordashboard');
+              setIsMessageOpen(false);
+              setOpenNotifications(false);
+            }}
+          >
             Dashboard
           </button>
-          <button onClick={() => setIsMessageOpen(true)}>Messages</button>
-          <button onClick={() => setOpenNotifications(!openNotifications)}>
+          <button
+            onClick={() => {
+              setIsMessageOpen((prev) => !prev);
+              setOpenNotifications(false);
+            }}
+          >
+            Messages
+          </button>
+          <button
+            onClick={() => {
+              setOpenNotifications((prev) => !prev);
+              setIsMessageOpen(false);
+            }}
+          >
             Notifications
           </button>
-          <button onClick={handleLogout}>Logout</button>
+          <button
+            onClick={() => {
+              handleLogout();
+              setIsMessageOpen(false);
+              setOpenNotifications(false);
+            }}
+          >
+            Logout
+          </button>
         </nav>
       </aside>
 
@@ -312,8 +346,13 @@ const CreatorProfile = () => {
       <NotificationPanel
         open={openNotifications}
         setOpen={setOpenNotifications}
+        mode="creator"
       />
-      <MessageSlide isOpen={isMessageOpen} setIsOpen={setIsMessageOpen} />
+      <MessageSlide
+        isOpen={isMessageOpen}
+        setIsOpen={setIsMessageOpen}
+        mode="creator"
+      />
 
       {/* Post Popup */}
       {showCreatePopup && (

@@ -1,3 +1,4 @@
+// ✅ Updated NotificationPanel.jsx
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/NotificationPanel.module.css';
 
@@ -39,14 +40,13 @@ const sampleNotifications = [
   },
 ];
 
-const NotificationPanel = ({ open, setOpen }) => {
+const NotificationPanel = ({ open, setOpen, mode = 'creator' }) => {
   const [notifications, setNotifications] = useState(sampleNotifications);
-
   const hasUnread = notifications.some((n) => !n.read);
 
   const handleRead = (id) => {
-    setNotifications(
-      notifications.map((n) => (n.id === id ? { ...n, read: true } : n))
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
     );
   };
 
@@ -56,26 +56,12 @@ const NotificationPanel = ({ open, setOpen }) => {
     };
     document.addEventListener('keydown', handleEsc);
     return () => document.removeEventListener('keydown', handleEsc);
-  }, []);
+  }, [setOpen]);
 
   return (
     <>
-      {/* <div
-        className={styles.notificationBell}
-        data-unread={hasUnread}
-        onClick={togglePanel}
-        aria-label="Open notifications"
-        role="button"
-        tabIndex="0"
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 0 0 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 0 0-3 0v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" />
-        </svg>
-      </div> */}
-
       <div
-        className={`${styles.panel} ${open ? styles.open : ''}`}
-        aria-live="polite"
+        className={`${styles.panel} ${styles[mode]} ${open ? styles.open : ''}`}
       >
         <div className={styles.panelHeader}>
           Notifications
@@ -97,7 +83,6 @@ const NotificationPanel = ({ open, setOpen }) => {
               key={n.id}
               className={styles.notificationItem}
               onClick={() => handleRead(n.id)}
-              tabIndex="0"
             >
               <div
                 className={styles.avatar}
@@ -114,7 +99,6 @@ const NotificationPanel = ({ open, setOpen }) => {
           ))}
         </div>
       </div>
-
       <div
         className={`${styles.overlay} ${open ? styles.overlayActive : ''}`}
         onClick={() => setOpen(false)}
