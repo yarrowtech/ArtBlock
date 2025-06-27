@@ -53,7 +53,7 @@ const FeedPage = () => {
   const [suggestedCreators, setSuggestedCreators] = useState([]);
 
   const handleNavigation = (path) => navigate(path);
-  const handleJoin = () => handleNavigation('/subscribe');
+  const handleJoin = () => handleNavigation('/creatorprofile');
 
   const scroll = (direction) => {
     const scrollAmount = 150;

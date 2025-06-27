@@ -2,17 +2,18 @@
   display: flex;
   min-height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #e2e8f0;
+  color: #003366;
+  background-color: #f0f8ff;
 }
 
 .sidebar {
-  background-color: #121212;
-  color: #f1f5f9;
+  background-color: #ffffff;
+  color: #003366;
   padding: 24px;
   width: 240px;
   height: 100vh;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
-  border-right: 1px solid #2c2c2c;
+  box-shadow: 2px 0 10px rgba(0, 85, 170, 0.1);
+  border-right: 1px solid #cce6ff;
   position: fixed;
 }
 
@@ -24,7 +25,7 @@
 
 .navItem {
   display: block;
-  color: #94a3b8;
+  color: #336699;
   text-decoration: none;
   margin-bottom: 1rem;
   padding: 0.75rem 1rem;
@@ -34,20 +35,20 @@
 }
 
 .navItem:hover {
-  background-color: #334155;
-  color: #ffffff;
+  background-color: #e6f2ff;
+  color: #003366;
 }
 
 .active {
-  background-color: #14b8a6;
+  background-color: #00bcd4;
   color: #ffffff;
 }
 
 .content {
   flex-grow: 1;
   padding: 48px 32px;
-  background-color: #121212;
-  border: 1px solid #121212;
+  background-color: #f0f8ff;
+  border: 1px solid #f0f8ff;
   margin-left: 240px;
 }
 
@@ -67,7 +68,7 @@
   height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #334155;
+  border: 3px solid #99ccff;
   margin-bottom: 12px;
 }
 
@@ -81,7 +82,7 @@
   display: block;
   margin-top: 1rem;
   font-weight: 600;
-  color: #f1f5f9;
+  color: #003366;
   margin-bottom: 0.5rem;
 }
 
@@ -90,10 +91,10 @@
   width: 100%;
   padding: 12px;
   margin-bottom: 1rem;
-  border: 1px solid #475569;
+  border: 1px solid #cce6ff;
   border-radius: 8px;
-  background-color: #1e293b;
-  color: #f8fafc;
+  background-color: #ffffff;
+  color: #003366;
   font-size: 1rem;
   transition: all 0.3s ease;
 }
@@ -104,22 +105,22 @@
 }
 
 .profileForm input:disabled {
-  background-color: #334155;
+  background-color: #e6f2ff;
   cursor: not-allowed;
 }
 
 .profileForm input:focus,
 .profileForm textarea:focus {
-  border-color: #38bdf8;
+  border-color: #00bcd4;
   outline: none;
-  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+  box-shadow: 0 0 0 2px rgba(0, 188, 212, 0.2);
 }
 
 .profileForm button {
   margin-top: 24px;
   width: 100%;
   padding: 12px 24px;
-  background-color: #10b981;
+  background-color: #00bcd4;
   border: none;
   color: #ffffff;
   border-radius: 8px;
@@ -130,7 +131,7 @@
 }
 
 .profileForm button:hover {
-  background-color: #059669;
+  background-color: #009bb3;
   transform: translateY(-1px);
 }
 
@@ -170,7 +171,7 @@
 
 .emailNotificationLabel {
   font-size: 1rem;
-  color: #e2e8f0;
+  color: #003366;
 }
 
 .toggleSwitch {
@@ -188,7 +189,7 @@
 .slider {
   position: absolute;
   inset: 0;
-  background-color: #4b5563;
+  background-color: #a0c4ff;
   border-radius: 34px;
   transition: background-color 0.4s;
 }
@@ -206,7 +207,7 @@
 }
 
 input:checked + .slider {
-  background-color: #10b981;
+  background-color: #00bcd4;
 }
 
 input:checked + .slider:before {
@@ -218,11 +219,11 @@ input:checked + .slider:before {
   width: 100%;
   border-collapse: collapse;
   margin-top: 2rem;
-  background-color: #1e293b;
+  background-color: #ffffff;
   border-radius: 8px;
   overflow: hidden;
   font-size: 0.95rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 10px rgba(0, 85, 170, 0.1);
 }
 
 .paymentTable th,
@@ -232,23 +233,23 @@ input:checked + .slider:before {
 }
 
 .paymentTable th {
-  background-color: #334155;
+  background-color: #e0f0ff;
   font-weight: 600;
-  color: #cbd5e1;
-  border-bottom: 1px solid #475569;
+  color: #003366;
+  border-bottom: 1px solid #b3d8ff;
 }
 
 .paymentTable tr:nth-child(even) {
-  background-color: #27303f;
+  background-color: #f5fbff;
 }
 
 .paymentTable tr:hover {
-  background-color: #334155;
+  background-color: #e6f2ff;
 }
 
 .paymentTable td {
-  color: #e2e8f0;
-  border-bottom: 1px solid #475569;
+  color: #003366;
+  border-bottom: 1px solid #d0e7ff;
 }
 
 /* Blocked Users */
@@ -265,10 +266,10 @@ input:checked + .slider:before {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #1e293b;
+  background-color: #ffffff;
   padding: 14px 18px;
   border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 6px rgba(0, 85, 170, 0.1);
 }
 
 .blockedUser div {
@@ -278,12 +279,12 @@ input:checked + .slider:before {
 
 .blockedUser strong {
   font-size: 1rem;
-  color: #f8fafc;
+  color: #003366;
 }
 
 .blockedUser span {
   font-size: 0.85rem;
-  color: #9ca3af;
+  color: #6699cc;
 }
 
 .unblockBtn {
@@ -304,16 +305,17 @@ input:checked + .slider:before {
 
 .back {
   position: fixed;
-  background-color: #14b8a6;
+  background-color: #00bcd4;
   padding: 0.5rem;
   border-radius: 10px;
   margin-left: 150vh;
   font-weight: bold;
+  color: white;
 }
 
 .back:hover {
   cursor: pointer;
-  background-color: #17bb87;
+  background-color: #00a3b0;
 }
 
 .faArrowLeft {

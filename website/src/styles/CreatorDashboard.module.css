@@ -1,11 +1,10 @@
-/* Dashboard.module.css (Dark Theme) */
 .dashboardContainer {
   width: 100vw;
   margin: 0 auto;
   padding: 2rem;
   font-family: 'Work Sans', sans-serif;
-  background: #121212;
-  color: #f3f4f6;
+  background: #f0f8ff;
+  color: #003366;
   overflow-x: hidden;
 }
 
@@ -14,13 +13,13 @@
   justify-content: space-between;
   align-items: center;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid #374151;
+  border-bottom: 1px solid #b3d8ff;
 }
 
 .dashboardContainer h1 {
   font-weight: 600;
   font-size: 1.75rem;
-  color: #f9fafb;
+  color: #003366;
 }
 
 .dashboardContainer .userProfile {
@@ -33,7 +32,7 @@
 }
 
 .dashboardContainer .userProfile:hover {
-  background-color: #1e293b;
+  background-color: #e6f2ff;
 }
 
 .dashboardContainer .userProfile img {
@@ -42,12 +41,12 @@
   border-radius: 50%;
   margin-right: 0.75rem;
   object-fit: cover;
-  border: 2px solid #818cf8;
+  border: 2px solid #00bcd4;
 }
 
 .dashboardContainer .userProfile span {
   font-weight: 600;
-  color: #d1d5db;
+  color: #336699;
 }
 
 .dashboardContainer main {
@@ -64,23 +63,24 @@
 }
 
 .dashboardContainer .card {
-  background: #1e1e1e;
+  background: #ffffff;
   border-radius: 0.75rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 5px rgba(0, 85, 170, 0.1);
   padding: 1.25rem 1.5rem;
+  border: 1px solid #cce6ff;
 }
 
 .dashboardContainer .card h3 {
   font-weight: 600;
   font-size: 1rem;
-  color: #e5e7eb;
+  color: #005f8a;
   margin-bottom: 0.5rem;
 }
 
 .dashboardContainer .metric {
   font-size: 2rem;
   font-weight: 700;
-  color: #818cf8;
+  color: #00bcd4;
 }
 
 .dashboardContainer .metricChange {
@@ -92,33 +92,28 @@
 }
 
 .dashboardContainer .positive {
-  color: #10b981;
+  color: #0f9d58;
 }
 
 .dashboardContainer .negative {
-  color: #ef4444;
+  color: #d93025;
 }
 
-.dashboardContainer .chartContainer {
-  background: #1e1e1e;
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-}
-
+.dashboardContainer .chartContainer,
 .dashboardContainer .insights {
-  background: #1e1e1e;
+  background: #ffffff;
   border-radius: 0.75rem;
   padding: 1.5rem;
-  margin-top: 2rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 5px rgba(0, 85, 170, 0.1);
+  border: 1px solid #cce6ff;
 }
 
 .dashboardContainer .insightItem {
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 0;
-  border-bottom: 1px solid #374151;
+  border-bottom: 1px solid #cce6ff;
+  color: #003366;
 }
 
 .dashboardContainer .actions {
@@ -129,7 +124,7 @@
 }
 
 .dashboardContainer .btn {
-  background: #4f46e5;
+  background: #00bcd4;
   color: white;
   padding: 0.65rem 1.25rem;
   border-radius: 0.5rem;
@@ -144,15 +139,16 @@
 }
 
 .dashboardContainer .btn:hover {
-  background-color: #4338ca;
+  background-color: #009bb3;
 }
+
+/* ===================== Responsive ===================== */
 
 @media (max-width: 900px) {
   .dashboardContainer main {
     grid-template-columns: 1fr;
   }
 }
-
 
 @media (max-width: 768px) {
   .dashboardContainer {
@@ -191,8 +187,10 @@
     gap: 1rem;
   }
 
-  .dashboardContainer .card {
-    width: 360px;
+  .dashboardContainer .card,
+  .dashboardContainer .chartContainer,
+  .dashboardContainer .insights {
+    width: 100%;
     padding: 1rem;
   }
 
@@ -206,12 +204,6 @@
 
   .dashboardContainer .metricChange {
     font-size: 0.8rem;
-  }
-
-  .dashboardContainer .chartContainer,
-  .dashboardContainer .insights {
-    width: 360px;
-    padding: 1rem;
   }
 
   .dashboardContainer .insightItem {

@@ -1,9 +1,9 @@
 /* Sidebar Styles */
 .sidebar {
-  background-color: #121212;
-  color: #ffffff;
+  background-color: #d0e7ff;
+  color: #003366;
   height: 100vh;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 2px 0 10px rgba(0, 85, 170, 0.15);
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -11,7 +11,7 @@
   left: 0;
   z-index: 1000;
   padding: 2rem 1rem;
-  border-right: 1px solid #2c2c2c;
+  border-right: 1px solid #b3d4fc;
   width: 240px;
   font-family: 'Poppins', sans-serif;
   transition: left 0.3s ease-in-out;
@@ -40,7 +40,7 @@
 .sidebar h2 {
   font-size: 1.8rem;
   font-weight: 600;
-  color: #00bfa6;
+  color: #007acc;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -48,7 +48,7 @@
 .btn {
   background-color: transparent;
   border: none;
-  color: #f0f0f0;
+  color: #003366;
   padding: 0.8rem 1rem;
   text-align: left;
   cursor: pointer;
@@ -58,12 +58,12 @@
 }
 
 .btn:hover {
-  background-color: #1f1f1f;
-  color: #ffffff;
+  background-color: #cce7ff;
+  color: #002244;
 }
 
 .btn:active {
-  background-color: #292929;
+  background-color: #b3d4fc;
 }
 
 /* Hamburger button */
@@ -74,7 +74,7 @@
   left: 1rem;
   font-size: 1.5rem;
   background: none;
-  color: white;
+  color: #003366;
   border: none;
   z-index: 2001;
   cursor: pointer;

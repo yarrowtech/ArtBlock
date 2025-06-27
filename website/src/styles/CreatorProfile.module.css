@@ -1,19 +1,18 @@
-/* CreatorProfile.module.css — Dark Theme */
+/* Light Blue Theme */
 
 .wrapper {
   display: flex;
   font-family: 'Poppins', sans-serif;
   min-height: 100vh;
-  background-color: #121212;
-  color: #e0e0e0;
+  background-color: #e6f0fa;
+  color: #1a1a2e;
 }
 
-/* Sidebar is fixed and always visible */
 .sidebar {
-  background-color: #121212;
-  color: #ffffff;
+  background-color: #d0e7ff;
+  color: #003366;
   height: 100vh;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -21,16 +20,15 @@
   left: 0;
   z-index: 1000;
   padding: 2rem 1rem;
-  border-right: 1px solid #2c2c2c;
+  border-right: 1px solid #b3d4fc;
   width: 240px;
-  font-family: 'Poppins', sans-serif;
   transition: left 0.3s ease-in-out;
 }
 
 .sidebar h2 {
   font-size: 1.8rem;
   font-weight: 600;
-  color: #00bfa6;
+  color: #007acc;
   margin-bottom: 3rem;
   text-align: center;
 }
@@ -44,7 +42,7 @@
 .nav button {
   background-color: transparent;
   border: none;
-  color: #f0f0f0;
+  color: #003366;
   padding: 0.8rem 1rem;
   text-align: left;
   cursor: pointer;
@@ -54,8 +52,7 @@
 }
 
 .nav button:hover {
-  background: #2a2a44;
-  border-radius: 6px;
+  background: #cce7ff;
 }
 
 .container {
@@ -64,7 +61,6 @@
   padding: 2rem;
 }
 
-/* Profile Section */
 .profile {
   text-align: center;
   margin-bottom: 2rem;
@@ -83,25 +79,25 @@
   height: 100px;
   border-radius: 50%;
   object-fit: cover;
-  border: 4px solid #1e1e2f;
+  border: 4px solid #b3d4fc;
   margin-bottom: 0.5rem;
 }
 
 .role {
-  color: #bbbbbb;
+  color: #4f6d7a;
   font-size: 0.9rem;
   margin: 0.3rem 0;
 }
 
 .username {
-  color: #888;
+  color: #607d8b;
   font-size: 0.9rem;
   margin-bottom: 0.3rem;
 }
 
 .bio {
   font-size: 0.95rem;
-  color: #ccc;
+  color: #555;
   margin: 0.5rem auto;
   max-width: 500px;
 }
@@ -115,7 +111,7 @@
 
 .primaryBtn {
   padding: 0.6rem 1.2rem;
-  background-color: #5e60ce;
+  background-color: #3399ff;
   color: white;
   border: none;
   border-radius: 6px;
@@ -124,14 +120,13 @@
 
 .secondaryBtn {
   padding: 0.6rem 1.2rem;
-  background-color: #333;
-  color: #eee;
+  background-color: #e0f0ff;
+  color: #007acc;
   border: none;
   border-radius: 6px;
   cursor: pointer;
 }
 
-/* Tabs */
 .profileBtn {
   display: flex;
   justify-content: center;
@@ -142,8 +137,8 @@
 .profileBtn button {
   padding: 0.5rem 1rem;
   border: none;
-  background: #2a2a2a;
-  color: #e0e0e0;
+  background: #cce7ff;
+  color: #003366;
   border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
@@ -151,10 +146,9 @@
 }
 
 .profileBtn button:hover {
-  background-color: #3a3a3a;
+  background-color: #b3d4fc;
 }
 
-/* Posts Section */
 .posts {
   display: flex;
   flex-direction: column;
@@ -162,10 +156,10 @@
 }
 
 .post {
-  background: #1f1f2e;
+  background: #ffffff;
   padding: 1.5rem;
   border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   width: 450px;
   height: 630px;
   margin-top: 3rem;
@@ -181,12 +175,12 @@
 .profilePic {
   width: 40px;
   height: 40px;
-  background-color: #555;
+  background-color: #cce0ff;
   border-radius: 50%;
 }
 
 .postTime {
-  color: #999;
+  color: #607d8b;
   font-size: 0.8rem;
 }
 
@@ -216,14 +210,13 @@
   margin-left: auto;
 }
 
-/* Live Classes */
 .createSection,
 .upcomingSection {
-  background: #1f1f2f;
+  background: #e6f3ff;
   padding: 2rem;
   border-radius: 10px;
   margin-bottom: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .form {
@@ -235,16 +228,16 @@
 .form input,
 .form textarea {
   padding: 0.6rem;
-  background: #2a2a3d;
-  border: 1px solid #444;
-  color: #eee;
+  background: #ffffff;
+  border: 1px solid #b3d4fc;
+  color: #003366;
   border-radius: 6px;
   font-size: 1rem;
 }
 
 .form button {
   padding: 0.7rem;
-  background-color: #5e60ce;
+  background-color: #3399ff;
   color: white;
   border: none;
   border-radius: 6px;
@@ -252,24 +245,25 @@
 }
 
 .classCard {
-  background: #2a2a3d;
+  background: #ffffff;
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1rem;
+  border: 1px solid #d0e7ff;
 }
 
 .classCard h3 {
   margin: 0.5rem 0;
-  color: #fff;
+  color: #003366;
 }
 
 .classCard p {
-  color: #ccc;
+  color: #444;
 }
 
 .classCard button {
   margin-top: 0.5rem;
-  background: #5e60ce;
+  background: #3399ff;
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 6px;
@@ -277,7 +271,6 @@
   cursor: pointer;
 }
 
-/* Membership Plans */
 .plans {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -285,21 +278,22 @@
 }
 
 .planCard {
-  background: #1f1f2f;
+  background: #ffffff;
   border-radius: 10px;
   padding: 2rem;
   text-align: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #cce7ff;
 }
 
 .planCard h2 {
   margin-bottom: 0.5rem;
-  color: #fff;
+  color: #003366;
 }
 
 .planCard p {
   font-size: 1.2rem;
-  color: #aaa;
+  color: #607d8b;
 }
 
 .planCard ul {
@@ -310,26 +304,25 @@
 
 .planCard ul li {
   margin-bottom: 0.5rem;
-  color: #ccc;
+  color: #4f6d7a;
 }
 
 .planCard button {
   padding: 0.6rem 1.2rem;
-  background-color: #5e60ce;
+  background-color: #3399ff;
   color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
 }
 
-/* Popup Overlay */
 .popupOverlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(15, 15, 30, 0.8);
+  background: rgba(180, 210, 240, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -337,13 +330,14 @@
 }
 
 .popupContent {
-  background: #2a2a3d;
+  background: #ffffff;
   padding: 2rem;
   width: 90%;
   max-width: 500px;
   border-radius: 10px;
   position: relative;
-  color: #eee;
+  color: #003366;
+  border: 1px solid #cce7ff;
 }
 
 .popupContent button {
@@ -353,6 +347,6 @@
   font-size: 1.5rem;
   border: none;
   background: transparent;
-  color: #fff;
+  color: #003366;
   cursor: pointer;
 }

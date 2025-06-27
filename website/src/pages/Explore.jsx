@@ -35,7 +35,7 @@ const Explore = () => {
   const [categories, setCategories] = useState([]);
 
   const handleClick = () => {
-    navigate('/subscribe');
+    navigate('/creatorprofile');
   };
 
   // Fetch data on mount (replace with real APIs later)

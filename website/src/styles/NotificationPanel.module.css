@@ -2,8 +2,8 @@
 
 .container {
   font-family: 'Inter', sans-serif;
-  background: #121212; /* Dark background */
-  color: #e0e0e0; /* Light text */
+  background: #f0f8ff; /* Light blue background */
+  color: #003366; /* Darker text for readability */
 }
 
 .panel {
@@ -12,8 +12,8 @@
   left: 0;
   height: 100vh;
   width: 400px;
-  background: #1e1e1e; /* Panel dark background */
-  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.5);
+  background: #ffffff; /* Light panel */
+  box-shadow: -4px 0 20px rgba(0, 85, 170, 0.2);
   transform: translateX(-100%);
   transition: transform 0.35s ease;
   display: flex;
@@ -28,10 +28,10 @@
 
 .panelHeader {
   padding: 14px 18px;
-  border-bottom: 1px solid #2c2c2c; /* Dark border */
+  border-bottom: 1px solid #cce6ff;
   font-weight: 600;
   font-size: 18px;
-  color: #ffffff;
+  color: #003366;
   position: relative;
 }
 
@@ -42,7 +42,7 @@
   transform: translateY(-50%);
   background: transparent;
   border: none;
-  color: #ffffff;
+  color: #003366;
   font-size: 20px;
   cursor: pointer;
 }
@@ -50,18 +50,21 @@
 .notificationsList {
   overflow-y: auto;
   flex-grow: 1;
+  background-color: #f9fbfd;
 }
 
 .notificationItem {
   display: flex;
   padding: 12px 18px;
-  border-bottom: 1px solid #2c2c2c;
+  border-bottom: 1px solid #e0f0ff;
   cursor: pointer;
   transition: background 0.15s ease;
+  background-color: #ffffff;
 }
 
 .notificationItem:hover {
-  background: #2a2a2a;
+  background: #e6f2ff;
+  transform: translateX(2px);
 }
 
 .avatar {
@@ -79,19 +82,19 @@
 
 .notificationMessage {
   font-size: 14px;
-  color: #f0f0f0;
+  color: #003366;
   margin-bottom: 4px;
 }
 
 .notificationTime {
   font-size: 12px;
-  color: #888888;
+  color: #6699cc;
 }
 
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5); /* Darker overlay */
+  background: rgba(0, 85, 170, 0.2); /* Subtle blue overlay */
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.35s ease;
@@ -101,15 +104,6 @@
 .overlayActive {
   opacity: 1;
   pointer-events: auto;
-}
-
-.notificationItem {
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-
-.notificationItem:hover {
-  background: #2a2a2a;
-  transform: translateX(2px);
 }
 
 /* ===================== Mode Variants ===================== */
