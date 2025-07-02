@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import styles from '../styles/CreatorProfile.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faBars,
-  faShare,
-  faBookmark as solidBookmark,
-} from '@fortawesome/free-solid-svg-icons';
+import { faBars, faShare } from '@fortawesome/free-solid-svg-icons';
 import {
   faHeart,
   faComment,
@@ -17,7 +14,7 @@ import NotificationPanel from '../components/NotificationPanel';
 import MessageSlide from '../components/MessageSlide';
 import CreatorStories from '../components/CreateStories';
 
-// Dummy data (replace with backend fetch)
+// Dummy user data
 const userData = {
   name: 'Amit Saha',
   username: 'amitsaha',
@@ -26,6 +23,7 @@ const userData = {
   subscriberCount: '1M',
 };
 
+// Subscription plans
 const plans = [
   {
     id: 'basic',
@@ -58,6 +56,13 @@ const plans = [
 const CreatorProfile = () => {
   const navigate = useNavigate();
 
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [media, setMedia] = useState(null);
+  const [mediaType, setMediaType] = useState('');
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+
   const [view, setView] = useState('post');
   const [menuOpen, setMenuOpen] = useState(false);
   const [openNotifications, setOpenNotifications] = useState(false);
@@ -77,32 +82,69 @@ const CreatorProfile = () => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    // TODO: Replace static data with actual fetch
     setUser(userData);
     setPosts([
       {
         id: 1,
         title: 'Fantasy Art',
-        mediaUrl: '',
+        mediaUrl: '../images/podcast.jpg',
         caption: 'A fantasy piece...',
         type: 'image',
       },
       {
         id: 2,
         title: 'Speed Paint',
-        mediaUrl: '',
+        mediaUrl: '../images/dancing.jpg',
         caption: 'Speed painting session...',
         type: 'image',
       },
       {
         id: 3,
         title: 'Art Tips',
-        mediaUrl: '',
+        mediaUrl: '../images/music.jpg',
         caption: 'Tips for beginners...',
         type: 'image',
       },
     ]);
   }, []);
+
+  const handleMediaChange = (e) => {
+    const file = e.target.files[0];
+    setMedia(file);
+
+    if (file) {
+      const type = file.type.split('/')[0];
+      setMediaType(type);
+    }
+  };
+
+  const handlePostSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('media', media);
+    formData.append('mediaType', mediaType);
+
+    try {
+      await axios.post('http://localhost:5000/api/posts', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+
+      setMessage('Post created successfully!');
+      setTitle('');
+      setContent('');
+      setMedia(null);
+      setMediaType('');
+    } catch (error) {
+      setMessage('Failed to create post');
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleToggleSidebar = () => setMenuOpen(!menuOpen);
   const handleLogout = () => navigate('/auth?mode=login');
@@ -116,9 +158,10 @@ const CreatorProfile = () => {
     e.preventDefault();
     setClasses([...classes, form]);
     setForm({ title: '', description: '', date: '', time: '', link: '' });
-
-    // TODO: Send this class to backend
+    // TODO: send to backend
   };
+
+  const onClose = () => setShowCreatePopup(false); // Fix for missing handler
 
   const renderPosts = () => (
     <div className={styles.posts}>
@@ -153,7 +196,7 @@ const CreatorProfile = () => {
   );
 
   const renderLiveClasses = () => (
-    <div>
+    <div className={styles.live}>
       <section className={styles.createSection}>
         <h2>Schedule a New Class</h2>
         <form onSubmit={handleCreateClass} className={styles.form}>
@@ -298,7 +341,11 @@ const CreatorProfile = () => {
       {/* Main Content */}
       <main className={styles.container}>
         <div className={styles.profile}>
-          <img src="../images/fantasy.webp" alt="" className={styles.cover} />
+          <img
+            src="../images/fantasy.webp"
+            alt="cover"
+            className={styles.cover}
+          />
           <img
             src="https://randomuser.me/api/portraits/men/1.jpg"
             alt="avatar"
@@ -342,7 +389,7 @@ const CreatorProfile = () => {
         {view === 'membership' && renderPlans()}
       </main>
 
-      {/* Notification & Messages */}
+      {/* Notifications & Messages */}
       <NotificationPanel
         open={openNotifications}
         setOpen={setOpenNotifications}
@@ -356,13 +403,39 @@ const CreatorProfile = () => {
 
       {/* Post Popup */}
       {showCreatePopup && (
-        <div className={styles.popupOverlay}>
-          {/* TODO: Extract CreatePostPopup into its own component */}
-          <div className={styles.popupContent}>
-            <button onClick={() => setShowCreatePopup(false)}>&times;</button>
-            <h2>Create New Post</h2>
-            {/* Form to handle file upload and submit */}
-            {/* TODO: Integrate API for media upload */}
+        <div className={styles.popupOverlay} onClick={onClose}>
+          <div
+            className={styles.popupContent}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2>Create a New Post</h2>
+            {message && <p>{message}</p>}
+            <form onSubmit={handlePostSubmit}>
+              <div className={styles.formGroup}>
+                <label>Title</label>
+                <input
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Content</label>
+                <textarea
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  required
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Upload Media</label>
+                <input type="file" onChange={handleMediaChange} required />
+              </div>
+              <button type="submit" disabled={loading}>
+                {loading ? 'Uploading...' : 'Post'}
+              </button>
+            </form>
           </div>
         </div>
       )}
