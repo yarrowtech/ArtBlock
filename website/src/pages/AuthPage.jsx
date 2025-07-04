@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styles from '../styles/AuthPage.module.css';
-import authService from '../services/auth.service';
 
 const AuthPage = () => {
   const location = useLocation();
@@ -17,6 +16,8 @@ const AuthPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+
+  const API = 'http://localhost:5000/api/auth';
 
   const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
@@ -34,16 +35,22 @@ const AuthPage = () => {
       }
 
       if (isRegistering) {
-        if (!username) {
+        if (!username)
           throw new Error('Username is required for registration.');
-        }
+        if (!role) throw new Error('Please select a role.');
 
-        if (!role) {
-          throw new Error('Please select a role.');
-        }
+        console.log('Selected role:', role); // ✅ Debug log
 
-        const isCreator = role === 'creator';
-        await authService.register(username, email, password, isCreator);
+        const res = await fetch(`${API}/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, email, password, role }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Registration failed.');
+
+        // Reset form and switch to login
         setIsRegistering(false);
         setUsername('');
         setEmail('');
@@ -51,10 +58,19 @@ const AuthPage = () => {
         setRole('');
         alert('Registration successful! Please log in.');
       } else {
-        const response = await authService.login(email, password);
-        const user = response.user;
+        const res = await fetch(`${API}/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
 
-        if (user.isCreator) {
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Login failed.');
+
+        const user = data.user;
+        console.log('Logged in user:', user); // ✅ Debug log
+
+        if (user.role === 'creator') {
           navigate('/creatorprofile');
         } else {
           navigate('/feed');

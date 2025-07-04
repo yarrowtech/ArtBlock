@@ -1,3 +1,5 @@
+// CreatorProfile.js (final version after backend integration)
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -14,61 +16,19 @@ import NotificationPanel from '../components/NotificationPanel';
 import MessageSlide from '../components/MessageSlide';
 import CreatorStories from '../components/CreateStories';
 
-// Dummy user data
-const userData = {
-  name: 'Amit Saha',
-  username: 'amitsaha',
-  role: 'Creator',
-  bio: 'Passionate digital artist...',
-  subscriberCount: '1M',
-};
-
-// Subscription plans
-const plans = [
-  {
-    id: 'basic',
-    name: 'Basic',
-    price: '$9.99/mo',
-    features: [
-      'Access to basic features',
-      'Email support',
-      'Single user license',
-    ],
-  },
-  {
-    id: 'standard',
-    name: 'Standard',
-    price: '$19.99/mo',
-    features: ['All Basic features', 'Priority email support', 'Up to 5 users'],
-  },
-  {
-    id: 'premium',
-    name: 'Premium',
-    price: '$29.99/mo',
-    features: [
-      'All Standard features',
-      'Unlimited users',
-      'Advanced analytics',
-    ],
-  },
-];
-
 const CreatorProfile = () => {
   const navigate = useNavigate();
-
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [media, setMedia] = useState(null);
   const [mediaType, setMediaType] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
-
   const [view, setView] = useState('post');
   const [menuOpen, setMenuOpen] = useState(false);
   const [openNotifications, setOpenNotifications] = useState(false);
   const [isMessageOpen, setIsMessageOpen] = useState(false);
   const [showCreatePopup, setShowCreatePopup] = useState(false);
-
   const [classes, setClasses] = useState([]);
   const [form, setForm] = useState({
     title: '',
@@ -77,67 +37,64 @@ const CreatorProfile = () => {
     time: '',
     link: '',
   });
-
   const [user, setUser] = useState({});
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    setUser(userData);
-    setPosts([
-      {
-        id: 1,
-        title: 'Fantasy Art',
-        mediaUrl: '../images/podcast.jpg',
-        caption: 'A fantasy piece...',
-        type: 'image',
-      },
-      {
-        id: 2,
-        title: 'Speed Paint',
-        mediaUrl: '../images/dancing.jpg',
-        caption: 'Speed painting session...',
-        type: 'image',
-      },
-      {
-        id: 3,
-        title: 'Art Tips',
-        mediaUrl: '../images/music.jpg',
-        caption: 'Tips for beginners...',
-        type: 'image',
-      },
-    ]);
+    setUser({
+      name: 'Amit Saha',
+      username: 'amitsaha',
+      role: 'Creator',
+      bio: 'Passionate digital artist...',
+      subscriberCount: '1M',
+    });
+
+    const fetchPosts = async () => {
+      try {
+        const res = await axios.get('http://localhost:5000/api/posts');
+        setPosts(res.data);
+      } catch (err) {
+        console.error('Failed to fetch posts:', err);
+      }
+    };
+
+    fetchPosts();
   }, []);
 
   const handleMediaChange = (e) => {
     const file = e.target.files[0];
     setMedia(file);
-
-    if (file) {
-      const type = file.type.split('/')[0];
-      setMediaType(type);
-    }
+    if (file) setMediaType(file.type.split('/')[0]);
   };
 
   const handlePostSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
+    const token = localStorage.getItem('token');
     const formData = new FormData();
-    formData.append('title', title);
-    formData.append('content', content);
+    formData.append('content', content); // Caption
     formData.append('media', media);
     formData.append('mediaType', mediaType);
 
     try {
-      await axios.post('http://localhost:5000/api/posts', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+      const res = await axios.post(
+        'http://localhost:5000/api/posts',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       setMessage('Post created successfully!');
-      setTitle('');
+      setPosts((prev) => [res.data, ...prev]);
       setContent('');
       setMedia(null);
       setMediaType('');
+      setShowCreatePopup(false);
     } catch (error) {
       setMessage('Failed to create post');
       console.error(error);
@@ -150,34 +107,38 @@ const CreatorProfile = () => {
   const handleLogout = () => navigate('/auth?mode=login');
   const handleSubscribe = (planId) => navigate(`/subscribe/${planId}`);
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
   const handleCreateClass = (e) => {
     e.preventDefault();
     setClasses([...classes, form]);
     setForm({ title: '', description: '', date: '', time: '', link: '' });
-    // TODO: send to backend
   };
 
-  const onClose = () => setShowCreatePopup(false); // Fix for missing handler
+  const onClose = () => setShowCreatePopup(false);
 
   const renderPosts = () => (
     <div className={styles.posts}>
       {posts.map((post) => (
-        <div key={post.id} className={styles.post}>
+        <div key={post._id} className={styles.post}>
           <div className={styles.postProfile}>
             <div className={styles.profilePic}></div>
             <div className={styles.username}>@{user.username}</div>
-            <div className={styles.postTime}>.5h</div>
+            <div className={styles.postTime}>
+              {new Date(post.createdAt).toLocaleTimeString()}
+            </div>
           </div>
-          <div className={styles.caption}>{post.caption}</div>
+          <div className={styles.caption}>{post.content}</div>
           <div className={styles.content}>
-            {post.type === 'image' && <img src={post.mediaUrl} alt="" />}
-            {post.type === 'video' && (
+            {post.mediaType === 'image' && (
+              <img src={`http://localhost:5000${post.mediaUrl}`} alt="" />
+            )}
+            {post.mediaType === 'video' && (
               <video controls>
-                <source src={post.mediaUrl} type="video/mp4" />
+                <source
+                  src={`http://localhost:5000${post.mediaUrl}`}
+                  type="video/mp4"
+                />
               </video>
             )}
           </div>
@@ -266,7 +227,38 @@ const CreatorProfile = () => {
 
   const renderPlans = () => (
     <div className={styles.plans}>
-      {plans.map((plan) => (
+      {[
+        {
+          id: 'basic',
+          name: 'Basic',
+          price: '$9.99/mo',
+          features: [
+            'Access to basic features',
+            'Email support',
+            'Single user license',
+          ],
+        },
+        {
+          id: 'standard',
+          name: 'Standard',
+          price: '$19.99/mo',
+          features: [
+            'All Basic features',
+            'Priority email support',
+            'Up to 5 users',
+          ],
+        },
+        {
+          id: 'premium',
+          name: 'Premium',
+          price: '$29.99/mo',
+          features: [
+            'All Standard features',
+            'Unlimited users',
+            'Advanced analytics',
+          ],
+        },
+      ].map((plan) => (
         <div key={plan.id} className={styles.planCard}>
           <h2>{plan.name}</h2>
           <p>{plan.price}</p>
@@ -283,62 +275,26 @@ const CreatorProfile = () => {
 
   return (
     <div className={styles.wrapper}>
-      {/* Sidebar Toggle */}
       <button className={styles.hamburger} onClick={handleToggleSidebar}>
         <FontAwesomeIcon icon={faBars} />
       </button>
-
-      {/* Sidebar */}
       <aside className={styles.sidebar}>
         <h2>Art Block</h2>
         <nav className={styles.nav}>
-          <button
-            onClick={() => {
-              navigate('/creatorprofile');
-              setIsMessageOpen(false);
-              setOpenNotifications(false);
-            }}
-          >
-            Profile
-          </button>
-          <button
-            onClick={() => {
-              navigate('/creatordashboard');
-              setIsMessageOpen(false);
-              setOpenNotifications(false);
-            }}
-          >
+          <button onClick={() => navigate('/creatorprofile')}>Profile</button>
+          <button onClick={() => navigate('/creatordashboard')}>
             Dashboard
           </button>
-          <button
-            onClick={() => {
-              setIsMessageOpen((prev) => !prev);
-              setOpenNotifications(false);
-            }}
-          >
+          <button onClick={() => setIsMessageOpen((prev) => !prev)}>
             Messages
           </button>
-          <button
-            onClick={() => {
-              setOpenNotifications((prev) => !prev);
-              setIsMessageOpen(false);
-            }}
-          >
+          <button onClick={() => setOpenNotifications((prev) => !prev)}>
             Notifications
           </button>
-          <button
-            onClick={() => {
-              handleLogout();
-              setIsMessageOpen(false);
-              setOpenNotifications(false);
-            }}
-          >
-            Logout
-          </button>
+          <button onClick={handleLogout}>Logout</button>
         </nav>
       </aside>
 
-      {/* Main Content */}
       <main className={styles.container}>
         <div className={styles.profile}>
           <img
@@ -376,20 +332,17 @@ const CreatorProfile = () => {
 
         <CreatorStories />
 
-        {/* Tabs */}
         <div className={styles.profileBtn}>
           <button onClick={() => setView('post')}>Posts</button>
           <button onClick={() => setView('liveclasses')}>Live Classes</button>
           <button onClick={() => setView('membership')}>Membership</button>
         </div>
 
-        {/* Content */}
         {view === 'post' && renderPosts()}
         {view === 'liveclasses' && renderLiveClasses()}
         {view === 'membership' && renderPlans()}
       </main>
 
-      {/* Notifications & Messages */}
       <NotificationPanel
         open={openNotifications}
         setOpen={setOpenNotifications}
@@ -401,7 +354,6 @@ const CreatorProfile = () => {
         mode="creator"
       />
 
-      {/* Post Popup */}
       {showCreatePopup && (
         <div className={styles.popupOverlay} onClick={onClose}>
           <div
@@ -412,16 +364,7 @@ const CreatorProfile = () => {
             {message && <p>{message}</p>}
             <form onSubmit={handlePostSubmit}>
               <div className={styles.formGroup}>
-                <label>Title</label>
-                <input
-                  type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  required
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <label>Content</label>
+                <label>Caption</label>
                 <textarea
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
@@ -429,8 +372,13 @@ const CreatorProfile = () => {
                 />
               </div>
               <div className={styles.formGroup}>
-                <label>Upload Media</label>
-                <input type="file" onChange={handleMediaChange} required />
+                <label>Upload Image or Video</label>
+                <input
+                  type="file"
+                  accept="image/*,video/*"
+                  onChange={handleMediaChange}
+                  required
+                />
               </div>
               <button type="submit" disabled={loading}>
                 {loading ? 'Uploading...' : 'Post'}
