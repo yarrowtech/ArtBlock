@@ -6,6 +6,7 @@ import axios from 'axios';
 import styles from '../styles/CreatorProfile.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faShare } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import {
   faHeart,
   faComment,
@@ -19,6 +20,7 @@ import CreatorStories from '../components/CreateStories';
 const CreatorProfile = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
+  const [openMenuPostId, setOpenMenuPostId] = useState(null); // Add this state
   const [content, setContent] = useState('');
   const [media, setMedia] = useState(null);
   const [mediaType, setMediaType] = useState('');
@@ -39,6 +41,35 @@ const CreatorProfile = () => {
   });
   const [user, setUser] = useState({});
   const [posts, setPosts] = useState([]);
+
+  const handleMenuToggle = (postId) => {
+    setOpenMenuPostId(openMenuPostId === postId ? null : postId);
+  };
+  const handleEditPost = (post) => {
+    // TODO: Implement edit logic
+    alert(`Edit post: ${post._id}`);
+    setOpenMenuPostId(null);
+  };
+  // Handler for delete (implement as needed)
+  const handleDeletePost = async (post) => {
+    const confirmDelete = window.confirm(
+      'Are you sure you want to delete this post?'
+    );
+    if (!confirmDelete) return;
+
+    try {
+      await axios.delete(`http://localhost:5000/api/posts/${post._id}`);
+
+      // Remove deleted post from state
+      setPosts((prev) => prev.filter((p) => p._id !== post._id));
+      setMessage('Post deleted successfully');
+    } catch (err) {
+      console.error('Delete failed:', err);
+      setMessage('Failed to delete post');
+    } finally {
+      setOpenMenuPostId(null);
+    }
+  };
 
   useEffect(() => {
     setUser({
@@ -126,6 +157,71 @@ const CreatorProfile = () => {
             <div className={styles.username}>@{user.username}</div>
             <div className={styles.postTime}>
               {new Date(post.createdAt).toLocaleTimeString()}
+            </div>
+            {/* Three-dot menu */}
+            <div
+              className={styles.postMenuWrapper}
+              style={{ position: 'relative', marginLeft: 'auto' }}
+            >
+              <button
+                className={styles.postMenuBtn}
+                onClick={() => handleMenuToggle(post._id)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '4px',
+                }}
+              >
+                <FontAwesomeIcon icon={faEllipsisV} />
+              </button>
+              {openMenuPostId === post._id && (
+                <div
+                  className={styles.postMenuDropdown}
+                  style={{
+                    position: 'absolute',
+                    top: '24px',
+                    right: 0,
+                    background: '#fff',
+                    border: '1px solid #ddd',
+                    borderRadius: '4px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                    zIndex: 10,
+                  }}
+                >
+                  <button
+                    className={styles.postMenuItem}
+                    onClick={() => handleEditPost(post)}
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      padding: '8px 16px',
+                      background: 'none',
+                      border: 'none',
+                      textAlign: 'left',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className={styles.postMenuItem}
+                    onClick={() => handleDeletePost(post)}
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      padding: '8px 16px',
+                      background: 'none',
+                      border: 'none',
+                      textAlign: 'left',
+                      cursor: 'pointer',
+                      color: 'red',
+                    }}
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
             </div>
           </div>
           <div className={styles.caption}>{post.content}</div>

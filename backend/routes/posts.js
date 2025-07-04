@@ -51,4 +51,22 @@ router.get('/', async (req, res) => {
   }
 });
 
+// DELETE a post by ID (no auth)
+router.delete('/:id', async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    await Post.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({ message: 'Post deleted successfully' });
+  } catch (error) {
+    console.error('Delete post error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 module.exports = router;
