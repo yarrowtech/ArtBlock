@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const Post = require('../models/Post');
+const { auth } = require('../middlewares/auth.middleware');
 
 // Storage setup
 const storage = multer.diskStorage({
@@ -18,7 +19,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // POST /api/posts — create post
-router.post('/', upload.single('media'), async (req, res) => {
+router.post('/', auth, upload.single('media'), async (req, res) => {
   try {
     const { content, mediaType } = req.body;
     const file = req.file;
@@ -29,7 +30,7 @@ router.post('/', upload.single('media'), async (req, res) => {
       content,
       mediaUrl: `/uploads/${file.filename}`,
       mediaType,
-      // createdBy: req.userId, // if auth
+      createdBy: req.user._id, // ✅ from middleware
     });
 
     await post.save();
@@ -41,13 +42,16 @@ router.post('/', upload.single('media'), async (req, res) => {
 });
 
 // GET /api/posts — fetch all posts
-router.get('/', async (req, res) => {
+// GET /api/posts/creator/:id
+router.get('/creator/:id', async (req, res) => {
   try {
-    const posts = await Post.find().sort({ createdAt: -1 });
+    const posts = await Post.find({ createdBy: req.params.id }).sort({
+      createdAt: -1,
+    });
     res.json(posts);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Failed to fetch posts' });
+    res.status(500).json({ error: 'Failed to fetch creator posts' });
   }
 });
 

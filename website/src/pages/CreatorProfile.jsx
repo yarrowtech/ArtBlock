@@ -1,7 +1,7 @@
 // CreatorProfile.js (final version after backend integration)
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from '../styles/CreatorProfile.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -71,26 +71,32 @@ const CreatorProfile = () => {
     }
   };
 
+  const { id } = useParams();
+
   useEffect(() => {
-    setUser({
-      name: 'Amit Saha',
-      username: 'amitsaha',
-      role: 'Creator',
-      bio: 'Passionate digital artist...',
-      subscriberCount: '1M',
-    });
+    const fetchCreatorData = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/api/users/${id}`);
+        setUser(res.data);
+      } catch (err) {
+        console.error('Failed to fetch creator data:', err);
+      }
+    };
 
     const fetchPosts = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/posts');
+        const res = await axios.get(
+          `http://localhost:5000/api/posts/creator/${id}`
+        );
         setPosts(res.data);
       } catch (err) {
         console.error('Failed to fetch posts:', err);
       }
     };
 
+    fetchCreatorData();
     fetchPosts();
-  }, []);
+  }, [id]);
 
   const handleMediaChange = (e) => {
     const file = e.target.files[0];

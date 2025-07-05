@@ -44,7 +44,8 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/support" element={<Support />} />
-          <Route path="/creatoredit" element={<CreatorEditProfile />} />
+          <Route path="/creatorprofile/:id" element={<CreatorProfile />} />
+
           <Route path="/createstories" element={<CreatorStories />} />
 
           {/* Nested settings routes */}

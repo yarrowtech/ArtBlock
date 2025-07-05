@@ -10,6 +10,10 @@ const userSchema = new mongoose.Schema(
       enum: ['creator', 'supporter'],
       required: true,
     },
+    name: { type: String },
+    bio: { type: String },
+    profilePhoto: { type: String },
+    coverPhoto: { type: String },
   },
   { timestamps: true }
 );

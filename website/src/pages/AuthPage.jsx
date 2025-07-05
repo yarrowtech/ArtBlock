@@ -1,3 +1,5 @@
+// src/pages/AuthPage.js
+
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styles from '../styles/AuthPage.module.css';
@@ -10,7 +12,6 @@ const AuthPage = () => {
   const [isRegistering, setIsRegistering] = useState(mode !== 'login');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-
   const [role, setRole] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -26,20 +27,12 @@ const AuthPage = () => {
       setError('');
       setIsLoading(true);
 
-      if (!isValidEmail(email)) {
-        throw new Error('Please enter a valid email address.');
-      }
-
-      if (!password) {
-        throw new Error('Password cannot be empty.');
-      }
+      if (!isValidEmail(email)) throw new Error('Please enter a valid email.');
+      if (!password) throw new Error('Password cannot be empty.');
 
       if (isRegistering) {
-        if (!username)
-          throw new Error('Username is required for registration.');
+        if (!username) throw new Error('Username is required.');
         if (!role) throw new Error('Please select a role.');
-
-        console.log('Selected role:', role); // ✅ Debug log
 
         const res = await fetch(`${API}/register`, {
           method: 'POST',
@@ -50,7 +43,6 @@ const AuthPage = () => {
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || 'Registration failed.');
 
-        // Reset form and switch to login
         setIsRegistering(false);
         setUsername('');
         setEmail('');
@@ -68,10 +60,11 @@ const AuthPage = () => {
         if (!res.ok) throw new Error(data.message || 'Login failed.');
 
         const user = data.user;
-        console.log('Logged in user:', user); // ✅ Debug log
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('token', data.token);
 
         if (user.role === 'creator') {
-          navigate('/creatorprofile');
+          navigate(`/creatorprofile/${user.id}`); // 🔥 Dynamic redirect
         } else {
           navigate('/feed');
         }
@@ -86,7 +79,6 @@ const AuthPage = () => {
   return (
     <div className={styles.container}>
       <div className={styles.authBox}>
-        {/* Left Section - Form */}
         <div className={styles.formSection}>
           <h2 className={styles.title}>
             {isRegistering ? 'Registration' : 'Login'}
@@ -160,20 +152,8 @@ const AuthPage = () => {
               ? 'Register'
               : 'Login'}
           </button>
-
-          <p className={styles.socialText}>
-            or {isRegistering ? 'register' : 'login'} with social platforms
-          </p>
-
-          <div className={styles.socialIcons}>
-            <span className={`${styles.socialIcon} ${styles.google}`} />
-            <span className={`${styles.socialIcon} ${styles.facebook}`} />
-            <span className={`${styles.socialIcon} ${styles.instagram}`} />
-            <span className={`${styles.socialIcon} ${styles.linkedin}`} />
-          </div>
         </div>
 
-        {/* Right Section - Toggle Panel */}
         <div className={styles.toggleSection}>
           <h2 className={styles.toggleTitle}>
             {isRegistering ? 'Welcome Back!' : 'Hello, Welcome!'}

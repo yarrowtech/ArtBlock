@@ -1,20 +1,20 @@
-// src/components/ProfileEdit.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/CreatorEdit.module.css';
-import axios from 'axios'; // For backend integration
+import axios from 'axios';
 
 const DEFAULT_PROFILE_PIC = 'https://randomuser.me/api/portraits/men/1.jpg';
 
 const ProfileEdit = () => {
   const navigate = useNavigate();
+  const username = localStorage.getItem('username');
 
   const [form, setForm] = useState({
-    name: 'Amit Saha',
-    username: 'amitsaha',
-    email: 'amit.saha@example.com',
-    bio: 'Passionate digital artist sharing tutorials, time-lapses, and behind-the-scenes of my artwork.',
-    role: 'Creator',
+    name: '',
+    username: '',
+    email: '',
+    bio: '',
+    role: '',
   });
 
   const [profilePhoto, setProfilePhoto] = useState(null);
@@ -22,14 +22,38 @@ const ProfileEdit = () => {
   const [previewPhoto, setPreviewPhoto] = useState(DEFAULT_PROFILE_PIC);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
-  // Preview URL cleanup
+  // Fetch profile on mount
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await axios.get(`/api/profile/${username}`);
+        const data = res.data;
+
+        setForm({
+          name: data.name || '',
+          username: data.username || '',
+          email: data.email || '',
+          bio: data.bio || '',
+          role: data.role || '',
+        });
+
+        if (data.profilePhoto) {
+          setPreviewPhoto(`http://localhost:5000/${data.profilePhoto}`);
+        }
+      } catch (err) {
+        console.error('Failed to fetch profile:', err);
+      }
+    };
+
+    fetchProfile();
+  }, [username]);
+
+  // Live preview for newly selected profile photo
   useEffect(() => {
     if (profilePhoto) {
       const objectUrl = URL.createObjectURL(profilePhoto);
       setPreviewPhoto(objectUrl);
       return () => URL.revokeObjectURL(objectUrl);
-    } else {
-      setPreviewPhoto(DEFAULT_PROFILE_PIC);
     }
   }, [profilePhoto]);
 
@@ -56,7 +80,6 @@ const ProfileEdit = () => {
       if (profilePhoto) formData.append('profilePhoto', profilePhoto);
       if (coverPhoto) formData.append('coverPhoto', coverPhoto);
 
-      // Send to backend
       await axios.post('/api/profile/update', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -83,7 +106,7 @@ const ProfileEdit = () => {
           role="button"
           tabIndex="0"
         >
-          <img src={DEFAULT_PROFILE_PIC} alt="User avatar" />
+          <img src={previewPhoto} alt="User avatar" />
           <span>{form.name}</span>
         </div>
       </header>
@@ -134,6 +157,7 @@ const ProfileEdit = () => {
                   value={form[field]}
                   onChange={handleChange}
                   required
+                  readOnly={field === 'username'} // Prevent editing username
                 />
               </React.Fragment>
             ))}
