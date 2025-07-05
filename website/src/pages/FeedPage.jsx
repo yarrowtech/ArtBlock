@@ -9,6 +9,7 @@ import {
   faHeart,
 } from '@fortawesome/free-regular-svg-icons';
 import { faShare } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 
 // Reusable Post Component
 const Post = ({ post, onJoin }) => (
@@ -21,8 +22,16 @@ const Post = ({ post, onJoin }) => (
     </div>
     <div className={styles.caption}>{post.caption}</div>
     <div className={styles.content}>
-      <img src={post.image} alt="post" />
+      {post.mediaType === 'image' ? (
+        <img src={post.mediaUrl} alt="post" />
+      ) : (
+        <video controls>
+          <source src={post.mediaUrl} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      )}
     </div>
+
     <div className={styles.interact}>
       <FontAwesomeIcon icon={faHeart} />
       <FontAwesomeIcon icon={faComment} />
@@ -66,7 +75,27 @@ const FeedPage = () => {
   };
 
   useEffect(() => {
-    // Simulated backend fetch (replace with actual API)
+    const fetchPosts = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/posts');
+        const fetchedPosts = response.data.map((post) => ({
+          caption: post.content,
+          mediaUrl: post.mediaUrl.startsWith('http')
+            ? post.mediaUrl
+            : `http://localhost:5000${post.mediaUrl}`,
+          mediaType: post.mediaType,
+          username: 'amitsaha2002', // temporary
+          createdAt: post.createdAt,
+        }));
+        console.log('Fetched posts:', fetchedPosts);
+        setPosts(fetchedPosts);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+      }
+    };
+
+    fetchPosts();
+
     setUsernames([
       'john',
       'emma',
@@ -78,24 +107,6 @@ const FeedPage = () => {
       'nina',
       'max',
       'olivia',
-    ]);
-
-    setPosts([
-      {
-        username: 'amitsaha2002',
-        caption: 'Creating an engaging podcast...',
-        image: '../images/podcast.jpg',
-      },
-      {
-        username: 'amitsaha2002',
-        caption: 'Grooving to some dance moves!',
-        image: '../images/dancing.jpg',
-      },
-      {
-        username: 'amitsaha2002',
-        caption: 'Exploring musical creativity.',
-        image: '../images/music.jpg',
-      },
     ]);
 
     setSuggestedCreators(
