@@ -63,17 +63,13 @@ export const posts = {
 
 // Users API
 export const users = {
-  getProfile: (userId) => api.get(`/users/profile/${userId}`),
+  getProfile: (userId) => api.get(`/users/${userId}`),
   updateProfile: (updates) => {
     const formData = new FormData();
     Object.keys(updates).forEach(key => {
-      if (key === 'profileImage') {
-        formData.append('profileImage', updates[key]);
-      } else {
-        formData.append(key, updates[key]);
-      }
+      formData.append(key, updates[key]);
     });
-    return api.patch('/users/profile', formData, {
+    return api.post('/profile/update', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }

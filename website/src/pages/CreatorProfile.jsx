@@ -400,12 +400,12 @@ const CreatorProfile = () => {
       <main className={styles.container}>
         <div className={styles.profile}>
           <img
-            src="../images/fantasy.webp"
+            src={user.coverPhoto ? `http://localhost:5000/${user.coverPhoto}` : '../images/fantasy.webp'}
             alt="cover"
             className={styles.cover}
           />
           <img
-            src="https://randomuser.me/api/portraits/men/1.jpg"
+            src={user.profilePhoto ? `http://localhost:5000/${user.profilePhoto}` : 'https://randomuser.me/api/portraits/men/1.jpg'}
             alt="avatar"
             className={styles.avatar}
           />
@@ -418,7 +418,7 @@ const CreatorProfile = () => {
           </p>
           <div className={styles.buttonGroup}>
             <button
-              onClick={() => navigate('/creatoredit')}
+              onClick={() => navigate(`/creatoredit/${user._id}`)}
               className={styles.secondaryBtn}
             >
               Edit Profile

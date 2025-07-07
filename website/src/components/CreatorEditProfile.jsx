@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../styles/CreatorEdit.module.css';
-import axios from 'axios';
+import { users } from '../services/api';
 
 const DEFAULT_PROFILE_PIC = 'https://randomuser.me/api/portraits/men/1.jpg';
 
 const ProfileEdit = () => {
   const navigate = useNavigate();
-  const username = localStorage.getItem('username');
+  const { id } = useParams();
 
   const [form, setForm] = useState({
     name: '',
@@ -26,9 +26,8 @@ const ProfileEdit = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axios.get(`/api/profile/${username}`);
+        const res = await users.getProfile(id);
         const data = res.data;
-
         setForm({
           name: data.name || '',
           username: data.username || '',
@@ -36,17 +35,15 @@ const ProfileEdit = () => {
           bio: data.bio || '',
           role: data.role || '',
         });
-
         if (data.profilePhoto) {
-          setPreviewPhoto(`http://localhost:5000/${data.profilePhoto}`);
+          setPreviewPhoto(data.profilePhoto.startsWith('http') ? data.profilePhoto : `http://localhost:5000/${data.profilePhoto}`);
         }
       } catch (err) {
         console.error('Failed to fetch profile:', err);
       }
     };
-
     fetchProfile();
-  }, [username]);
+  }, [id]);
 
   // Live preview for newly selected profile photo
   useEffect(() => {
@@ -73,19 +70,15 @@ const ProfileEdit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const formData = new FormData();
-      Object.entries(form).forEach(([key, value]) => {
-        formData.append(key, value);
-      });
-      if (profilePhoto) formData.append('profilePhoto', profilePhoto);
-      if (coverPhoto) formData.append('coverPhoto', coverPhoto);
-
-      await axios.post('/api/profile/update', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
+      const updates = { ...form };
+      if (profilePhoto) updates.profilePhoto = profilePhoto;
+      if (coverPhoto) updates.coverPhoto = coverPhoto;
+      const res = await users.updateProfile(updates);
+      if (res.data && res.data.user) {
+        localStorage.setItem('name', res.data.user.name);
+        localStorage.setItem('bio', res.data.user.bio);
+        localStorage.setItem('profilePhoto', res.data.user.profilePhoto || '');
+      }
       setSaveSuccess(true);
       setTimeout(() => {
         setSaveSuccess(false);

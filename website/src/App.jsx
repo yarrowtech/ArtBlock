@@ -32,7 +32,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/feed" element={<FeedPage />} />
-          <Route path="/creatorprofile" element={<CreatorProfile />} />
+          <Route path="/creatoredit/:id" element={<CreatorEditProfile />} />
           <Route path="/createpost" element={<CreatePost />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/subscribe" element={<Subscribe />} />
