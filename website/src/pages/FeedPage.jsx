@@ -12,36 +12,57 @@ import { faShare } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
 // Reusable Post Component
-const Post = ({ post, onJoin }) => (
-  <div className={styles.post}>
-    <div className={styles.postProfile}>
-      <div className={styles.profilePic}></div>
-      <div className={styles.username}>{post.username}</div>
-      <div className={styles.postTime}>.5h</div>
-      <FontAwesomeIcon icon={regularBookmark} className={styles.bookmark} />
+const Post = ({ post, onJoin }) => {
+  // Format createdAt as e.g. '2h ago' or date string
+  const formatTime = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diff = Math.floor((now - date) / 1000); // seconds
+    if (diff < 60) return `${diff}s ago`;
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+    return date.toLocaleDateString();
+  };
+  return (
+    <div className={styles.post}>
+      <div className={styles.postProfile}>
+        {post.profilePhoto ? (
+          <img
+            src={post.profilePhoto.startsWith('http')
+              ? post.profilePhoto
+              : `http://localhost:5000/${post.profilePhoto.replace(/\\/g, '/')}`}
+            alt="profile"
+            className={styles.profilePic}
+          />
+        ) : (
+          <div className={styles.profilePic}></div>
+        )}
+        <div className={styles.username}>{post.username}</div>
+        <div className={styles.postTime}>{formatTime(post.createdAt)}</div>
+        <FontAwesomeIcon icon={regularBookmark} className={styles.bookmark} />
+      </div>
+      <div className={styles.caption}>{post.caption}</div>
+      <div className={styles.content}>
+        {post.mediaType === 'image' ? (
+          <img src={post.mediaUrl} alt="post" />
+        ) : (
+          <video controls>
+            <source src={post.mediaUrl} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        )}
+      </div>
+      <div className={styles.interact}>
+        <FontAwesomeIcon icon={faHeart} />
+        <FontAwesomeIcon icon={faComment} />
+        <FontAwesomeIcon icon={faShare} />
+        <button type="button" className={styles.join} onClick={onJoin}>
+          Join
+        </button>
+      </div>
     </div>
-    <div className={styles.caption}>{post.caption}</div>
-    <div className={styles.content}>
-      {post.mediaType === 'image' ? (
-        <img src={post.mediaUrl} alt="post" />
-      ) : (
-        <video controls>
-          <source src={post.mediaUrl} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      )}
-    </div>
-
-    <div className={styles.interact}>
-      <FontAwesomeIcon icon={faHeart} />
-      <FontAwesomeIcon icon={faComment} />
-      <FontAwesomeIcon icon={faShare} />
-      <button type="button" className={styles.join} onClick={onJoin}>
-        Join
-      </button>
-    </div>
-  </div>
-);
+  );
+};
 
 // Reusable Story Component
 const Story = ({ imgUrl, name }) => (
@@ -52,6 +73,8 @@ const Story = ({ imgUrl, name }) => (
     <h5>{name}</h5>
   </div>
 );
+
+const DEFAULT_PROFILE_PHOTO = 'https://ui-avatars.com/api/?name=User&background=random';
 
 const FeedPage = () => {
   const navigate = useNavigate();
@@ -79,22 +102,36 @@ const FeedPage = () => {
       try {
         const response = await axios.get('http://localhost:5000/api/posts');
         const fetchedPosts = response.data.map((post) => ({
-          caption: post.content,
+          ...post,
           mediaUrl: post.mediaUrl.startsWith('http')
             ? post.mediaUrl
             : `http://localhost:5000${post.mediaUrl}`,
-          mediaType: post.mediaType,
-          username: 'amitsaha2002', // temporary
-          createdAt: post.createdAt,
+          profilePhoto: post.profilePhoto
+            ? (post.profilePhoto.startsWith('http')
+                ? post.profilePhoto
+                : `http://localhost:5000${post.profilePhoto}`)
+            : null,
         }));
-        console.log('Fetched posts:', fetchedPosts);
+        // Sort posts by createdAt descending (latest first)
+        fetchedPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setPosts(fetchedPosts);
       } catch (error) {
         console.error('Error fetching posts:', error);
       }
     };
 
+    const fetchCreators = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/users/role/creator');
+        console.log('Fetched creators:', response.data);
+        setSuggestedCreators(response.data);
+      } catch (error) {
+        console.error('Error fetching creators:', error);
+      }
+    };
+
     fetchPosts();
+    fetchCreators();
 
     setUsernames([
       'john',
@@ -108,14 +145,6 @@ const FeedPage = () => {
       'max',
       'olivia',
     ]);
-
-    setSuggestedCreators(
-      Array.from({ length: 8 }, (_, i) => ({
-        name: `Creator ${i + 1}`,
-        handle: `@creator${i + 1}`,
-        avatar: `https://i.pravatar.cc/40?img=${i + 1}`,
-      }))
-    );
   }, []);
 
   return (
@@ -151,16 +180,22 @@ const FeedPage = () => {
       <div className={styles.item3}>
         <h3 className={styles.suggestionTitle}>Suggested Creators</h3>
         <ul className={styles.creatorList}>
-          {suggestedCreators.map((creator, index) => (
-            <li key={index} className={styles.creatorItem}>
+          {suggestedCreators.map((creator) => (
+            <li key={creator._id} className={styles.creatorItem}>
               <img
-                src={creator.avatar}
-                alt={creator.name}
+                src={
+                  creator.profilePhoto
+                    ? (creator.profilePhoto.startsWith('http')
+                        ? creator.profilePhoto
+                        : `http://localhost:5000/${creator.profilePhoto.replace(/\\/g, '/')}`)
+                    : DEFAULT_PROFILE_PHOTO
+                }
+                alt={creator.username}
                 className={styles.avatar}
               />
               <div className={styles.creatorInfo}>
-                <span className={styles.creatorName}>{creator.name}</span>
-                <span className={styles.creatorHandle}>{creator.handle}</span>
+                <span className={styles.creatorName}>{creator.username}</span>
+                {creator.bio && <span className={styles.creatorHandle}>{creator.bio}</span>}
               </div>
               <button className={styles.followBtn} onClick={handleJoin}>
                 Join

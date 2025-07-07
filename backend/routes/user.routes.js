@@ -15,4 +15,15 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// Get all creators
+router.get('/role/creator', async (req, res) => {
+  try {
+    const creators = await User.find({ role: 'creator' }).select('username profilePhoto bio _id');
+    res.status(200).json(creators);
+  } catch (err) {
+    console.error('Error fetching creators:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 module.exports = router;

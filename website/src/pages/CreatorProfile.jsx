@@ -159,11 +159,17 @@ const CreatorProfile = () => {
       {posts.map((post) => (
         <div key={post._id} className={styles.post}>
           <div className={styles.postProfile}>
-            <div className={styles.profilePic}></div>
-            <div className={styles.username}>@{user.username}</div>
-            <div className={styles.postTime}>
-              {new Date(post.createdAt).toLocaleTimeString()}
+            <div className={styles.profilePic}>
+            <img
+            src={user.profilePhoto ? `http://localhost:5000/${user.profilePhoto}` : 'https://randomuser.me/api/portraits/men/1.jpg'}
+            alt="avatar"
+            className={styles.profilePic}
+          />
             </div>
+            <div className={styles.username}>@{user.username}</div>
+            {/* <div className={styles.postTime}>
+              {new Date(post.createdAt).toLocaleTimeString()}
+            </div> */}
             {/* Three-dot menu */}
             <div
               className={styles.postMenuWrapper}
@@ -383,7 +389,7 @@ const CreatorProfile = () => {
       <aside className={styles.sidebar}>
         <h2>Art Block</h2>
         <nav className={styles.nav}>
-          <button onClick={() => navigate('/creatorprofile')}>Profile</button>
+          <button onClick={() => navigate(`/creatorprofile/${id}`)}>Profile</button>
           <button onClick={() => navigate('/creatordashboard')}>
             Dashboard
           </button>

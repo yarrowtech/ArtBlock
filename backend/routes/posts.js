@@ -42,6 +42,29 @@ router.post('/', auth, upload.single('media'), async (req, res) => {
 });
 
 // GET /api/posts — fetch all posts
+router.get('/', async (req, res) => {
+  try {
+    // Populate createdBy to access user info
+    const posts = await Post.find().populate('createdBy');
+    // Filter posts to only those created by users with role 'creator'
+    const creatorPosts = posts.filter(post => post.createdBy && post.createdBy.role === 'creator');
+    // Map to include only required fields
+    const formattedPosts = creatorPosts.map(post => ({
+      _id: post._id,
+      caption: post.content,
+      mediaUrl: post.mediaUrl,
+      mediaType: post.mediaType,
+      createdAt: post.createdAt,
+      username: post.createdBy.username,
+      profilePhoto: post.createdBy.profilePhoto || null,
+    }));
+    res.json(formattedPosts);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch posts' });
+  }
+});
+
 // GET /api/posts/creator/:id
 router.get('/creator/:id', async (req, res) => {
   try {

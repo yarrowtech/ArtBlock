@@ -54,6 +54,8 @@ const ProfileEdit = () => {
     }
   }, [profilePhoto]);
 
+  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({
@@ -82,7 +84,7 @@ const ProfileEdit = () => {
       setSaveSuccess(true);
       setTimeout(() => {
         setSaveSuccess(false);
-        navigate('/creatorprofile');
+        navigate(`/creatorprofile/${id}`);
       }, 2000);
     } catch (err) {
       console.error('Profile update failed:', err);
@@ -94,7 +96,7 @@ const ProfileEdit = () => {
       <header>
         <h1>Edit Profile</h1>
         <div
-          onClick={() => navigate('/creatorprofile')}
+          onClick={() => navigate(`/creatorprofile/${id}`)}
           className={styles.userProfile}
           role="button"
           tabIndex="0"
