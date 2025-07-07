@@ -39,26 +39,34 @@ const Post = ({ post, onJoin }) => {
         )}
         <div className={styles.username}>{post.username}</div>
         <div className={styles.postTime}>{formatTime(post.createdAt)}</div>
-        <FontAwesomeIcon icon={regularBookmark} className={styles.bookmark} />
+        {/* <FontAwesomeIcon icon={regularBookmark} className={styles.bookmark} /> */}
       </div>
       <div className={styles.caption}>{post.caption}</div>
       <div className={styles.content}>
-        {post.mediaType === 'image' ? (
-          <img src={post.mediaUrl} alt="post" />
-        ) : (
-          <video controls>
-            <source src={post.mediaUrl} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        )}
-      </div>
+  {post.mediaType === 'image' ? (
+    <img src={post.mediaUrl} alt="post" />
+  ) : (
+    <video
+      autoPlay
+      muted
+      loop
+      playsInline
+      className={styles.video}
+    >
+      <source src={post.mediaUrl} type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  )}
+</div>
+
       <div className={styles.interact}>
         <FontAwesomeIcon icon={faHeart} />
         <FontAwesomeIcon icon={faComment} />
         <FontAwesomeIcon icon={faShare} />
-        <button type="button" className={styles.join} onClick={onJoin}>
+        <button type="button" className={styles.join} onClick={() => onJoin(post.creatorId)}>
           Join
-        </button>
+          </button>
+
       </div>
     </div>
   );
@@ -85,7 +93,8 @@ const FeedPage = () => {
   const [suggestedCreators, setSuggestedCreators] = useState([]);
 
   const handleNavigation = (path) => navigate(path);
-  const handleJoin = () => handleNavigation('/creatorprofile');
+  const handleJoin = (creatorId) => navigate(`/creatorprofile/${creatorId}`);
+
 
   const scroll = (direction) => {
     const scrollAmount = 150;
@@ -195,11 +204,16 @@ const FeedPage = () => {
               />
               <div className={styles.creatorInfo}>
                 <span className={styles.creatorName}>{creator.username}</span>
-                {creator.bio && <span className={styles.creatorHandle}>{creator.bio}</span>}
+                {creator.bio && (
+  <span className={styles.creatorHandle}>
+    {creator.bio.slice(0, 10)}{creator.bio.length > 10 ? '...' : ''}
+  </span>
+)}
               </div>
-              <button className={styles.followBtn} onClick={handleJoin}>
-                Join
-              </button>
+              <button className={styles.followBtn} onClick={() => handleJoin(creator._id)}>
+  Join
+</button>
+
             </li>
           ))}
         </ul>
