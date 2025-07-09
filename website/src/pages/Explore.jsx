@@ -4,11 +4,19 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../styles/Explore.module.css';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
+import { explore } from '../services/api';
+
+const BASE_URL = 'http://localhost:5000'; // ⚠️ Replace with deployed URL if needed
+const DEFAULT_PROFILE = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
 
 // Card component
-const CreatorCard = ({ image, name, role, onClick }) => (
+const CreatorCard = ({ profilePhoto, name, role, onClick }) => (
   <div className={styles.creatorCard}>
-    <img src={image} alt={name} />
+    <img
+      src={profilePhoto || DEFAULT_PROFILE}
+      alt={name}
+      onError={(e) => (e.target.src = DEFAULT_PROFILE)}
+    />
     <div className={styles.cardBody}>
       <h5 className={styles.cardTitle}>{name}</h5>
       <p className={styles.cardText}>{role}</p>
@@ -38,73 +46,46 @@ const Explore = () => {
     navigate('/creatorprofile');
   };
 
-  // Fetch data on mount (replace with real APIs later)
-  useEffect(() => {
-    // Simulated API data
-    setFeaturedCreators([
-      {
-        image: 'https://randomuser.me/api/portraits/men/7.jpg',
-        name: 'Amit',
-        role: 'Video Creator',
-      },
-      {
-        image: 'https://randomuser.me/api/portraits/women/2.jpg',
-        name: 'Priya',
-        role: 'Video Creator',
-      },
-      {
-        image: 'https://randomuser.me/api/portraits/women/5.jpg',
-        name: 'Sonal',
-        role: 'Video Creator',
-      },
-      {
-        image: 'https://randomuser.me/api/portraits/men/3.jpg',
-        name: 'Ravi',
-        role: 'Video Creator',
-      },
-      {
-        image: 'https://randomuser.me/api/portraits/men/9.jpg',
-        name: 'Karan',
-        role: 'Video Creator',
-      },
-    ]);
+  const formatCreators = (creators) =>
+    creators.map((creator) => ({
+      ...creator,
+      profilePhoto: creator.profilePhoto
+        ? creator.profilePhoto.startsWith('http')
+          ? creator.profilePhoto
+          : `${BASE_URL}/${creator.profilePhoto}`
+        : '',
+    }));
 
-    setNewCreators([
-      {
-        image: 'https://randomuser.me/api/portraits/men/6.jpg',
-        name: 'Nikhil',
-        role: 'Video Creator',
-      },
-      {
-        image: 'https://randomuser.me/api/portraits/women/7.jpg',
-        name: 'Isha',
-        role: 'Video Creator',
-      },
-      {
-        image: 'https://randomuser.me/api/portraits/women/8.jpg',
-        name: 'Megha',
-        role: 'Video Creator',
-      },
-      {
-        image: 'https://randomuser.me/api/portraits/men/10.jpg',
-        name: 'Jay',
-        role: 'Video Creator',
-      },
-      {
-        image: 'https://randomuser.me/api/portraits/men/16.jpg',
-        name: 'Raj',
-        role: 'Video Creator',
-      },
-    ]);
-
-    setCategories([
-      { image: '../images/creator.jpg', label: 'Explore', sublabel: 'Art' },
-      { image: '../images/music.jpg', label: 'Explore', sublabel: 'Music' },
-      { image: '../images/dancing.jpg', label: 'Explore', sublabel: 'Dance' },
-      { image: '../images/podcast.jpg', label: 'Explore', sublabel: 'Podcast' },
-      { image: '../images/content.webp', label: 'Explore', sublabel: 'Vlogs' },
-    ]);
-  }, []);
+    useEffect(() => {
+      explore
+        .getFeaturedCreators()
+        .then((res) => {
+          setFeaturedCreators(formatCreators(res.data));
+        })
+        .catch(() => setFeaturedCreators([]));
+    
+      explore
+        .getNewCreators()
+        .then((res) => {
+          // ✅ Sort by recent (assuming backend returns all)
+          const sorted = res.data.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          );
+          // ✅ Take latest 5
+          const latestFive = sorted.slice(0, 5);
+          setNewCreators(formatCreators(latestFive));
+        })
+        .catch(() => setNewCreators([]));
+    
+      // Static categories
+      setCategories([
+        { image: '../images/creator.jpg', label: 'Explore', sublabel: 'Art' },
+        { image: '../images/music.jpg', label: 'Explore', sublabel: 'Music' },
+        { image: '../images/dancing.jpg', label: 'Explore', sublabel: 'Dance' },
+        { image: '../images/podcast.jpg', label: 'Explore', sublabel: 'Podcast' },
+      ]);
+    }, []);
+    
 
   return (
     <div>

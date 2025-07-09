@@ -43,6 +43,7 @@ const CreatorProfile = () => {
   const [user, setUser] = useState({});
   const [posts, setPosts] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
+  const [category, setCategory] = useState('art');
 
   const handleMenuToggle = (postId) => {
     setOpenMenuPostId(openMenuPostId === postId ? null : postId);
@@ -116,6 +117,7 @@ const CreatorProfile = () => {
     formData.append('content', content); // Caption
     formData.append('media', media);
     formData.append('mediaType', mediaType);
+    formData.append('category', category);
 
     try {
       const res = await axios.post(
@@ -497,6 +499,15 @@ const CreatorProfile = () => {
                   onChange={handleMediaChange}
                   required
                 />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Category</label>
+                <select value={category} onChange={e => setCategory(e.target.value)} required>
+                  <option value="art">Art</option>
+                  <option value="music">Music</option>
+                  <option value="dance">Dance</option>
+                  <option value="podcast">Podcast</option>
+                </select>
               </div>
               <button type="submit" disabled={loading}>
                 {loading ? 'Uploading...' : 'Post'}

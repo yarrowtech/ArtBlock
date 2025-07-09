@@ -104,10 +104,18 @@ export const messages = {
   delete: (messageId) => api.delete(`/messages/${messageId}`),
 };
 
+// Explore API
+export const explore = {
+  getFeaturedCreators: () => api.get('/explore/featured-creators'),
+  getNewCreators: () => api.get('/explore/new-creators'),
+  getCategories: () => api.get('/explore/categories'),
+};
+
 export default {
   auth,
   posts,
   users,
   subscriptions,
   messages,
+  explore,
 }; 

@@ -9,6 +9,7 @@ const CreatePost = () => {
   const [mediaType, setMediaType] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [category, setCategory] = useState('art');
 
   const handleMediaChange = (e) => {
     const file = e.target.files[0];
@@ -29,6 +30,7 @@ const CreatePost = () => {
     formData.append('content', content);
     formData.append('media', media);
     formData.append('mediaType', mediaType);
+    formData.append('category', category);
 
     try {
       const response = await axios.post(
@@ -81,6 +83,16 @@ const CreatePost = () => {
         <div className={styles.formGroup}>
           <label>Upload Media</label>
           <input type="file" onChange={handleMediaChange} required />
+        </div>
+
+        <div className={styles.formGroup}>
+          <label>Category</label>
+          <select value={category} onChange={e => setCategory(e.target.value)} required>
+            <option value="art">Art</option>
+            <option value="music">Music</option>
+            <option value="dance">Dance</option>
+            <option value="podcast">Podcast</option>
+          </select>
         </div>
 
         <button type="submit" disabled={loading}>

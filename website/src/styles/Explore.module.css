@@ -32,9 +32,21 @@
 
 /* Cards */
 .creatorCard,
-.category,
 .projectCard {
   width: 11rem;
+  height: 16rem;
+  background-color: #ffffff;
+  margin: 0.75rem 0.75rem;
+  border-radius: 10px;
+  font-weight: 500;
+  color: #003366;
+  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 85, 170, 0.1);
+  text-align: center;
+}
+
+.category{
+  width: 16rem;
   height: 16rem;
   background-color: #ffffff;
   margin: 0.75rem 0.75rem;
@@ -64,6 +76,13 @@
 .categories img {
   margin-top: 0.5rem;
   width: 10rem;
+  height: 10rem;
+  border-radius: 10px;
+}
+
+.category img {
+  margin-top: 0.5rem;
+  width: 15rem;
   height: 10rem;
   border-radius: 10px;
 }

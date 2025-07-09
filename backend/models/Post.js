@@ -15,6 +15,11 @@ const postSchema = new mongoose.Schema(
       enum: ['image', 'video'],
       required: true,
     },
+    category: {
+      type: String,
+      enum: ['art', 'music', 'dance', 'podcast'],
+      required: true,
+    },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

@@ -21,15 +21,18 @@ const upload = multer({ storage });
 // POST /api/posts — create post
 router.post('/', auth, upload.single('media'), async (req, res) => {
   try {
-    const { content, mediaType } = req.body;
+    const { content, mediaType, category } = req.body;
     const file = req.file;
 
     if (!file) return res.status(400).json({ error: 'No media file provided' });
-
+    if (!category || !['art', 'music', 'dance', 'podcast'].includes(category)) {
+      return res.status(400).json({ error: 'Invalid or missing category' });
+    }
     const post = new Post({
       content,
       mediaUrl: `/uploads/${file.filename}`,
       mediaType,
+      category,
       createdBy: req.user._id, // ✅ from middleware
     });
 
