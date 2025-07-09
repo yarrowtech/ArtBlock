@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import styles from '../styles/CreatorStories.module.css';
 
-const CreatorStories = ({ stories = [], onAddStory = () => {} }) => {
+const CreatorStories = ({ stories = [], onAddStory = () => {}, hideAddStory = false }) => {
   const [showStoryUpload, setShowStoryUpload] = useState(false);
   const [previewMedia, setPreviewMedia] = useState(null);
   const fileInputRef = useRef(null);
@@ -98,17 +98,19 @@ const CreatorStories = ({ stories = [], onAddStory = () => {} }) => {
   return (
     <div className={styles.storiesContainer}>
       {/* Add Story Button */}
-      <div className={styles.addStoryWrapper}>
-        <div
-          className={styles.addStoryButton}
-          onClick={() => setShowStoryUpload(true)}
-          role="button"
-          tabIndex={0}
-        >
-          <div className={styles.addIcon}>+</div>
+      {!hideAddStory && (
+        <div className={styles.addStoryWrapper}>
+          <div
+            className={styles.addStoryButton}
+            onClick={() => setShowStoryUpload(true)}
+            role="button"
+            tabIndex={0}
+          >
+            <div className={styles.addIcon}>+</div>
+          </div>
+          <span>Add Story</span>
         </div>
-        <span>Add Story</span>
-      </div>
+      )}
 
       {/* Story Circles */}
       {stories.length > 0 ? (

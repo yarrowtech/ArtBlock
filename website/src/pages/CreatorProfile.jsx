@@ -16,6 +16,7 @@ import {
 import NotificationPanel from '../components/NotificationPanel';
 import MessageSlide from '../components/MessageSlide';
 import CreatorStories from '../components/CreateStories';
+import AuthService from '../services/auth.service';
 
 const CreatorProfile = () => {
   const navigate = useNavigate();
@@ -41,6 +42,7 @@ const CreatorProfile = () => {
   });
   const [user, setUser] = useState({});
   const [posts, setPosts] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
 
   const handleMenuToggle = (postId) => {
     setOpenMenuPostId(openMenuPostId === postId ? null : postId);
@@ -96,6 +98,7 @@ const CreatorProfile = () => {
 
     fetchCreatorData();
     fetchPosts();
+    setCurrentUser(AuthService.getCurrentUser());
   }, [id]);
 
   const handleMediaChange = (e) => {
@@ -187,7 +190,7 @@ const CreatorProfile = () => {
               >
                 <FontAwesomeIcon icon={faEllipsisV} />
               </button>
-              {openMenuPostId === post._id && (
+              {openMenuPostId === post._id && (isOwner || isCreator) && (
                 <div
                   className={styles.postMenuDropdown}
                   style={{
@@ -381,6 +384,9 @@ const CreatorProfile = () => {
     </div>
   );
 
+  const isOwner = currentUser && currentUser._id === user._id;
+  const isCreator = currentUser && currentUser.role === 'creator';
+
   return (
     <div className={styles.wrapper}>
       <button className={styles.hamburger} onClick={handleToggleSidebar}>
@@ -423,22 +429,26 @@ const CreatorProfile = () => {
             Subscribers: <strong>{user.subscriberCount}</strong>
           </p>
           <div className={styles.buttonGroup}>
-            <button
-              onClick={() => navigate(`/creatoredit/${user._id}`)}
-              className={styles.secondaryBtn}
-            >
-              Edit Profile
-            </button>
-            <button
-              onClick={() => setShowCreatePopup(true)}
-              className={styles.primaryBtn}
-            >
-              Create Post
-            </button>
+            {(isOwner || isCreator) && (
+              <>
+                <button
+                  onClick={() => navigate(`/creatoredit/${user._id}`)}
+                  className={styles.secondaryBtn}
+                >
+                  Edit Profile
+                </button>
+                <button
+                  onClick={() => setShowCreatePopup(true)}
+                  className={styles.primaryBtn}
+                >
+                  Create Post
+                </button>
+              </>
+            )}
           </div>
         </div>
 
-        <CreatorStories />
+        <CreatorStories hideAddStory={!(isOwner || isCreator)} />
 
         <div className={styles.profileBtn}>
           <button onClick={() => setView('post')}>Posts</button>
