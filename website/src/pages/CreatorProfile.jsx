@@ -17,6 +17,7 @@ import NotificationPanel from '../components/NotificationPanel';
 import MessageSlide from '../components/MessageSlide';
 import CreatorStories from '../components/CreateStories';
 import AuthService from '../services/auth.service';
+import Sidebar from '../components/Sidebar';
 
 const CreatorProfile = () => {
   const navigate = useNavigate();
@@ -394,22 +395,27 @@ const CreatorProfile = () => {
       <button className={styles.hamburger} onClick={handleToggleSidebar}>
         <FontAwesomeIcon icon={faBars} />
       </button>
-      <aside className={styles.sidebar}>
-        <h2>Art Block</h2>
-        <nav className={styles.nav}>
-          <button onClick={() => navigate(`/creatorprofile/${id}`)}>Profile</button>
-          <button onClick={() => navigate('/creatordashboard')}>
-            Dashboard
-          </button>
-          <button onClick={() => setIsMessageOpen((prev) => !prev)}>
-            Messages
-          </button>
-          <button onClick={() => setOpenNotifications((prev) => !prev)}>
-            Notifications
-          </button>
-          <button onClick={handleLogout}>Logout</button>
-        </nav>
-      </aside>
+      {/* Render supporter sidebar for supporters, creator sidebar for creators/owners */}
+      {currentUser && currentUser.role === 'supporter' ? (
+        <Sidebar />
+      ) : (
+        <aside className={styles.sidebar}>
+          <h2>Art Block</h2>
+          <nav className={styles.nav}>
+            <button onClick={() => navigate(`/creatorprofile/${id}`)}>Profile</button>
+            <button onClick={() => navigate('/creatordashboard')}>
+              Dashboard
+            </button>
+            <button onClick={() => setIsMessageOpen((prev) => !prev)}>
+              Messages
+            </button>
+            <button onClick={() => setOpenNotifications((prev) => !prev)}>
+              Notifications
+            </button>
+            <button onClick={handleLogout}>Logout</button>
+          </nav>
+        </aside>
+      )}
 
       <main className={styles.container}>
         <div className={styles.profile}>
