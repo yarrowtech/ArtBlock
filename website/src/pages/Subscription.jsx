@@ -1,104 +1,118 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styles from '../styles/Subscription.module.css';
-import VideoCard from '../components/VideoCard';
-import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 
-const Subscription = () => {
-  const [videos, setVideos] = useState([]);
+const SubscriptionsPage = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedTier, setSelectedTier] = useState('All');
+  const [billingHistoryVisible, setBillingHistoryVisible] = useState(false);
 
-  useEffect(() => {
-    // TODO: Replace with real API call
-    const fetchVideos = async () => {
-      // Simulated data fetch (can be replaced by: const res = await fetch('/api/videos'); setVideos(await res.json()))
-      const mockVideos = [
-        {
-          title: 'Original Track Release: “Midnight Echoes”',
-          thumbnail: '../images/music.jpg',
-          channel: 'username',
-          avatar: 'https://randomuser.me/api/portraits/men/51.jpg',
-          meta: '5.3K listens • 1 week ago',
-          category: 'music',
-        },
-        {
-          title: 'Live Performance: Acoustic Vibes Vol. 2',
-          thumbnail: 'https://i.ytimg.com/vi/tAGnKpE4NCI/hqdefault.jpg',
-          channel: 'username',
-          avatar: 'https://randomuser.me/api/portraits/women/25.jpg',
-          meta: '2.1K views • 3 days ago',
-          category: 'music',
-        },
-        {
-          title: 'Animation Breakdown: “Dream Loop” Short Film',
-          thumbnail: 'https://i.ytimg.com/vi/e4dT8FJ2GE0/hqdefault.jpg',
-          channel: 'username',
-          avatar: 'https://randomuser.me/api/portraits/women/33.jpg',
-          meta: '1.1K views • 2 days ago',
-          category: 'videos',
-        },
-        {
-          title: 'Creative Hustle Ep. 12: Monetizing Passion Projects',
-          thumbnail: '../images/podcast.jpg',
-          channel: 'username',
-          avatar: 'https://randomuser.me/api/portraits/men/73.jpg',
-          meta: '900 plays • 4 days ago',
-          category: 'podcast',
-        },
-        {
-          title: 'Art & Identity: Deep Conversations with Creators',
-          thumbnail: 'https://i.ytimg.com/vi/60ItHLz5WEA/hqdefault.jpg',
-          channel: 'username',
-          avatar: 'https://randomuser.me/api/portraits/women/54.jpg',
-          meta: '1.5K plays • 6 days ago',
-          category: 'podcast',
-        },
-        {
-          title: 'Live Art Class: Watercolor Basics for Beginners',
-          thumbnail: '../images/creator.jpg',
-          channel: 'username',
-          avatar: 'https://randomuser.me/api/portraits/men/61.jpg',
-          meta: 'Live • 150 participants',
-          category: 'live classes',
-        },
-        {
-          title: 'Interactive Q&A: Building a Creative Career',
-          thumbnail: '../images/fantasy.webp',
-          channel: 'username',
-          avatar: 'https://randomuser.me/api/portraits/men/29.jpg',
-          meta: 'Live • 89 participants',
-          category: 'live classes',
-        },
-        {
-          title: 'Polymer Clay Charms: Step-by-Step Guide',
-          thumbnail: '../images/dancing.jpg',
-          channel: 'username',
-          avatar: 'https://randomuser.me/api/portraits/men/40.jpg',
-          meta: '2.4K views • 1 week ago',
-          category: 'art and craft',
-        },
-      ];
+  const creators = [
+    {
+      id: 1,
+      avatar: '../images/profilePhoto.png',
+      name: 'Amit Saha',
+      tierName: 'Gold',
+      price: 10,
+      nextBillingDate: '2023-11-01',
+    },
+    {
+      id: 2,
+      avatar: '../images/music.jpg',
+      name: 'Creator Two',
+      tierName: 'Silver',
+      price: 5,
+      nextBillingDate: '2023-11-15',
+    },
+    // Add more creators as needed
+  ];
 
-      setVideos(mockVideos);
-    };
+  const filteredCreators = creators.filter(
+    (creator) =>
+      creator.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      (selectedTier === 'All' || creator.tierName === selectedTier)
+  );
 
-    fetchVideos();
-  }, []);
+  const totalMonthlySpend = filteredCreators.reduce(
+    (total, creator) => total + creator.price,
+    0
+  );
+
+  const toggleBillingHistory = () => {
+    setBillingHistoryVisible(!billingHistoryVisible);
+  };
 
   return (
-    <div className={styles.subscriptionWrapper}>
+    <div className={styles.subscriptionPage}>
       <Sidebar />
+
       <div className={styles.container}>
-        <Header />
-        <section className={styles.subscriptionsContent}>
-          {videos.length > 0 ? (
-            videos.map((video, index) => <VideoCard key={index} {...video} />)
-          ) : (
-            <p className={styles.loadingText}>Loading your subscriptions...</p>
+        <h1>Subscriptions</h1>
+        <div className={styles.searchBar}>
+          <input
+            type="text"
+            placeholder="Search creators..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <select
+            value={selectedTier}
+            onChange={(e) => setSelectedTier(e.target.value)}
+          >
+            <option value="All">All Tiers</option>
+            <option value="Gold">Gold</option>
+            <option value="Silver">Silver</option>
+            <option value="Bronze">Bronze</option>
+          </select>
+        </div>
+        <div className={styles.creatorList}>
+          {filteredCreators.map((creator) => (
+            <div key={creator.id} className={styles.creatorCard}>
+              <img src={creator.avatar} alt={`${creator.name}'s avatar`} />
+              <div className={styles.creatorInfo}>
+                <h2>{creator.name}</h2>
+                <p>Tier: {creator.tierName}</p>
+                <p>Price: ${creator.price}</p>
+                <p>Next Billing Date: {creator.nextBillingDate}</p>
+              </div>
+              <div className={styles.actionButtons}>
+                <button>View Creator</button>
+                <button>Edit Tier</button>
+                <button>Cancel Subscription</button>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className={styles.billingSummary}>
+          <h2>Billing Summary</h2>
+          <p>Total Monthly Spend: ${totalMonthlySpend}</p>
+          <p>
+            Next Payment:{' '}
+            {filteredCreators.length > 0
+              ? filteredCreators[0].nextBillingDate
+              : 'N/A'}
+          </p>
+        </div>
+        <div className={styles.billingHistory}>
+          <button onClick={toggleBillingHistory}>
+            {billingHistoryVisible
+              ? 'Hide Billing History'
+              : 'Show Billing History'}
+          </button>
+          {billingHistoryVisible && (
+            <div className={styles.historyDetails}>
+              <h3>Billing History</h3>
+              <ul>
+                <li>Payment on 2023-10-01: $10</li>
+                <li>Payment on 2023-09-01: $15</li>
+                {/* Add more payment history as needed */}
+              </ul>
+            </div>
           )}
-        </section>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Subscription;
+export default SubscriptionsPage;

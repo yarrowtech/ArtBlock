@@ -1,122 +1,194 @@
-// src/pages/Explore.jsx
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import styles from '../styles/Explore.module.css';
 import Sidebar from '../components/Sidebar';
-import Header from '../components/Header';
-import { explore } from '../services/api';
 
-const BASE_URL = 'http://localhost:5000'; // ⚠️ Replace with deployed URL if needed
-const DEFAULT_PROFILE = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
+const categories = [
+  'All',
+  'Art',
+  'Music',
+  'Photography',
+  'Writing',
+  'Design',
+  'Video',
+  'Podcasts',
+  'Tutorials',
+  'Education',
+];
 
-// Card component
-const CreatorCard = ({ profilePhoto, name, role, onClick }) => (
-  <div className={styles.creatorCard}>
-    <img
-      src={profilePhoto || DEFAULT_PROFILE}
-      alt={name}
-      onError={(e) => (e.target.src = DEFAULT_PROFILE)}
-    />
-    <div className={styles.cardBody}>
-      <h5 className={styles.cardTitle}>{name}</h5>
-      <p className={styles.cardText}>{role}</p>
-      <button className={styles.cardBtn} onClick={onClick}>
-        Join
-      </button>
-    </div>
-  </div>
-);
+const featuredCreators = [
+  {
+    name: 'Amit Saha',
+    bio: 'Digital artist creating vibrant fantasy worlds and characters',
+    img: '../images/profilePhoto.png',
+  },
+  {
+    name: 'James Rodriguez',
+    bio: 'Guitarist and composer blending jazz and electronic influences',
+    img: '../images/music.jpg',
+  },
+  {
+    name: 'Mia Johnson',
+    bio: "Landscape photographer capturing Earth's most breathtaking views",
+    img: '../images/podcast.jpg',
+  },
+  {
+    name: 'David Park',
+    bio: '2D animator specializing in cartoon shorts and motion graphics',
+    img: '../images/content.webp',
+  },
+  {
+    name: 'Priya Kapoor',
+    bio: 'Science fiction author exploring AI and human consciousness',
+    img: '../images/fantasy.webp',
+  },
+];
 
-const CategoryCard = ({ image, label, sublabel }) => (
-  <div className={styles.category}>
-    <img src={image} alt={label} />
-    <h5 className={styles.cardTitle}>{label}</h5>
-    <p className={styles.cardText}>{sublabel}</p>
-  </div>
-);
+const posts = [
+  {
+    caption: 'New Series: Geometric Dreams',
+    creator: 'Sarah Chen',
+    likes: '1.2K',
+    img: '../images/creator.jpg',
+  },
+  {
+    caption: 'Behind the Scenes: Album Recording',
+    creator: 'James Rodriguez',
+    likes: '956',
+    img: '../images/music.jpg',
+  },
+  {
+    caption: 'Alpine Dawn (New Print Available)',
+    creator: 'Mia Johnson',
+    likes: '2.3K',
+    img: '../images/fantasy.webp',
+  },
+  {
+    caption: 'Character Concept: Space Explorer Nova',
+    creator: 'David Park',
+    likes: '1.8K',
+    img: '../images/podcast.jpg',
+  },
+];
 
-const Explore = () => {
-  const navigate = useNavigate();
+const newCreators = [
+  'Amit Saha',
+  'Arjo Dey',
+  'Sarah Chen',
+  'Emma Lee',
+  'Noah Williams',
+  'Amina Diallo',
+  'Lucas Kim',
+  'Sofia Martinez',
+];
 
-  const [featuredCreators, setFeaturedCreators] = useState([]);
-  const [newCreators, setNewCreators] = useState([]);
-  const [categories, setCategories] = useState([]);
+const ExplorePage = () => {
+  const [following, setFollowing] = useState({});
 
-  const handleClick = () => {
-    navigate('/creatorprofile');
+  const toggleFollow = (name) => {
+    setFollowing((prev) => ({
+      ...prev,
+      [name]: !prev[name],
+    }));
   };
 
-  const formatCreators = (creators) =>
-    creators.map((creator) => ({
-      ...creator,
-      profilePhoto: creator.profilePhoto
-        ? creator.profilePhoto.startsWith('http')
-          ? creator.profilePhoto
-          : `${BASE_URL}/${creator.profilePhoto}`
-        : '',
-    }));
+  const [liked, setLiked] = useState({});
 
-    useEffect(() => {
-      explore
-        .getFeaturedCreators()
-        .then((res) => {
-          setFeaturedCreators(formatCreators(res.data));
-        })
-        .catch(() => setFeaturedCreators([]));
-    
-      explore
-        .getNewCreators()
-        .then((res) => {
-          // ✅ Sort by recent (assuming backend returns all)
-          const sorted = res.data.sort(
-            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-          );
-          // ✅ Take latest 5
-          const latestFive = sorted.slice(0, 5);
-          setNewCreators(formatCreators(latestFive));
-        })
-        .catch(() => setNewCreators([]));
-    
-      // Static categories
-      setCategories([
-        { image: '../images/creator.jpg', label: 'Explore', sublabel: 'Art' },
-        { image: '../images/music.jpg', label: 'Explore', sublabel: 'Music' },
-        { image: '../images/dancing.jpg', label: 'Explore', sublabel: 'Dance' },
-        { image: '../images/podcast.jpg', label: 'Explore', sublabel: 'Podcast' },
-      ]);
-    }, []);
-    
+  const toggleLike = (caption) => {
+    setLiked((prev) => ({
+      ...prev,
+      [caption]: !prev[caption],
+    }));
+  };
 
   return (
-    <div>
+    <div className={styles.exploreContainer}>
       <Sidebar />
-      <main className={styles.main}>
-        <Header />
-        <div className={styles.container}>
-          <h2>Featured Creators</h2>
-          <section className={styles.featuredCreators}>
-            {featuredCreators.map((creator, i) => (
-              <CreatorCard key={i} {...creator} onClick={handleClick} />
-            ))}
-          </section>
 
-          <h2>Categories</h2>
-          <section className={styles.categories}>
-            {categories.map((cat, i) => (
-              <CategoryCard key={i} {...cat} />
-            ))}
-          </section>
-
-          <h2>New Creators</h2>
-          <section className={styles.featuredCreators}>
-            {newCreators.map((creator, i) => (
-              <CreatorCard key={i} {...creator} onClick={handleClick} />
-            ))}
-          </section>
+      <div className={styles.explorePage}>
+        <div className={styles.header}>
+          <h1 className={styles.title}>Explore</h1>
+          <div className={styles.searchBar}>
+            <input
+              type="text"
+              placeholder="Search creators, topics, and more..."
+            />
+            <button>🔍</button>
+          </div>
         </div>
-      </main>
+
+        <div className={styles.categories}>
+          {categories.map((cat, idx) => (
+            <div key={idx} className={styles.category}>
+              {cat}
+            </div>
+          ))}
+        </div>
+
+        <h2 className={styles.sectionTitle}>Featured Creators</h2>
+        <div className={styles.featuredCreators}>
+          <div className={styles.carousel}>
+            {featuredCreators.map(({ name, bio, img }) => (
+              <div className={styles.creatorCard} key={name}>
+                <img src={img} alt={name} className={styles.avatar} />
+                <h3 className={styles.creatorName}>{name}</h3>
+                <p className={styles.creatorBio}>{bio}</p>
+                <button
+                  className={styles.followButton}
+                  onClick={() => toggleFollow(name)}
+                  style={{ backgroundColor: following[name] ? '#4CAF50' : '' }}
+                >
+                  {following[name] ? 'Following' : 'Follow'}
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <h2 className={styles.sectionTitle}>Trending Posts</h2>
+        <div className={styles.postsGrid}>
+          {posts.map(({ caption, creator, likes, img }) => (
+            <div className={styles.postCard} key={caption}>
+              <img src={img} alt={caption} className={styles.postImage} />
+              <div className={styles.postInfo}>
+                <p className={styles.postCaption}>{caption}</p>
+                <p className={styles.postCreator}>By {creator}</p>
+                <p className={styles.postLikes}>
+                  <span
+                    onClick={() => toggleLike(caption)}
+                    style={{ color: liked[caption] ? 'red' : '' }}
+                  >
+                    ❤️
+                  </span>
+                  <span>{likes}</span>
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <h2 className={styles.sectionTitle}>New Creators</h2>
+        <div className={styles.smallCreators}>
+          {newCreators.map((name, idx) => (
+            <div className={styles.smallCreatorCard} key={idx}>
+              <img
+                src="https://placehold.co/150x150"
+                alt={name}
+                className={styles.smallAvatar}
+              />
+              <h3 className={styles.creatorName}>{name}</h3>
+              <button
+                className={styles.followButton}
+                onClick={() => toggleFollow(name)}
+                style={{ backgroundColor: following[name] ? '#4CAF50' : '' }}
+              >
+                {following[name] ? 'Following' : 'Follow'}
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
 
-export default Explore;
+export default ExplorePage;

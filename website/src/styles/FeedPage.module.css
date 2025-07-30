@@ -202,9 +202,9 @@
 .item3 {
   width: 350px;
   padding: 1rem;
-  border-left: 1px solid #cce7ff;
+  border-left: 2px solid #cce7ff;
   overflow-y: auto;
-  background-color: #f2faff;
+  background-color: #d0e7ff;
 }
 
 .suggestionTitle {

@@ -1,32 +1,141 @@
-.subscriptionsContent {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-  padding: 30px;
-  overflow-y: auto;
-  flex: 1;
-  background-color: #e6f2ff;
-  color: #003366; /* lightest blue background for cards area */
+/* Subscription.module.css */
+
+.subscriptionPage {
+  margin-left: 240px;
+  background-color: #e6f0fa;
 }
 
 .container {
-  margin-left: 240px;
-  background-color: #e6f2ff; /* light blue */
-  min-height: 100vh;
-  color: #003366;
-  font-family: 'Poppins', sans-serif;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
 }
 
-/* ------------------ Mobile View ------------------ */
-@media (max-width: 768px) {
-  .container {
-    margin-left: 0;
-    padding: 0 1rem;
-  }
+.container h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #264653;
+}
 
-  .subscriptionsContent {
-    padding: 20px 10px;
-    grid-template-columns: 1fr; /* One card per row */
-    gap: 16px;
-  }
+.searchBar {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.searchBar input,
+.searchBar select {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 200px;
+}
+
+.creatorList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.creatorCard {
+  display: flex;
+  align-items: center;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  gap: 1rem;
+}
+
+.creatorCard img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.creatorInfo {
+  flex: 1;
+}
+
+.creatorInfo h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.creatorInfo p {
+  margin: 0.25rem 0;
+  color: #666;
+}
+
+.actionButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.actionButtons button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.actionButtons button:hover {
+  background-color: #0056b3;
+}
+
+.billingSummary {
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: #e9f7ef;
+  border-left: 5px solid #28a745;
+  border-radius: 10px;
+}
+
+.billingSummary h2 {
+  margin-top: 0;
+}
+
+.billingHistory {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.billingHistory button {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.billingHistory button:hover {
+  background-color: #5a6268;
+}
+
+.historyDetails {
+  margin-top: 1rem;
+  background-color: #f1f1f1;
+  padding: 1rem;
+  border-radius: 10px;
+  text-align: left;
+}
+
+.historyDetails ul {
+  padding-left: 1.5rem;
+}
+
+.historyDetails li {
+  margin-bottom: 0.5rem;
 }
