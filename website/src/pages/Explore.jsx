@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../styles/Explore.module.css';
 import Sidebar from '../components/Sidebar';
+import { useNavigate } from 'react-router-dom';
 
 const categories = [
   'All',
@@ -82,15 +83,7 @@ const newCreators = [
 ];
 
 const ExplorePage = () => {
-  const [following, setFollowing] = useState({});
-
-  const toggleFollow = (name) => {
-    setFollowing((prev) => ({
-      ...prev,
-      [name]: !prev[name],
-    }));
-  };
-
+  const navigate = useNavigate();
   const [liked, setLiked] = useState({});
 
   const toggleLike = (caption) => {
@@ -98,6 +91,12 @@ const ExplorePage = () => {
       ...prev,
       [caption]: !prev[caption],
     }));
+  };
+
+  // Helper to go to creator profile
+  const goToProfile = (name) => {
+    // You may want to slugify or encode the name for the route
+    navigate(`/creatorprofile/${encodeURIComponent(name)}`);
   };
 
   return (
@@ -133,11 +132,10 @@ const ExplorePage = () => {
                 <h3 className={styles.creatorName}>{name}</h3>
                 <p className={styles.creatorBio}>{bio}</p>
                 <button
-                  className={styles.followButton}
-                  onClick={() => toggleFollow(name)}
-                  style={{ backgroundColor: following[name] ? '#4CAF50' : '' }}
+                  className={styles.joinButton}
+                  onClick={() => goToProfile(name)}
                 >
-                  {following[name] ? 'Following' : 'Follow'}
+                  Join
                 </button>
               </div>
             ))}
@@ -177,11 +175,10 @@ const ExplorePage = () => {
               />
               <h3 className={styles.creatorName}>{name}</h3>
               <button
-                className={styles.followButton}
-                onClick={() => toggleFollow(name)}
-                style={{ backgroundColor: following[name] ? '#4CAF50' : '' }}
+                className={styles.joinButton}
+                onClick={() => goToProfile(name)}
               >
-                {following[name] ? 'Following' : 'Follow'}
+                Join
               </button>
             </div>
           ))}
