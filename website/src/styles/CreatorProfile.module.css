@@ -28,7 +28,7 @@
 .sidebar h2 {
   font-size: 1.8rem;
   font-weight: 600;
-  color: #007acc;
+  color: #264653;
   margin-bottom: 3rem;
   text-align: center;
 }
@@ -419,4 +419,24 @@
     transform: scale(1);
     opacity: 1;
   }
+}
+
+.tierManagementBtnWrapper {
+  margin: 20px;
+  text-align: center;
+}
+
+.tierManagementBtn {
+  background-color: #4a90e2;
+  color: white;
+  padding: 10px 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.tierManagementBtn:hover {
+  background-color: #357ab8;
 }

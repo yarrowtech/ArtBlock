@@ -166,11 +166,15 @@ const CreatorProfile = () => {
         <div key={post._id} className={styles.post}>
           <div className={styles.postProfile}>
             <div className={styles.profilePic}>
-            <img
-            src={user.profilePhoto ? `http://localhost:5000/${user.profilePhoto}` : 'https://randomuser.me/api/portraits/men/1.jpg'}
-            alt="avatar"
-            className={styles.profilePic}
-          />
+              <img
+                src={
+                  user.profilePhoto
+                    ? `http://localhost:5000/${user.profilePhoto}`
+                    : 'https://randomuser.me/api/portraits/men/1.jpg'
+                }
+                alt="avatar"
+                className={styles.profilePic}
+              />
             </div>
             <div className={styles.username}>@{user.username}</div>
             {/* <div className={styles.postTime}>
@@ -340,50 +344,63 @@ const CreatorProfile = () => {
   );
 
   const renderPlans = () => (
-    <div className={styles.plans}>
-      {[
-        {
-          id: 'basic',
-          name: 'Basic',
-          price: '$9.99/mo',
-          features: [
-            'Access to basic features',
-            'Email support',
-            'Single user license',
-          ],
-        },
-        {
-          id: 'standard',
-          name: 'Standard',
-          price: '$19.99/mo',
-          features: [
-            'All Basic features',
-            'Priority email support',
-            'Up to 5 users',
-          ],
-        },
-        {
-          id: 'premium',
-          name: 'Premium',
-          price: '$29.99/mo',
-          features: [
-            'All Standard features',
-            'Unlimited users',
-            'Advanced analytics',
-          ],
-        },
-      ].map((plan) => (
-        <div key={plan.id} className={styles.planCard}>
-          <h2>{plan.name}</h2>
-          <p>{plan.price}</p>
-          <ul>
-            {plan.features.map((f, i) => (
-              <li key={i}>{f}</li>
-            ))}
-          </ul>
-          <button onClick={() => handleSubscribe(plan.id)}>Subscribe</button>
+    <div className={styles.plansWrapper}>
+      <div className={styles.plans}>
+        {[
+          {
+            id: 'basic',
+            name: 'Basic',
+            price: '$9.99/mo',
+            features: [
+              'Access to basic features',
+              'Email support',
+              'Single user license',
+            ],
+          },
+          {
+            id: 'standard',
+            name: 'Standard',
+            price: '$19.99/mo',
+            features: [
+              'All Basic features',
+              'Priority email support',
+              'Up to 5 users',
+            ],
+          },
+          {
+            id: 'premium',
+            name: 'Premium',
+            price: '$29.99/mo',
+            features: [
+              'All Standard features',
+              'Unlimited users',
+              'Advanced analytics',
+            ],
+          },
+        ].map((plan) => (
+          <div key={plan.id} className={styles.planCard}>
+            <h2>{plan.name}</h2>
+            <p>{plan.price}</p>
+            <ul>
+              {plan.features.map((f, i) => (
+                <li key={i}>{f}</li>
+              ))}
+            </ul>
+            <button onClick={() => handleSubscribe(plan.id)}>Subscribe</button>
+          </div>
+        ))}
+      </div>
+
+      {(isOwner || isCreator) && (
+        <div className={styles.tierManagementBtnWrapper}>
+          <button
+            className={styles.tierManagementBtn}
+            onClick={() => navigate('/tiermanagement')}
+          >
+            Manage Tiers
+          </button>
         </div>
-      ))}
+      )}
     </div>
   );
 
@@ -402,7 +419,9 @@ const CreatorProfile = () => {
         <aside className={styles.sidebar}>
           <h2>Art Block</h2>
           <nav className={styles.nav}>
-            <button onClick={() => navigate(`/creatorprofile/${id}`)}>Profile</button>
+            <button onClick={() => navigate(`/creatorprofile/${id}`)}>
+              Profile
+            </button>
             <button onClick={() => navigate('/creatordashboard')}>
               Dashboard
             </button>
@@ -420,12 +439,20 @@ const CreatorProfile = () => {
       <main className={styles.container}>
         <div className={styles.profile}>
           <img
-            src={user.coverPhoto ? `http://localhost:5000/${user.coverPhoto}` : '../images/fantasy.webp'}
+            src={
+              user.coverPhoto
+                ? `http://localhost:5000/${user.coverPhoto}`
+                : '../images/fantasy.webp'
+            }
             alt="cover"
             className={styles.cover}
           />
           <img
-            src={user.profilePhoto ? `http://localhost:5000/${user.profilePhoto}` : 'https://randomuser.me/api/portraits/men/1.jpg'}
+            src={
+              user.profilePhoto
+                ? `http://localhost:5000/${user.profilePhoto}`
+                : 'https://randomuser.me/api/portraits/men/1.jpg'
+            }
             alt="avatar"
             className={styles.avatar}
           />
@@ -508,7 +535,11 @@ const CreatorProfile = () => {
               </div>
               <div className={styles.formGroup}>
                 <label>Category</label>
-                <select value={category} onChange={e => setCategory(e.target.value)} required>
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  required
+                >
                   <option value="art">Art</option>
                   <option value="music">Music</option>
                   <option value="dance">Dance</option>

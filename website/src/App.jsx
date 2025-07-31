@@ -16,6 +16,7 @@ import SettingsPage from './pages/SettingsPage';
 import About from './pages/About';
 import HowItWorks from './pages/HowItWorks';
 import Support from './pages/Support';
+import TierManagement from './pages/TierManagement';
 import CreatorEditProfile from './components/CreatorEditProfile';
 
 import ProfileEdit from './components/ProfileEdit';
@@ -31,6 +32,7 @@ export default function App() {
       <div className="font-sans">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/tiermanagement" element={<TierManagement />} />
           <Route path="/feed" element={<FeedPage />} />
           <Route path="/creatoredit/:id" element={<CreatorEditProfile />} />
           <Route path="/createpost" element={<CreatePost />} />
