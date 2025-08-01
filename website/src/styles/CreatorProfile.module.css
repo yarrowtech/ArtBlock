@@ -1,3 +1,194 @@
+/* Comment Modal Styles */
+.commentModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.commentModal {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 85, 170, 0.18);
+  display: flex;
+  flex-direction: column;
+  min-width: 700px;
+  max-width: 90vw;
+  min-height: 420px;
+  max-height: 80vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.commentModalContent {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.commentModalPost {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background: #e6f0fa;
+  padding: 1.5rem 1rem 1rem 1.5rem;
+  border-right: 1px solid #cce7ff;
+}
+
+.commentModalImg {
+  width: 320px;
+  height: 320px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #cce7ff;
+  margin-bottom: 1rem;
+}
+
+.commentModalCaption {
+  font-size: 1.05rem;
+  color: #003366;
+  margin-top: 0.5rem;
+  text-align: center;
+  word-break: break-word;
+}
+
+.commentListSection {
+  flex: 1.8;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1.5rem 1rem 1rem;
+  background: #f7fbff;
+  min-width: 300px;
+  max-width: 350px;
+  overflow-y: auto;
+}
+
+.commentListSection h4 {
+  margin: 0 0 1rem 0;
+  color: #003366;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.commentList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
+  max-height: 250px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.commentItem {
+  display: flex;
+  flex-direction: column;
+  background: #e6f0fa;
+  border-radius: 8px;
+  padding: 0.5rem 0.8rem;
+  font-size: 0.97rem;
+  color: #003366;
+}
+
+.commentUser {
+  font-weight: 600;
+  color: #004080;
+  margin-bottom: 0.1rem;
+}
+
+.commentText {
+  margin-bottom: 0.2rem;
+  word-break: break-word;
+}
+
+.commentTime {
+  font-size: 0.8rem;
+  color: #607d8b;
+  align-self: flex-end;
+}
+
+.commentInputSection {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
+  border-top: 1px solid #cce7ff;
+}
+
+.commentInput {
+  flex: 1;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #cce7ff;
+  font-size: 1rem;
+  outline: none;
+  background: #f7fbff;
+  color: #003366;
+}
+
+.commentSendBtn {
+  background: #3399ff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.97rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.commentSendBtn:hover {
+  background: #007acc;
+}
+
+.commentModalClose {
+  position: absolute;
+  top: 10px;
+  right: 18px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #003366;
+  cursor: pointer;
+  z-index: 10;
+  transition: color 0.2s;
+}
+.commentModalClose:hover {
+  color: #007acc;
+}
+
+@media (max-width: 900px) {
+  .commentModal {
+    min-width: 95vw;
+    flex-direction: column;
+    min-height: 60vh;
+  }
+  .commentModalContent {
+    flex-direction: column;
+  }
+  .commentModalPost,
+  .commentListSection {
+    max-width: 100vw;
+    min-width: 0;
+    padding: 1rem;
+  }
+  .commentModalImg {
+    width: 90vw;
+    height: 40vw;
+    max-width: 350px;
+    max-height: 350px;
+  }
+}
 /* Light Blue Theme */
 
 .wrapper {

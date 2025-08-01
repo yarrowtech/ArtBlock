@@ -12,7 +12,7 @@ import { faShare } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
 // Reusable Post Component
-const Post = ({ post, onJoin }) => {
+const Post = ({ post, onJoin, onCommentClick }) => {
   // Format createdAt as e.g. '2h ago' or date string
   const formatTime = (dateString) => {
     const date = new Date(dateString);
@@ -28,9 +28,14 @@ const Post = ({ post, onJoin }) => {
       <div className={styles.postProfile}>
         {post.profilePhoto ? (
           <img
-            src={post.profilePhoto.startsWith('http')
-              ? post.profilePhoto
-              : `http://localhost:5000/${post.profilePhoto.replace(/\\/g, '/')}`}
+            src={
+              post.profilePhoto.startsWith('http')
+                ? post.profilePhoto
+                : `http://localhost:5000/${post.profilePhoto.replace(
+                    /\\/g,
+                    '/'
+                  )}`
+            }
             alt="profile"
             className={styles.profilePic}
           />
@@ -42,31 +47,35 @@ const Post = ({ post, onJoin }) => {
         {/* <FontAwesomeIcon icon={regularBookmark} className={styles.bookmark} /> */}
       </div>
       <div className={styles.caption}>{post.caption}</div>
-      <div className={styles.content}>
-  {post.mediaType === 'image' ? (
-    <img src={post.mediaUrl} alt="post" />
-  ) : (
-    <video
-      autoPlay
-      muted
-      loop
-      playsInline
-      className={styles.video}
-    >
-      <source src={post.mediaUrl} type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
-  )}
-</div>
-
+      <div
+        className={styles.content}
+        onClick={() => onCommentClick(post)}
+        style={{ cursor: 'pointer' }}
+      >
+        {post.mediaType === 'image' ? (
+          <img src={post.mediaUrl} alt="post" />
+        ) : (
+          <video autoPlay muted loop playsInline className={styles.video}>
+            <source src={post.mediaUrl} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        )}
+      </div>
       <div className={styles.interact}>
         <FontAwesomeIcon icon={faHeart} />
-        <FontAwesomeIcon icon={faComment} />
+        <FontAwesomeIcon
+          icon={faComment}
+          onClick={() => onCommentClick(post)}
+          style={{ cursor: 'pointer' }}
+        />
         <FontAwesomeIcon icon={faShare} />
-        <button type="button" className={styles.join} onClick={() => onJoin(post.creatorId)}>
+        <button
+          type="button"
+          className={styles.join}
+          onClick={() => onJoin(post.creatorId)}
+        >
           Join
-          </button>
-
+        </button>
       </div>
     </div>
   );
@@ -82,7 +91,8 @@ const Story = ({ imgUrl, name }) => (
   </div>
 );
 
-const DEFAULT_PROFILE_PHOTO = 'https://ui-avatars.com/api/?name=User&background=random';
+const DEFAULT_PROFILE_PHOTO =
+  'https://ui-avatars.com/api/?name=User&background=random';
 
 const FeedPage = () => {
   const navigate = useNavigate();
@@ -91,10 +101,14 @@ const FeedPage = () => {
   const [posts, setPosts] = useState([]);
   const [usernames, setUsernames] = useState([]);
   const [suggestedCreators, setSuggestedCreators] = useState([]);
+  const [showCommentModal, setShowCommentModal] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState('');
+  const [loadingComments, setLoadingComments] = useState(false);
 
   const handleNavigation = (path) => navigate(path);
   const handleJoin = (creatorId) => navigate(`/creatorprofile/${creatorId}`);
-
 
   const scroll = (direction) => {
     const scrollAmount = 150;
@@ -104,6 +118,46 @@ const FeedPage = () => {
         behavior: 'smooth',
       });
     }
+  };
+
+  // Open comment modal and fetch comments for the post
+  const handleCommentClick = async (post) => {
+    setSelectedPost(post);
+    setShowCommentModal(true);
+    setLoadingComments(true);
+    try {
+      const res = await axios.get(
+        `http://localhost:5000/api/posts/${post._id}/comments`
+      );
+      setComments(res.data);
+    } catch (err) {
+      setComments([]);
+    }
+    setLoadingComments(false);
+  };
+
+  // Add a new comment
+  const handleAddComment = async () => {
+    if (!newComment.trim() || !selectedPost) return;
+    try {
+      const res = await axios.post(
+        `http://localhost:5000/api/posts/${selectedPost._id}/comments`,
+        {
+          text: newComment,
+        }
+      );
+      setComments((prev) => [...prev, res.data]);
+      setNewComment('');
+    } catch (err) {
+      // Optionally show error
+    }
+  };
+
+  const closeModal = () => {
+    setShowCommentModal(false);
+    setSelectedPost(null);
+    setComments([]);
+    setNewComment('');
   };
 
   useEffect(() => {
@@ -116,13 +170,15 @@ const FeedPage = () => {
             ? post.mediaUrl
             : `http://localhost:5000${post.mediaUrl}`,
           profilePhoto: post.profilePhoto
-            ? (post.profilePhoto.startsWith('http')
-                ? post.profilePhoto
-                : `http://localhost:5000${post.profilePhoto}`)
+            ? post.profilePhoto.startsWith('http')
+              ? post.profilePhoto
+              : `http://localhost:5000${post.profilePhoto}`
             : null,
         }));
         // Sort posts by createdAt descending (latest first)
-        fetchedPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        fetchedPosts.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
         setPosts(fetchedPosts);
       } catch (error) {
         console.error('Error fetching posts:', error);
@@ -131,8 +187,9 @@ const FeedPage = () => {
 
     const fetchCreators = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/users/role/creator');
-        console.log('Fetched creators:', response.data);
+        const response = await axios.get(
+          'http://localhost:5000/api/users/role/creator'
+        );
         setSuggestedCreators(response.data);
       } catch (error) {
         console.error('Error fetching creators:', error);
@@ -155,6 +212,17 @@ const FeedPage = () => {
       'olivia',
     ]);
   }, []);
+
+  // Format createdAt for comments
+  const formatTime = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diff = Math.floor((now - date) / 1000); // seconds
+    if (diff < 60) return `${diff}s ago`;
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+    return date.toLocaleDateString();
+  };
 
   return (
     <div className={styles.container}>
@@ -181,9 +249,94 @@ const FeedPage = () => {
 
         {/* Posts section */}
         {posts.map((post, i) => (
-          <Post key={i} post={post} onJoin={handleJoin} />
+          <Post
+            key={i}
+            post={post}
+            onJoin={handleJoin}
+            onCommentClick={handleCommentClick}
+          />
         ))}
       </div>
+
+      {/* Comment Modal */}
+      {showCommentModal && selectedPost && (
+        <div className={styles.commentModalOverlay} onClick={closeModal}>
+          <div
+            className={styles.commentModal}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className={styles.commentModalContent}>
+              {/* Post preview */}
+              <div className={styles.commentModalPost}>
+                {selectedPost.mediaType === 'image' ? (
+                  <img
+                    src={selectedPost.mediaUrl}
+                    alt="post"
+                    className={styles.commentModalImg}
+                  />
+                ) : (
+                  <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className={styles.commentModalImg}
+                  >
+                    <source src={selectedPost.mediaUrl} type="video/mp4" />
+                  </video>
+                )}
+                <div className={styles.commentModalCaption}>
+                  {selectedPost.caption}
+                </div>
+              </div>
+              {/* Comments list */}
+              <div className={styles.commentListSection}>
+                <h4>Comments</h4>
+                {loadingComments ? (
+                  <div>Loading...</div>
+                ) : comments.length === 0 ? (
+                  <div>No comments yet.</div>
+                ) : (
+                  <ul className={styles.commentList}>
+                    {comments.map((c, idx) => (
+                      <li key={c._id || idx} className={styles.commentItem}>
+                        <span className={styles.commentUser}>
+                          {c.username || 'User'}
+                        </span>
+                        <span className={styles.commentText}>{c.text}</span>
+                        <span className={styles.commentTime}>
+                          {formatTime(c.createdAt)}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <div className={styles.commentInputSection}>
+                  <input
+                    type="text"
+                    placeholder="Add a comment..."
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    className={styles.commentInput}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') handleAddComment();
+                    }}
+                  />
+                  <button
+                    className={styles.commentSendBtn}
+                    onClick={handleAddComment}
+                  >
+                    Post
+                  </button>
+                </div>
+              </div>
+              <button className={styles.commentModalClose} onClick={closeModal}>
+                &times;
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Suggested Creators */}
       <div className={styles.item3}>
@@ -194,9 +347,12 @@ const FeedPage = () => {
               <img
                 src={
                   creator.profilePhoto
-                    ? (creator.profilePhoto.startsWith('http')
-                        ? creator.profilePhoto
-                        : `http://localhost:5000/${creator.profilePhoto.replace(/\\/g, '/')}`)
+                    ? creator.profilePhoto.startsWith('http')
+                      ? creator.profilePhoto
+                      : `http://localhost:5000/${creator.profilePhoto.replace(
+                          /\\/g,
+                          '/'
+                        )}`
                     : DEFAULT_PROFILE_PHOTO
                 }
                 alt={creator.username}
@@ -205,15 +361,18 @@ const FeedPage = () => {
               <div className={styles.creatorInfo}>
                 <span className={styles.creatorName}>{creator.username}</span>
                 {creator.bio && (
-  <span className={styles.creatorHandle}>
-    {creator.bio.slice(0, 10)}{creator.bio.length > 10 ? '...' : ''}
-  </span>
-)}
+                  <span className={styles.creatorHandle}>
+                    {creator.bio.slice(0, 10)}
+                    {creator.bio.length > 10 ? '...' : ''}
+                  </span>
+                )}
               </div>
-              <button className={styles.followBtn} onClick={() => handleJoin(creator._id)}>
-  Join
-</button>
-
+              <button
+                className={styles.followBtn}
+                onClick={() => handleJoin(creator._id)}
+              >
+                Join
+              </button>
             </li>
           ))}
         </ul>

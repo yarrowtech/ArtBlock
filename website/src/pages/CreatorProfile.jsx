@@ -160,6 +160,64 @@ const CreatorProfile = () => {
 
   const onClose = () => setShowCreatePopup(false);
 
+  // Comment modal state
+  const [showCommentModal, setShowCommentModal] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState('');
+  const [loadingComments, setLoadingComments] = useState(false);
+
+  // Open comment modal and fetch comments for the post
+  const handleCommentClick = async (post) => {
+    setSelectedPost(post);
+    setShowCommentModal(true);
+    setLoadingComments(true);
+    try {
+      const res = await axios.get(
+        `http://localhost:5000/api/posts/${post._id}/comments`
+      );
+      setComments(res.data);
+    } catch (err) {
+      setComments([]);
+    }
+    setLoadingComments(false);
+  };
+
+  // Add a new comment
+  const handleAddComment = async () => {
+    if (!newComment.trim() || !selectedPost) return;
+    try {
+      const res = await axios.post(
+        `http://localhost:5000/api/posts/${selectedPost._id}/comments`,
+        {
+          text: newComment,
+        }
+      );
+      setComments((prev) => [...prev, res.data]);
+      setNewComment('');
+    } catch (err) {
+      // Optionally show error
+    }
+  };
+
+  const closeModal = () => {
+    setShowCommentModal(false);
+    setSelectedPost(null);
+    setComments([]);
+    setNewComment('');
+  };
+
+  // Format createdAt for comments
+  const formatTime = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diff = Math.floor((now - date) / 1000); // seconds
+    if (diff < 60) return `${diff}s ago`;
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+    return date.toLocaleDateString();
+  };
+
   const renderPosts = () => (
     <div className={styles.posts}>
       {posts.map((post) => (
@@ -247,7 +305,11 @@ const CreatorProfile = () => {
             </div>
           </div>
           <div className={styles.caption}>{post.content}</div>
-          <div className={styles.content}>
+          <div
+            className={styles.content}
+            onClick={() => handleCommentClick(post)}
+            style={{ cursor: 'pointer' }}
+          >
             {post.mediaType === 'image' && (
               <img src={`http://localhost:5000${post.mediaUrl}`} alt="" />
             )}
@@ -262,7 +324,11 @@ const CreatorProfile = () => {
           </div>
           <div className={styles.interact}>
             <FontAwesomeIcon icon={faHeart} />
-            <FontAwesomeIcon icon={faComment} />
+            <FontAwesomeIcon
+              icon={faComment}
+              onClick={() => handleCommentClick(post)}
+              style={{ cursor: 'pointer' }}
+            />
             <FontAwesomeIcon icon={faShare} />
             <FontAwesomeIcon
               icon={regularBookmark}
@@ -271,6 +337,89 @@ const CreatorProfile = () => {
           </div>
         </div>
       ))}
+
+      {/* Comment Modal */}
+      {showCommentModal && selectedPost && (
+        <div className={styles.commentModalOverlay} onClick={closeModal}>
+          <div
+            className={styles.commentModal}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className={styles.commentModalContent}>
+              {/* Post preview */}
+              <div className={styles.commentModalPost}>
+                {selectedPost.mediaType === 'image' ? (
+                  <img
+                    src={`http://localhost:5000${selectedPost.mediaUrl}`}
+                    alt="post"
+                    className={styles.commentModalImg}
+                  />
+                ) : (
+                  <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className={styles.commentModalImg}
+                  >
+                    <source
+                      src={`http://localhost:5000${selectedPost.mediaUrl}`}
+                      type="video/mp4"
+                    />
+                  </video>
+                )}
+                <div className={styles.commentModalCaption}>
+                  {selectedPost.content}
+                </div>
+              </div>
+              {/* Comments list */}
+              <div className={styles.commentListSection}>
+                <h4>Comments</h4>
+                {loadingComments ? (
+                  <div>Loading...</div>
+                ) : comments.length === 0 ? (
+                  <div>No comments yet.</div>
+                ) : (
+                  <ul className={styles.commentList}>
+                    {comments.map((c, idx) => (
+                      <li key={c._id || idx} className={styles.commentItem}>
+                        <span className={styles.commentUser}>
+                          {c.username || 'User'}
+                        </span>
+                        <span className={styles.commentText}>{c.text}</span>
+                        <span className={styles.commentTime}>
+                          {formatTime(c.createdAt)}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <div className={styles.commentInputSection}>
+                  <input
+                    type="text"
+                    placeholder="Add a comment..."
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    className={styles.commentInput}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') handleAddComment();
+                    }}
+                  />
+                  <button
+                    className={styles.commentSendBtn}
+                    onClick={handleAddComment}
+                  >
+                    Post
+                  </button>
+                </div>
+              </div>
+              <button className={styles.commentModalClose} onClick={closeModal}>
+                &times;
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 
