@@ -276,49 +276,51 @@ const CreatorProfile = () => {
 
   const renderLiveClasses = () => (
     <div className={styles.live}>
-      <section className={styles.createSection}>
-        <h2>Schedule a New Class</h2>
-        <form onSubmit={handleCreateClass} className={styles.form}>
-          <input
-            type="text"
-            name="title"
-            placeholder="Class Title"
-            value={form.title}
-            onChange={handleChange}
-            required
-          />
-          <textarea
-            name="description"
-            placeholder="Description"
-            value={form.description}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="date"
-            name="date"
-            value={form.date}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="time"
-            name="time"
-            value={form.time}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="url"
-            name="link"
-            placeholder="Live Stream URL"
-            value={form.link}
-            onChange={handleChange}
-            required
-          />
-          <button type="submit">Create Class</button>
-        </form>
-      </section>
+      {(isOwner || isCreator) && (
+        <section className={styles.createSection}>
+          <h2>Schedule a New Class</h2>
+          <form onSubmit={handleCreateClass} className={styles.form}>
+            <input
+              type="text"
+              name="title"
+              placeholder="Class Title"
+              value={form.title}
+              onChange={handleChange}
+              required
+            />
+            <textarea
+              name="description"
+              placeholder="Description"
+              value={form.description}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="date"
+              name="date"
+              value={form.date}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="time"
+              name="time"
+              value={form.time}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="url"
+              name="link"
+              placeholder="Live Stream URL"
+              value={form.link}
+              onChange={handleChange}
+              required
+            />
+            <button type="submit">Create Class</button>
+          </form>
+        </section>
+      )}
       <section className={styles.upcomingSection}>
         <h2>Upcoming Classes</h2>
         {classes.length === 0 ? (
