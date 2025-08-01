@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../styles/Explore.module.css';
 import Sidebar from '../components/Sidebar';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const categories = [
   'All',
@@ -14,34 +15,6 @@ const categories = [
   'Podcasts',
   'Tutorials',
   'Education',
-];
-
-const featuredCreators = [
-  {
-    name: 'Amit Saha',
-    bio: 'Digital artist creating vibrant fantasy worlds and characters',
-    img: '../images/profilePhoto.png',
-  },
-  {
-    name: 'James Rodriguez',
-    bio: 'Guitarist and composer blending jazz and electronic influences',
-    img: '../images/music.jpg',
-  },
-  {
-    name: 'Mia Johnson',
-    bio: "Landscape photographer capturing Earth's most breathtaking views",
-    img: '../images/podcast.jpg',
-  },
-  {
-    name: 'David Park',
-    bio: '2D animator specializing in cartoon shorts and motion graphics',
-    img: '../images/content.webp',
-  },
-  {
-    name: 'Priya Kapoor',
-    bio: 'Science fiction author exploring AI and human consciousness',
-    img: '../images/fantasy.webp',
-  },
 ];
 
 const posts = [
@@ -71,20 +44,27 @@ const posts = [
   },
 ];
 
-const newCreators = [
-  'Amit Saha',
-  'Arjo Dey',
-  'Sarah Chen',
-  'Emma Lee',
-  'Noah Williams',
-  'Amina Diallo',
-  'Lucas Kim',
-  'Sofia Martinez',
-];
-
 const ExplorePage = () => {
   const navigate = useNavigate();
   const [liked, setLiked] = useState({});
+  const [featuredCreators, setFeaturedCreators] = useState([]);
+  const [newCreators, setNewCreators] = useState([]);
+
+  useEffect(() => {
+    const fetchCreators = async () => {
+      try {
+        const res = await axios.get(
+          'http://localhost:5000/api/explore/creators'
+        );
+        setFeaturedCreators(res.data.featuredCreators);
+        setNewCreators(res.data.newCreators);
+      } catch (error) {
+        console.error('Failed to fetch creators:', error);
+      }
+    };
+
+    fetchCreators();
+  }, []);
 
   const toggleLike = (caption) => {
     setLiked((prev) => ({
@@ -93,9 +73,7 @@ const ExplorePage = () => {
     }));
   };
 
-  // Helper to go to creator profile
   const goToProfile = (name) => {
-    // You may want to slugify or encode the name for the route
     navigate(`/creatorprofile/${encodeURIComponent(name)}`);
   };
 
@@ -126,9 +104,21 @@ const ExplorePage = () => {
         <h2 className={styles.sectionTitle}>Featured Creators</h2>
         <div className={styles.featuredCreators}>
           <div className={styles.carousel}>
-            {featuredCreators.map(({ name, bio, img }) => (
-              <div className={styles.creatorCard} key={name}>
-                <img src={img} alt={name} className={styles.avatar} />
+            {featuredCreators.map(({ _id, name, bio, profilePhoto }) => (
+              <div className={styles.creatorCard} key={_id}>
+                <img
+                  src={
+                    profilePhoto
+                      ? `http://localhost:5000/${profilePhoto.replace(
+                          /\\/g,
+                          '/'
+                        )}`
+                      : 'https://placehold.co/150x150'
+                  }
+                  alt={name}
+                  className={styles.avatar}
+                />
+
                 <h3 className={styles.creatorName}>{name}</h3>
                 <p className={styles.creatorBio}>{bio}</p>
                 <button
@@ -166,13 +156,21 @@ const ExplorePage = () => {
 
         <h2 className={styles.sectionTitle}>New Creators</h2>
         <div className={styles.smallCreators}>
-          {newCreators.map((name, idx) => (
-            <div className={styles.smallCreatorCard} key={idx}>
+          {newCreators.map(({ _id, name, profilePhoto }) => (
+            <div className={styles.smallCreatorCard} key={_id}>
               <img
-                src="https://placehold.co/150x150"
+                src={
+                  profilePhoto
+                    ? `http://localhost:5000/${profilePhoto.replace(
+                        /\\/g,
+                        '/'
+                      )}`
+                    : 'https://placehold.co/150x150'
+                }
                 alt={name}
                 className={styles.smallAvatar}
               />
+
               <h3 className={styles.creatorName}>{name}</h3>
               <button
                 className={styles.joinButton}
