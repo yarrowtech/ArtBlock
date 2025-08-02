@@ -3,16 +3,29 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import styles from '../styles/FeedPage.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import {
   faBookmark as regularBookmark,
   faComment,
-  faHeart,
+  faHeart as regularHeart,
 } from '@fortawesome/free-regular-svg-icons';
-import { faShare } from '@fortawesome/free-solid-svg-icons';
+import {
+  faShare,
+  faHeart as solidHeart,
+} from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import { posts as postsApi } from '../services/api';
 
 // Reusable Post Component
-const Post = ({ post, onJoin, onCommentClick }) => {
+const Post = ({
+  post,
+  onJoin,
+  onCommentClick,
+  onLike,
+  likeCount,
+  liked,
+  likeLoading,
+}) => {
   // Format createdAt as e.g. '2h ago' or date string
   const formatTime = (dateString) => {
     const date = new Date(dateString);
@@ -62,7 +75,18 @@ const Post = ({ post, onJoin, onCommentClick }) => {
         )}
       </div>
       <div className={styles.interact}>
-        <FontAwesomeIcon icon={faHeart} />
+        <button
+          className={styles.likeBtn}
+          onClick={() => onLike(post)}
+          disabled={likeLoading}
+          aria-label={liked ? 'Unlike' : 'Like'}
+        >
+          <FontAwesomeIcon
+            icon={liked ? solidHeart : regularHeart}
+            style={{ color: liked ? '#e74c3c' : undefined }}
+          />
+        </button>
+        <span className={styles.likeCount}>{likeCount}</span>
         <FontAwesomeIcon
           icon={faComment}
           onClick={() => onCommentClick(post)}
@@ -106,6 +130,8 @@ const FeedPage = () => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [loadingComments, setLoadingComments] = useState(false);
+  // Like state
+  const [likeInfo, setLikeInfo] = useState({}); // { [postId]: { count, liked, loading } }
 
   const handleNavigation = (path) => navigate(path);
   const handleJoin = (creatorId) => navigate(`/creatorprofile/${creatorId}`);
@@ -180,6 +206,23 @@ const FeedPage = () => {
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
         setPosts(fetchedPosts);
+
+        // Fetch like info for all posts
+        const likeResults = await Promise.all(
+          fetchedPosts.map(async (post) => {
+            try {
+              const res = await postsApi.getLikes(post._id);
+              return { postId: post._id, ...res.data };
+            } catch {
+              return { postId: post._id, count: 0, liked: false };
+            }
+          })
+        );
+        const likeMap = {};
+        likeResults.forEach(({ postId, count, liked }) => {
+          likeMap[postId] = { count, liked, loading: false };
+        });
+        setLikeInfo(likeMap);
       } catch (error) {
         console.error('Error fetching posts:', error);
       }
@@ -212,6 +255,32 @@ const FeedPage = () => {
       'olivia',
     ]);
   }, []);
+  // Like/unlike handler
+  const handleLike = async (post) => {
+    const postId = post._id;
+    setLikeInfo((prev) => ({
+      ...prev,
+      [postId]: { ...prev[postId], loading: true },
+    }));
+    try {
+      const res = await postsApi.toggleLike(postId);
+      // Get new like count
+      const likeRes = await postsApi.getLikes(postId);
+      setLikeInfo((prev) => ({
+        ...prev,
+        [postId]: {
+          count: likeRes.data.count,
+          liked: likeRes.data.liked,
+          loading: false,
+        },
+      }));
+    } catch {
+      setLikeInfo((prev) => ({
+        ...prev,
+        [postId]: { ...prev[postId], loading: false },
+      }));
+    }
+  };
 
   // Format createdAt for comments
   const formatTime = (dateString) => {
@@ -254,6 +323,10 @@ const FeedPage = () => {
             post={post}
             onJoin={handleJoin}
             onCommentClick={handleCommentClick}
+            onLike={handleLike}
+            likeCount={likeInfo[post._id]?.count || 0}
+            liked={likeInfo[post._id]?.liked || false}
+            likeLoading={likeInfo[post._id]?.loading || false}
           />
         ))}
       </div>

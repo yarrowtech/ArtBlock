@@ -6,8 +6,8 @@ const API_URL = 'http://localhost:5000/api';
 const api = axios.create({
   baseURL: API_URL,
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 });
 
 // Add token to requests if available
@@ -35,7 +35,7 @@ export const auth = {
 export const posts = {
   create: (postData) => {
     const formData = new FormData();
-    Object.keys(postData).forEach(key => {
+    Object.keys(postData).forEach((key) => {
       if (key === 'tags' && Array.isArray(postData[key])) {
         formData.append(key, JSON.stringify(postData[key]));
       } else if (key === 'media') {
@@ -46,18 +46,20 @@ export const posts = {
     });
     return api.post('/posts', formData, {
       headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+        'Content-Type': 'multipart/form-data',
+      },
     });
   },
-  getPublic: (page = 1, limit = 10) => 
+  getPublic: (page = 1, limit = 10) =>
     api.get(`/posts/public?page=${page}&limit=${limit}`),
-  getFeed: (page = 1, limit = 10) => 
+  getFeed: (page = 1, limit = 10) =>
     api.get(`/posts/feed?page=${page}&limit=${limit}`),
   getById: (id) => api.get(`/posts/${id}`),
   update: (id, updates) => api.patch(`/posts/${id}`, updates),
   delete: (id) => api.delete(`/posts/${id}`),
-  like: (id) => api.post(`/posts/${id}/like`),
+  // Like system
+  getLikes: (postId) => api.get(`/likes/${postId}`),
+  toggleLike: (postId) => api.post(`/likes/${postId}`),
   comment: (id, content) => api.post(`/posts/${id}/comment`, { content }),
 };
 
@@ -66,13 +68,13 @@ export const users = {
   getProfile: (userId) => api.get(`/users/${userId}`),
   updateProfile: (updates) => {
     const formData = new FormData();
-    Object.keys(updates).forEach(key => {
+    Object.keys(updates).forEach((key) => {
       formData.append(key, updates[key]);
     });
     return api.post('/profile/update', formData, {
       headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+        'Content-Type': 'multipart/form-data',
+      },
     });
   },
   changePassword: (passwords) => api.post('/users/change-password', passwords),
@@ -84,19 +86,19 @@ export const users = {
 
 // Subscriptions API
 export const subscriptions = {
-  subscribe: (creatorId, amount) => 
+  subscribe: (creatorId, amount) =>
     api.post(`/subscriptions/${creatorId}`, { amount }),
   getMySubscriptions: () => api.get('/subscriptions/my-subscriptions'),
   getMySubscribers: () => api.get('/subscriptions/my-subscribers'),
-  cancel: (subscriptionId) => 
+  cancel: (subscriptionId) =>
     api.post(`/subscriptions/${subscriptionId}/cancel`),
-  renew: (subscriptionId, amount) => 
+  renew: (subscriptionId, amount) =>
     api.post(`/subscriptions/${subscriptionId}/renew`, { amount }),
 };
 
 // Messages API
 export const messages = {
-  send: (recipientId, content, attachments = []) => 
+  send: (recipientId, content, attachments = []) =>
     api.post('/messages', { recipientId, content, attachments }),
   getConversation: (userId) => api.get(`/messages/conversation/${userId}`),
   getConversations: () => api.get('/messages/conversations'),
@@ -118,4 +120,4 @@ export default {
   subscriptions,
   messages,
   explore,
-}; 
+};

@@ -10,6 +10,7 @@ const planRoutes = require('./routes/plans');
 const profileRoutes = require('./routes/profile');
 const userRoutes = require('./routes/user.routes');
 const exploreRoutes = require('./routes/explore');
+const likeRoutes = require('./routes/likes');
 
 dotenv.config();
 const app = express();
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
+
 app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api/posts', postRoutes);
 app.use('/api/classes', classRoutes);
@@ -28,6 +30,7 @@ app.use('/api/plans', planRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/explore', exploreRoutes);
+app.use('/api/likes', likeRoutes);
 
 // Root
 app.get('/', (req, res) => res.send('API is running...'));
